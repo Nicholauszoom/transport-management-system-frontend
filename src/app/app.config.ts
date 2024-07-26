@@ -1,17 +1,20 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { AppComponent } from './app.component';
-import { AuthComponent } from './auth/auth.component'; // Adjust based on your component
-
-
+import { MessageService } from 'primeng/api';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { routes } from './app.routes';
+import { authInterceptor } from '../interceptors/auth.inteceptos';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
-  ],
+    provideHttpClient(
+      withInterceptors([authInterceptor]),
+    ),
+    provideAnimationsAsync(),
+    MessageService
+  ]
 };

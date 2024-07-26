@@ -6,5 +6,4 @@ export const routes: Routes = [
     { path: 'login', component: AuthComponent },
     // { path: 'profile/:id', component: ProfileComponent },
     // { path: 'search', component: SearchComponent },
-    
 ];

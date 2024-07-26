@@ -5,17 +5,21 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { ToastModule } from 'primeng/toast';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'auth-component',
   standalone: true,
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
-  imports: [CardModule, ButtonModule, FloatLabelModule, InputTextModule, PasswordModule, ReactiveFormsModule]
+  imports: [CardModule, ButtonModule, FloatLabelModule, InputTextModule, PasswordModule, ReactiveFormsModule, ToastModule]
 })
 
 export class AuthComponent {
-  submitted = false;
+  submitted   = false;
+  inProgress  = false;
+
   username = new FormControl("", [Validators.required]);
   password = new FormControl("", [Validators.required]);
 
@@ -24,14 +28,28 @@ export class AuthComponent {
     password: this.password
   });
 
-  public login() {
+  public constructor(private authService: AuthService){
+
+  }
+
+  ngOnInit() {
+    this.authService.inProgress$.subscribe(progressStatus => {
+      this.inProgress = progressStatus;
+      this.submitted = false;
+      this.loginForm.reset();
+    });
+  }
+
+  public async login() {
     this.submitted = true;
     
     if(this.loginForm.valid){
-      
-    } else {
-      console.log(this.loginForm);
-      console.log(this.loginForm.dirty)
+      const credentials = {
+        "username": this.username.value,
+        "password": this.password.value
+      };
+
+      this.authService.login(credentials);
     }
   }
 }
