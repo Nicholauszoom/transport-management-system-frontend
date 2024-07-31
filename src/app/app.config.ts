@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { routes } from './app.routes';
-import { authInterceptor } from '../interceptors/auth.inteceptos';
+import { authInterceptor } from '../interceptors/auth.interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [
