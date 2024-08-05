@@ -6,6 +6,7 @@ import { env } from '../constants/env.constant';
 import { MessageService } from 'primeng/api';
 import { DataResponse } from '../dtos/api.dto';
 import { Router } from '@angular/router';
+import { ErrorToast } from './error.service';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +24,7 @@ export class AuthService {
         this.progressSubject.next(progress);
     }
 
-    constructor(private http: HttpClient, private toast: MessageService, private router: Router) {
+    constructor(private http: HttpClient, private toast: MessageService, private router: Router, private err: ErrorToast) {
 
     }
 
@@ -39,19 +40,10 @@ export class AuthService {
             {
                 next: res => {
                     this.toast.add({ severity: 'success', summary: 'Success', detail: res.message })
-                    this.router.navigate(['fsp']);
+                    this.router.navigate(['fsp-categories']);
                 },
                 error: err => {
-                    console.error(err)
-                    //Set default message to http client response message
-                    let message = err.message;
-
-                    //If error comes from the backend server then use appropriate message from it
-                    if(err.status != 0){
-                        message = err.error.message;
-                    }
-
-                    this.toast.add({ severity: 'error', summary: 'Error occured', detail: message })
+                    this.err.show(err);
                 }
             }
         );

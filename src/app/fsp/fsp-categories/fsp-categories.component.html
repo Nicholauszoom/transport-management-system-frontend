@@ -1,0 +1,105 @@
+<app-main-layout>
+    <p-table [value]="categories" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}" styleClass="pt-2 pl-2">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:20%">Code</th>
+                <th style="width:20%">Name</th>
+                <th style="width:20%">Status</th>
+                <button></button>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="category">
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input 
+                                pInputText 
+                                type="text" 
+                                [formControl]="category.categoryCode" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{category.categoryCode}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input 
+                                pInputText type="text" 
+                                [formControl]="category.categoryName" 
+                                required />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{category.categoryName}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <!-- <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <p-dropdown 
+                                [options]="statuses" 
+                                appendTo="body" 
+                                [(ngModel)]="category.recordStatusId" 
+                                [style]="{'width':'100%'}" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            <p-tag 
+                                [value]="product.inventoryStatus" 
+                                [severity]="getSeverity(product.inventoryStatus)" />
+                        </ng-template>
+                    </p-cellEditor>
+                </td> -->
+                <!-- <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input 
+                                pInputText 
+                                type="text" 
+                                [(ngModel)]="product.price" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{product.price | currency: 'USD'}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td> -->
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button 
+                            *ngIf="!editing" 
+                            pButton 
+                            pRipple 
+                            type="button" 
+                            pInitEditableRow 
+                            icon="pi pi-pencil" 
+                            (click)="onRowEditInit(category)" 
+                            class="p-button-rounded p-button-text">
+                        </button>
+                        <button 
+                            *ngIf="editing" 
+                            pButton 
+                            pRipple 
+                            type="button" 
+                            pSaveEditableRow 
+                            icon="pi pi-check" 
+                            (click)="onRowEditSave(category)" 
+                            class="p-button-rounded p-button-text p-button-success mr-2">
+                        </button>
+                        <button 
+                            *ngIf="editing" 
+                            pButton pRipple 
+                            type="button" 
+                            pCancelEditableRow 
+                            icon="pi pi-times" 
+                            (click)="onRowEditCancel(category, ri)" 
+                            class="p-button-rounded p-button-text p-button-danger">
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</app-main-layout>
+

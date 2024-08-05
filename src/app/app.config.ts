@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { routes } from './app.routes';
 import { authInterceptor } from '../interceptors/auth.interceptors';
+import { ButtonModule } from 'primeng/button';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([authInterceptor]),
     ),
     provideAnimationsAsync(),
-    MessageService
+    MessageService,
+    ButtonModule
   ]
 };

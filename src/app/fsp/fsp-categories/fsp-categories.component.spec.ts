@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MenuComponent } from './menu.component';
+import { FspCategoriesComponent } from './fsp-categories.component';
 
-describe('MenuComponent', () => {
-  let component: MenuComponent;
-  let fixture: ComponentFixture<MenuComponent>;
+describe('FspCategoriesComponent', () => {
+  let component: FspCategoriesComponent;
+  let fixture: ComponentFixture<FspCategoriesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuComponent]
+      imports: [FspCategoriesComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MenuComponent);
+    fixture = TestBed.createComponent(FspCategoriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

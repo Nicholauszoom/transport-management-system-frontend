@@ -6,7 +6,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'auth-component',
@@ -38,6 +38,12 @@ export class AuthComponent {
       this.submitted = false;
       this.loginForm.reset();
     });
+
+    this.loginForm.setValue({
+      username: "dflex_admin",
+      password: "rabbitmq"
+    });
+    this.login();
   }
 
   public async login() {
