@@ -17,8 +17,8 @@
                 <td>{{ category.categoryName }}</td>
                 <td>{{ category.recordStatusId }}</td>
                 <td>
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" />
-                    <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
+                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (onClick)="edit(category)" />
+                    <!-- <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" /> -->
                 </td>
             </tr>
         </ng-template>

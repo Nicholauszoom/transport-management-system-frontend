@@ -36,8 +36,9 @@ export class FspCategoriesComponent implements OnInit{
     this.fspService.fetchCategories();
   }
 
-  onRowEditInit(category: FspCategoryDto) {
-    
+  edit(category: FspCategoryDto) {
+    this.fspService.setEditingFspCategory(category);
+    this.router.navigate(['update-fsp-category']);
   }
 
   onRowEditSave(category: FspCategoryDto) {

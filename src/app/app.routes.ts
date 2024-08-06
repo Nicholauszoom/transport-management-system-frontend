@@ -7,6 +7,7 @@ export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: AuthComponent },
     { path: 'create-fsp-category', component: FspCategoryFormComponent },
+    { path: 'update-fsp-category', component: FspCategoryFormComponent },
     { path: 'fsp-categories', component: FspCategoriesComponent },
     // { path: 'search', component: SearchComponent },
 ];

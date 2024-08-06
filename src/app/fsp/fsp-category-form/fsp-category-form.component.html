@@ -3,10 +3,10 @@
         <p-card id="auth-block" [style]="{ width: '40rem', height: '25rem' }">
             <ng-template  pTemplate="header">
                 <div class="p-card-header">
-                    <h2>Financial Service Provider Category</h2>
+                    <h2>FSP Category</h2>
                 </div>
             </ng-template>
-            <form [formGroup]="createCategoryForm" (ngSubmit)="submitFspCategoryData()">
+            <form [formGroup]="categoryForm" (ngSubmit)="submitFspCategoryData()">
                 <p-floatLabel>
                     <input id="code" type="text" [formControl]="code" pInputText p-disabled/>
                     <label for="code">Code</label>
@@ -23,7 +23,7 @@
                     <small id="username-help" class="error">*Category name is required.</small>
                 }
         
-                <p-button type="submit" label="Create" class="w-full" styleClass="w-full" [loading]="inProgress" />
+                <p-button type="submit" [label]="title" class="w-full" styleClass="w-full" [loading]="inProgress" />
             </form>
         </p-card>
     </div>
