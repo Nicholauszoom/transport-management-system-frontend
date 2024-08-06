@@ -1,0 +1,30 @@
+<app-main-layout>
+    <div id="category-form" class="flex justify-content-center flex-wrap">
+        <p-card id="auth-block" [style]="{ width: '40rem', height: '25rem' }">
+            <ng-template  pTemplate="header">
+                <div class="p-card-header">
+                    <h2>Financial Service Provider Category</h2>
+                </div>
+            </ng-template>
+            <form [formGroup]="createCategoryForm" (ngSubmit)="submitFspCategoryData()">
+                <p-floatLabel>
+                    <input id="code" type="text" [formControl]="code" pInputText p-disabled/>
+                    <label for="code">Code</label>
+                </p-floatLabel>
+                @if(code.hasError("required") && (code.touched || submitted)){
+                    <small id="username-help" class="error">*Category code is required.</small>
+                }
+                
+                <p-floatLabel>
+                    <input id="name" type="text" [formControl]="name" pInputText p-disabled/>
+                    <label for="name">Name</label>
+                </p-floatLabel>
+                @if(name.hasError("required") && (name.touched || submitted)){
+                    <small id="username-help" class="error">*Category name is required.</small>
+                }
+        
+                <p-button type="submit" label="Create" class="w-full" styleClass="w-full" [loading]="inProgress" />
+            </form>
+        </p-card>
+    </div>
+</app-main-layout>

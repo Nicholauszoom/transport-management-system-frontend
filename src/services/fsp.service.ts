@@ -49,4 +49,22 @@ export class FspService implements OnInit{
             }
         );
     }
+
+    public createFspCategory(payload: any){
+        this.http.post<DataResponse>(this.categoryUri, payload, {withCredentials: true})
+        .subscribe(
+            {
+                next: res => {
+                    let data = res.data;
+                    let categoryCreated = "Category \nCode: "+data.categoryCode+"\nName: "+data.categoryName;
+                    this.toast.add({ severity: 'success', summary: res.message, detail: categoryCreated });
+                   
+                    this.router.navigate(['fsp-categories']);
+                },
+                error: err => {
+                    this.err.show(err);
+                }
+            }
+        );
+    }
 }

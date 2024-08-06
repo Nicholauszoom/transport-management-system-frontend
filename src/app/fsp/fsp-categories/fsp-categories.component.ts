@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fsp-categories',
@@ -22,7 +23,7 @@ export class FspCategoriesComponent implements OnInit{
   categories: FspCategoryDto[];
   clonedCategories: { [s: number]: FspCategoryDto } = {};
 
-  public constructor(private http:HttpClient, private fspService: FspService) {
+  public constructor(private http:HttpClient, private fspService: FspService, private router: Router) {
     this.categories = [];
   }
 
@@ -36,20 +37,14 @@ export class FspCategoriesComponent implements OnInit{
   }
 
   onRowEditInit(category: FspCategoryDto) {
-    this.clonedCategories[category.id as unknown as number] = { ...category };
+    
   }
 
   onRowEditSave(category: FspCategoryDto) {
-    delete this.clonedCategories[category.id as unknown as number];
-    // if (product.price > 0) {
-    //     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
-    // } else {
-    //     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
-    // }
+    
   }
 
-  onRowEditCancel(category: FspCategoryDto, index: number) {
-    this.categories[index] = this.clonedCategories[category.id as unknown as number];
-    delete this.clonedCategories[category.id as unknown as number];
+  goToCreateCategory() {
+   this.router.navigate(['create-fsp-category']);
   }
 }

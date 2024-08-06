@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FspComponent } from './fsp.component';
+import { FspCategoryFormComponent } from './fsp-category-form.component';
 
-describe('FspComponent', () => {
-  let component: FspComponent;
-  let fixture: ComponentFixture<FspComponent>;
+describe('FspCategoryFormComponent', () => {
+  let component: FspCategoryFormComponent;
+  let fixture: ComponentFixture<FspCategoryFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FspComponent]
+      imports: [FspCategoryFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FspComponent);
+    fixture = TestBed.createComponent(FspCategoryFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

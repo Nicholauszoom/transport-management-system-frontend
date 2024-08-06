@@ -32,7 +32,7 @@ export class MenuComponent implements OnInit{
                         label: 'FSP Categories',
                         // icon: 'pi pi-plus',
                         command: () => {
-                            // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
+                            this.router.navigate(['fsp-categories']);
                         }
                     },
                     {
@@ -51,33 +51,33 @@ export class MenuComponent implements OnInit{
                     }
                 ]
             },
-            {
-                label: 'Sync',
-                icon: 'pi pi-cloud',
-                items: [
-                    {
-                        label: 'Import',
-                        icon: 'pi pi-cloud-download',
-                        command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-                        }
-                    },
-                    {
-                        label: 'Export',
-                        icon: 'pi pi-cloud-upload',
-                        command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-                        }
-                    }
-                ]
-            },
-            {
-                label: 'Sign Out',
-                icon: 'pi pi-sign-out',
-                command: () => {
-                    // this.messageService.add({ severity: 'info', summary: 'Signed out', detail: 'User logged out', life: 3000 });
-                }
-            }
+            // {
+            //     label: 'Sync',
+            //     icon: 'pi pi-cloud',
+            //     items: [
+            //         {
+            //             label: 'Import',
+            //             icon: 'pi pi-cloud-download',
+            //             command: () => {
+            //                 // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+            //             }
+            //         },
+            //         {
+            //             label: 'Export',
+            //             icon: 'pi pi-cloud-upload',
+            //             command: () => {
+            //                 // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+            //             }
+            //         }
+            //     ]
+            // },
+            // {
+            //     label: 'Sign Out',
+            //     icon: 'pi pi-sign-out',
+            //     command: () => {
+            //         // this.messageService.add({ severity: 'info', summary: 'Signed out', detail: 'User logged out', life: 3000 });
+            //     }
+            // }
         ];
     }
 }
