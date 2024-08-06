@@ -25,11 +25,19 @@ export class MenuComponent implements OnInit{
     ngOnInit() {
         this.items = [
             {
+                label: 'Dashboard',
+                icon: 'pi pi-home',
+                command: () => {
+                    // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+                }
+            },
+            {
                 label: 'Financial Service Providers',
                 icon: 'pi pi-file',
                 items: [
                     {
                         label: 'FSP Categories',
+                        styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-plus',
                         command: () => {
                             // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'File created', life: 3000 });
@@ -37,6 +45,7 @@ export class MenuComponent implements OnInit{
                     },
                     {
                         label: 'FSP Branches',
+                        styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-search',
                         command: () => {
                             // this.messageService.add({ severity: 'warn', summary: 'Search Results', detail: 'No results found', life: 3000 });
@@ -44,9 +53,99 @@ export class MenuComponent implements OnInit{
                     },
                     {
                         label: 'FSPs',
+                        styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-print',
                         command: () => {
                             // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
+                        }
+                    }
+                ]
+            },
+            {
+                label: 'Product',
+                icon: 'pi pi-tag',
+                items: [
+                    {
+                        label: 'Product Catalogues',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-download',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+                        }
+                    },
+                    {
+                        label: 'Product Decommision',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-upload',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+                        }
+                    }
+                ]
+            },
+            {
+                label: 'Loan',
+                icon: 'pi pi-bookmark',
+                items: [
+                    {
+                        label: 'Calculator',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-download',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+                        }
+                    },
+                    {
+                        label: 'New Loan',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-upload',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+                        }
+                    },
+                    {
+                        label: 'Top Up Loan',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-upload',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+                        }
+                    },
+                   
+                ]
+            },
+            {
+                label: 'Borrower',
+                icon: 'pi pi-folder-open',
+                items: [
+                    {
+                        label: 'Product Catalogues',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-download',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+                        }
+                    },
+                    {
+                        label: 'Product Decommision',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-upload',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+                        }
+                    }
+                ]
+            },
+            {
+                label: 'ESS Accounts',
+                icon: 'pi pi-book',
+                items: [
+                    {
+                        label: 'Accounts',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-cloud-download',
+                        command: () => {
+                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
                         }
                     }
                 ]
