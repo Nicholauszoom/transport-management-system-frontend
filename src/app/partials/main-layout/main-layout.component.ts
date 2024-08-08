@@ -119,21 +119,14 @@ export class MenuComponent implements OnInit{
                 icon: 'pi pi-folder-open',
                 items: [
                     {
-                        label: 'Product Catalogues',
+                        label: 'Borrowers',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+                            this.router.navigate(['borrowers']);
                         }
                     },
-                    {
-                        label: 'Product Decommision',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-upload',
-                        command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-                        }
-                    }
+                    
                 ]
             },
             {

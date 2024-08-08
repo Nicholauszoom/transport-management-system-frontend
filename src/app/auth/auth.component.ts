@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -12,13 +12,12 @@ import { AuthService } from '../../services/auth.service';
   selector: 'auth-component',
   standalone: true,
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.css',
+  styleUrls: ['./auth.component.css'],
   imports: [CardModule, ButtonModule, FloatLabelModule, InputTextModule, PasswordModule, ReactiveFormsModule, ToastModule]
 })
-
 export class AuthComponent {
-  submitted   = false;
-  inProgress  = false;
+  submitted = false;
+  inProgress = false;
 
   username = new FormControl("", [Validators.required]);
   password = new FormControl("", [Validators.required]);
@@ -28,31 +27,32 @@ export class AuthComponent {
     password: this.password
   });
 
-  public constructor(private authService: AuthService){
-
-  }
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.authService.inProgress$.subscribe(progressStatus => {
       this.inProgress = progressStatus;
-      this.submitted = false;
-      this.loginForm.reset();
+      if (!this.inProgress && this.submitted) {
+        this.loginForm.reset();
+        this.submitted = false;
+      }
     });
 
-    this.loginForm.setValue({
-      username: "dflex_admin",
-      password: "rabbitmq"
-    });
-    this.login();
+    // Commented out auto-login for testing purposes
+    // this.loginForm.setValue({
+    //   username: "dflex_admin",
+    //   password: "guest"
+    // });
+    // this.login();
   }
 
-  public async login() {
+  public login() {
     this.submitted = true;
-    
-    if(this.loginForm.valid){
+
+    if (this.loginForm.valid) {
       const credentials = {
-        "username": this.username.value,
-        "password": this.password.value
+        username: this.username.value,
+        password: this.password.value
       };
 
       this.authService.login(credentials);
