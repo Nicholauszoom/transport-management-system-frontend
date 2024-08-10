@@ -20,7 +20,6 @@ export class BorrowerService {
 
   getBorrowers() {
     return this.borrowersSubject.getValue();
-
 }
 
 setBorrowers(borrowers: BorrowerDto[]) {  

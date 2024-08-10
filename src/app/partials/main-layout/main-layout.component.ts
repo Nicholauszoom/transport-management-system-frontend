@@ -66,7 +66,7 @@ export class MenuComponent implements OnInit{
                 icon: 'pi pi-tag',
                 items: [
                     {
-                        label: 'Product Catalogues',
+                        label: 'product catalogues',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
@@ -74,7 +74,7 @@ export class MenuComponent implements OnInit{
                         }
                     },
                     {
-                        label: 'Product Decommision',
+                        label: 'product decommision',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-upload',
                         command: () => {
@@ -88,7 +88,7 @@ export class MenuComponent implements OnInit{
                 icon: 'pi pi-bookmark',
                 items: [
                     {
-                        label: 'Calculator',
+                        label: 'calculator',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
@@ -96,7 +96,7 @@ export class MenuComponent implements OnInit{
                         }
                     },
                     {
-                        label: 'New Loan',
+                        label: 'new loan',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-upload',
                         command: () => {
@@ -104,7 +104,7 @@ export class MenuComponent implements OnInit{
                         }
                     },
                     {
-                        label: 'Top Up Loan',
+                        label: 'top up loan',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-upload',
                         command: () => {
@@ -119,7 +119,7 @@ export class MenuComponent implements OnInit{
                 icon: 'pi pi-folder-open',
                 items: [
                     {
-                        label: 'Borrowers',
+                        label: 'borrowers',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
@@ -134,10 +134,11 @@ export class MenuComponent implements OnInit{
                 icon: 'pi pi-book',
                 items: [
                     {
-                        label: 'Accounts',
+                        label: 'ess accounts',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
+                            this.router.navigate(['accounts']);
                             // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
                         }
                     }
