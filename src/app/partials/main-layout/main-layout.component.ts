@@ -44,19 +44,19 @@ export class MenuComponent implements OnInit{
                         }
                     },
                     {
-                        label: 'FSP Branches',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-search',
-                        command: () => {
-                            // this.messageService.add({ severity: 'warn', summary: 'Search Results', detail: 'No results found', life: 3000 });
-                        }
-                    },
-                    {
                         label: 'FSPs',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-print',
                         command: () => {
                             // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
+                        }
+                    },
+                    {
+                        label: 'FSP Branches',
+                        styleClass: 'custom-submenu-item',
+                        // icon: 'pi pi-search',
+                        command: () => {
+                            // this.messageService.add({ severity: 'warn', summary: 'Search Results', detail: 'No results found', life: 3000 });
                         }
                     }
                 ]

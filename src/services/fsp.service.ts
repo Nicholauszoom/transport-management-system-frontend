@@ -123,4 +123,29 @@ export class FspService implements OnInit{
             }
         );
     }
+
+    public trashFspCategory(id: Int32Array){
+        this.setProgress(true);
+        
+        this.http.delete<DataResponse>(this.categoryUri+"/trash/"+id, {withCredentials: true})
+        .pipe(
+            finalize(() => {
+                this.setProgress(false);
+            })
+        )
+        .subscribe(
+            {
+                next: res => {
+                    let data = res.data;
+                    let categoryCreated = "Category \nCode: "+data.categoryCode+"\nName: "+data.categoryName;
+                    this.toast.add({ severity: 'warning', summary: res.message, detail: categoryCreated });
+                   
+                    location.reload();
+                },
+                error: err => {
+                    this.err.show(err);
+                }
+            }
+        );
+    }
 }
