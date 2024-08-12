@@ -1,0 +1,30 @@
+<app-main-layout>
+    <p-table [value]="accounts" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <!-- <th>Check No</th> -->
+                <th>Check Number</th>
+                <th>Full Name</th>
+                <th>Acount Number</th>
+                <th>Branch Name</th>
+                <th>Action</th>
+                <th>
+                    <p-button label="New Accounts" icon="pi pi-plus" iconPos="left"  (onClick)="goToCreateAccount()" ></p-button>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-accounts>
+            <tr>
+                <!-- <td>{{ borrower.checkNumber }}</td> -->
+                <td>{{ accounts.checkNumber }}</td>
+                <td>{{ accounts.fullName }}</td>
+                <td>{{ accounts.bankAccountNumber }}</td>
+                <td>{{ accounts.nearestBanchName }}</td>
+                <td>
+                    <p-button icon="pi pi-trach" [rounded]="true" [outlined]="true" />
+                    <!-- <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" /> -->
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</app-main-layout>

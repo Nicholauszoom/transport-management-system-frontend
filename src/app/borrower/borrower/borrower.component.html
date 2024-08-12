@@ -1,0 +1,36 @@
+<app-main-layout>
+    <p-table [value]="borrowers" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <!-- <th>Check No</th> -->
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>NIN</th>
+                <th>Account No</th>
+                <th>Branch Name</th>
+                <th>Sallary</th>
+                <th>Retirement</th>
+                <th>Action</th>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-borrower>
+            <tr>
+                <!-- <td>{{ borrower.checkNumber }}</td> -->
+                <td>{{ borrower.firstName }}</td>
+                <td>{{ borrower.middleName }}</td>
+                <td>{{ borrower.lastName }}</td>
+                <td>{{ borrower.NIN }}</td>
+                <td>{{ borrower.bankAccountNumber }}</td>
+                <td>{{ borrower.nearestBranchName }}</td>
+                <td>{{ borrower.salary }}</td>
+                <td>{{ borrower.retirementDate }}</td>
+                <td>
+                    <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true" />
+                    <!-- <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" /> -->
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</app-main-layout>
