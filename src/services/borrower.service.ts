@@ -13,42 +13,36 @@ import { DataResponse } from '../dtos/api.dto';
 })
 export class BorrowerService {
 
-  url=  env.baseUrl;
+  private url = `${env.baseUrl}/api/portal/borrower/list`;
 
-  private borrowersSubject = new BehaviorSubject<BorrowerDto[]>([]);  
+  private borrowersSubject = new BehaviorSubject<BorrowerDto[]>([]);
   borrowers$ = this.borrowersSubject.asObservable();
 
-  getBorrowers() {
+  constructor(
+    private http: HttpClient,
+    private toast: MessageService,
+    private router: Router,
+    private err: ErrorToast
+  ) {}
+
+  getBorrowers(): BorrowerDto[] {
     return this.borrowersSubject.getValue();
-}
+  }
 
-setBorrowers(borrowers: BorrowerDto[]) {  
-  this.borrowersSubject.next(borrowers);
-}
+  setBorrowers(borrowers: BorrowerDto[]) {
+    this.borrowersSubject.next(borrowers);
+  }
 
-constructor(private http: HttpClient, private toast: MessageService, private router: Router, private err: ErrorToast) {
-
-}
-
-ngOnInit(): void {
-    this.fetchBorrowers();
-}
-
-public fetchBorrowers() {
-    this.http.get<DataResponse>(this.url+"/api/portal/borrower/list", {withCredentials: true})
-    .subscribe(
-        {
-            next: res => {
-                this.toast.add({ severity: 'success', summary: 'Success', detail: res.message });
-                this.setBorrowers(res.data);
-            },
-            error: err => {
-                this.err.show(err);
-            }
+  public fetchBorrowers(page: number = 1, size: number = 10) {
+    this.http.get<DataResponse>(`${this.url}?page=${page}&size=${size}`, {withCredentials: true})
+      .subscribe({
+        next: res => {
+          this.toast.add({ severity: 'success', summary: 'Success', detail: res.message });
+          this.setBorrowers(res.data); // Ensure this is the correct format for data
+        },
+        error: err => {
+          this.err.show(err);
         }
-    );
+      });
+  }
 }
- 
-}
-
-

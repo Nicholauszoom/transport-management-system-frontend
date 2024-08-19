@@ -13,14 +13,16 @@ import { DataResponse } from '../dtos/api.dto';
 })
 
 export class EssAccountsService {
-  private url: string = env.baseUrl+"/api/portal/account";
+  private url: string = env.baseUrl+"/api/portal/account/list";
 
   private accountsSubject = new BehaviorSubject<AccountDto[]>([]);  
   accounts$ = this.accountsSubject.asObservable();
 
-  getAccounts() {
-    return this.accountsSubject.getValue();
-}
+
+  getAccounts(page: number, size: number): Observable<DataResponse> {
+    return this.http.get<DataResponse>(`${this.url}?page=${page}&size=${size}`);
+  }
+
   setAccounnts(accounts: AccountDto[]) {  
     this.accountsSubject.next(accounts);
   }
@@ -42,19 +44,16 @@ uploadFile(formData: FormData): Observable<any> {
 
  
 
-  public fetchAccounts() {
-    this.http.get<DataResponse>(this.url+"/list", {withCredentials: true})
-    .subscribe(
-        {
-            next: res => {
-                this.toast.add({ severity: 'success', summary: 'Success', detail: res.message });
-                this.setAccounnts(res.data);
-            },
-            error: err => {
-                this.err.show(err);
-            }
-        }
-    );
-}
+ public fetchAccounts(page: number = 1, size: number = 10) {
+    this.getAccounts(page, size).subscribe({
+      next: res => {
+        this.toast.add({ severity: 'success', summary: 'Success', detail: res.message });
+        this.setAccounnts(res.data); // Assuming res.data contains the array of accounts
+      },
+      error: err => {
+        this.err.show(err);
+      }
+    });
+  }
 }
 

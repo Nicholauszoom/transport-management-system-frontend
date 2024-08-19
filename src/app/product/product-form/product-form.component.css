@@ -1,21 +1,4 @@
-.form-group {
-    margin-bottom: 15px;
-  }
-  
-  .is-invalid {
-    border-color: #dc3545;
-  }
-  
-  .invalid-feedback {
-    color: #dc3545;
-    display: block;
-  }
-  
-  .btn-primary {
-    background-color: #7504628e;
-    border-color: #7504628e;
-  }
-  .p-card-header{
+.p-card-header{
     display: flex;
     justify-content: center;
     margin-top: 1em;
@@ -34,6 +17,6 @@ form{
     justify-content: center;
 }
 
-#account-form{
+#category-form{
     width: 100%;
 }

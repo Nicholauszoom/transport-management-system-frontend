@@ -5,6 +5,8 @@ import { FspCategoriesComponent } from './fsp/fsp-categories/fsp-categories.comp
 import { BorrowerComponent } from './borrower/borrower/borrower.component';
 import { EssAccountsComponent } from './borrower/ess-accounts/ess-accounts.component';
 import { EssAccountsFormComponent } from './borrower/ess-accounts-form/ess-accounts-form.component';
+import { ProductFormComponent } from './product/product-form/product-form.component';
+import { ProductComponent } from './product/product.component';
 
 
 export const routes: Routes = [
@@ -14,8 +16,10 @@ export const routes: Routes = [
     { path: 'update-fsp-category', component: FspCategoryFormComponent },
     { path: 'fsp-categories', component: FspCategoriesComponent },
     { path: 'borrowers', component: BorrowerComponent },
-    {path: 'accounts', component: EssAccountsComponent},
-    {path: 'upload-accounts', component: EssAccountsFormComponent}
+    { path: 'accounts', component: EssAccountsComponent},
+    { path: 'upload-accounts', component: EssAccountsFormComponent},
+    { path: 'app-product', component: ProductComponent},
+    { path: 'create-product', component: ProductFormComponent}
 
     // { path: 'search', component: SearchComponent },
 ];

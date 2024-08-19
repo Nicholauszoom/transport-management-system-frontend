@@ -70,8 +70,7 @@ export class MenuComponent implements OnInit{
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-                        }
+                            this.router.navigate(['app-product']);                        }
                     },
                     {
                         label: 'product decommision',
