@@ -41,8 +41,9 @@ export class FspCategoriesComponent implements OnInit{
     this.router.navigate(['update-fsp-category']);
   }
 
-  onRowEditSave(category: FspCategoryDto) {
-    
+  trash(category: FspCategoryDto) {
+    console.log("trash"+category.id)
+    this.fspService.trashFspCategory(category.id);
   }
 
   goToCreateCategory() {
