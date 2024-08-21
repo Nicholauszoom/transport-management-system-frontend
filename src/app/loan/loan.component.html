@@ -1,0 +1,46 @@
+<app-main-layout>
+    <p-table [value]="loan" [tableStyle]="{ 'min-width': '50rem' }"
+             [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords"
+             (onPageChange)="onPageChange($event)">
+        <ng-template pTemplate="header">
+            <tr>
+                <th></th>
+                <th>Loan Number</th>
+                <th>Loan Type</th>
+                <th>Fsp Code</th>
+                <th>Tenure</th>
+                <th>Application Number</th>
+                <th>Loan Amount</th>
+                <th>Interest Rate</th>
+                <th>Loan Date</th>
+                <th>Product Code</th>
+                <th>Total Amount Pay</th>
+                <th>Desired Deductible Amount</th>
+                <th>Action</th>
+                <th>
+                    <p-button label="New Product" icon="pi pi-plus" iconPos="left" (onClick)="goToCreateProduct()"></p-button>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-loan>
+            <tr>
+                <td></td>
+                <td>{{ loan.loanNumber }}</td>
+                <td>{{ loan.loanType }}</td>
+                <td>{{ loan.fspCode }}</td>
+                <td>{{ loan.tenure }}</td>
+                <td>{{ loan.applicationNumber }}</td>
+                <td>{{ loan.loanAmount }}</td>
+                <td>{{ loan.interestRate }}</td>
+                <td>{{ loan.productCode }}</td>
+                <td>{{ loan.totalAmountToPay }}</td>
+                <td>{{ loan.desiredDeductibleAmount }}</td>
+                <td>
+                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true"></p-button>
+                    <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true"></p-button>
+                    <!-- Add more buttons if needed -->
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</app-main-layout>
