@@ -99,6 +99,7 @@ export class MenuComponent implements OnInit{
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-upload',
                         command: () => {
+                            this.router.navigate(['loan']);
                             // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
                         }
                     },

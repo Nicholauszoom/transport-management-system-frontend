@@ -5,8 +5,8 @@ export interface Product{
     productName: String;
     minimumTenure: string;
     maximumTenure: string;
-    minimumPrinciple: number;
-    maximumPrinciple: number;
+    minLoanAmount: number;
+    maxLoanAmount: number;
     fspId: number;
     fspCode: string;
     fspName: string;

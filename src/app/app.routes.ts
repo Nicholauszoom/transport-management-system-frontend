@@ -7,6 +7,7 @@ import { EssAccountsComponent } from './borrower/ess-accounts/ess-accounts.compo
 import { EssAccountsFormComponent } from './borrower/ess-accounts-form/ess-accounts-form.component';
 import { ProductFormComponent } from './product/product-form/product-form.component';
 import { ProductComponent } from './product/product.component';
+import { LoanComponent } from './loan/loan.component';
 
 
 export const routes: Routes = [
@@ -19,7 +20,7 @@ export const routes: Routes = [
     { path: 'accounts', component: EssAccountsComponent},
     { path: 'upload-accounts', component: EssAccountsFormComponent},
     { path: 'app-product', component: ProductComponent},
-    { path: 'create-product', component: ProductFormComponent}
-
+    { path: 'create-product', component: ProductFormComponent},
+    { path: 'loan', component: LoanComponent}
     // { path: 'search', component: SearchComponent },
 ];

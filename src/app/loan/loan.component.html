@@ -4,14 +4,12 @@
              (onPageChange)="onPageChange($event)">
         <ng-template pTemplate="header">
             <tr>
-                <th></th>
                 <th>Loan Number</th>
-                <th>Loan Type</th>
                 <th>Fsp Code</th>
                 <th>Tenure</th>
                 <th>Application Number</th>
                 <th>Loan Amount</th>
-                <th>Interest Rate</th>
+                <!-- <th>Interest Rate</th> -->
                 <th>Loan Date</th>
                 <th>Product Code</th>
                 <th>Total Amount Pay</th>
@@ -23,14 +21,13 @@
         </ng-template>
         <ng-template pTemplate="body" let-loan>
             <tr>
-                <td></td>
                 <td>{{ loan.loanNumber }}</td>
-                <td>{{ loan.loanType }}</td>
                 <td>{{ loan.fspCode }}</td>
                 <td>{{ loan.tenure }}</td>
                 <td>{{ loan.applicationNumber }}</td>
                 <td>{{ loan.loanAmount }}</td>
-                <td>{{ loan.interestRate }}</td>
+                <!-- <td>{{ loan.interestRate }}</td> -->
+                <td>{{ loan.loanDate }}</td>
                 <td>{{ loan.productCode }}</td>
                 <td>{{ loan.totalAmountToPay }}</td>
                 <td>{{ loan.desiredDeductibleAmount }}</td>

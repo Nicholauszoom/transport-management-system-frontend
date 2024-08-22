@@ -12,7 +12,7 @@ import { DataResponse } from '../dtos/api.dto';
   providedIn: 'root'
 })
 export class LoanService {
-  private url = `${env.baseUrl}/api/portal/loan/list`;
+  private url = `${env.baseUrl}/api/portal/message/list`;
 
   private loansSubject = new BehaviorSubject<LoanDto[]>([]);
   loans$ = this.loansSubject.asObservable();

@@ -9,7 +9,7 @@ export interface BorrowerDto {
     bankAccountNumber: string;
     voteCode: string;
     voteName: string;
-    salary: string;
+    basicSalary: string;
     nearestBranchName: string;
     phone: string;
     email: string;
