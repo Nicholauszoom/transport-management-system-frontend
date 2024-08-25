@@ -6,57 +6,22 @@
                 <div class="p-card-header">
                     <h2>Create Product</h2>
                 </div>
-              <form [formGroup]="productForm" (ngSubmit)="submitProductData()">
-                <p-floatLabel>
-                    <input id="productCode type" type="text" [formControl]="productCode" pInputText p-disabled/>
-                    <label for="productCode">Code</label>
-                </p-floatLabel>
-                @if(productCode.hasError("required") && (productCode.touched || submitted)){
-                    <small id="username-help" class="error">*product code is required.</small>
-                }
-                
-                <p-floatLabel>
-                    <input id="productName" type="text" [formControl]="productName" pInputText p-disabled/>
-                    <label for="name">Name</label>
-                </p-floatLabel>
-                @if(productName.hasError("required") && (productName.touched || submitted)){
-                    <small id="username-help" class="error">*product name is required.</small>
-                }
-
-                <p-floatLabel>
-                    <input id="minimumTenure" type="number" [formControl]="minimumTenure" pInputText p-disabled/>
-                    <label for="minimumTenure">Min Tenure</label>
-                </p-floatLabel>
-                @if(minimumTenure.hasError("required") && (minimumTenure.touched || submitted)){
-                    <small id="username-help" class="error">*minimum tenure is required.</small>
-                }
-               
-                <p-floatLabel>
-                    <input id="maximumTenure" type="number" [formControl]="maximumTenure" pInputText p-disabled/>
-                    <label for="maximumTenure">Max Tenure</label>
-                </p-floatLabel>
-                @if(maximumTenure.hasError("required") && (maximumTenure.touched || submitted)){
-                    <small id="username-help" class="error">*maximum tenure is required.</small>
-                }
-
-                <p-floatLabel>
-                    <input id="minimumPrinciple" type="number" [formControl]="minimumPrinciple" pInputText p-disabled/>
-                    <label for="minimumPrinciple">Min Principal</label>
-                </p-floatLabel>
-                @if(minimumPrinciple.hasError("required") && (minimumPrinciple.touched || submitted)){
-                    <small id="username-help" class="error">*minimum principle is required.</small>
-                }
-
-                <p-floatLabel>
-                    <input id="maximumPrinciple" type="number" [formControl]="maximumPrinciple" pInputText p-disabled/>
-                    <label for="maximumPrinciple">Max Principal</label>
-                </p-floatLabel>
-                @if(maximumPrinciple.hasError("required") && (maximumPrinciple.touched || submitted)){
-                    <small id="username-help" class="error">*maximum principle is required.</small>
-                }
-
-                <p-button type="submit" [label]="title" class="w-full" styleClass="w-full" [loading]="inProgress" />
-            </form>
+                <form>
+                    <div class="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
         </ng-template>
 
         </p-card>

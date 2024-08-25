@@ -9,5 +9,5 @@ export interface FspDto{
     fspUid: String,
     fspCode: String,
     fspName: String,
-    fspShgortName: String,
+    fspShortName: String,
 }

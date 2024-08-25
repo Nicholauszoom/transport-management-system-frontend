@@ -7,6 +7,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InputTextModule } from 'primeng/inputtext';
 import { NgClass, NgIf } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-product-form',
@@ -19,7 +21,9 @@ import { ProductService } from '../../../services/product.service';
     ReactiveFormsModule,
     InputTextModule,
     NgClass,
-    NgIf
+    NgIf,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css'] 

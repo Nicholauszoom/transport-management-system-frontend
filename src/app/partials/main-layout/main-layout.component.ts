@@ -48,6 +48,7 @@ export class MenuComponent implements OnInit{
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-print',
                         command: () => {
+                            this.router.navigate(['fsp']);
                             // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
                         }
                     },

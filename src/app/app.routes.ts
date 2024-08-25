@@ -8,6 +8,8 @@ import { EssAccountsFormComponent } from './borrower/ess-accounts-form/ess-accou
 import { ProductFormComponent } from './product/product-form/product-form.component';
 import { ProductComponent } from './product/product.component';
 import { LoanComponent } from './loan/loan.component';
+import { FspComponent } from './fsp/fsp/fsp.component';
+import { FspFormComponent } from './fsp/fsp-form/fsp-form.component';
 
 
 export const routes: Routes = [
@@ -21,6 +23,8 @@ export const routes: Routes = [
     { path: 'upload-accounts', component: EssAccountsFormComponent},
     { path: 'app-product', component: ProductComponent},
     { path: 'create-product', component: ProductFormComponent},
-    { path: 'loan', component: LoanComponent}
+    { path: 'loan', component: LoanComponent},
+    { path: 'fsp',  component: FspComponent},
+    { path: 'fsp-form', component: FspFormComponent}
     // { path: 'search', component: SearchComponent },
 ];
