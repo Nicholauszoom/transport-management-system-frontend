@@ -5,15 +5,16 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Loan Number</th>
+                <th>Loan</th>
                 <th>Fsp Code</th>
                 <th>Tenure</th>
-                <th>Application Number</th>
+                <th>Application No</th>
                 <th>Loan Amount</th>
-                <!-- <th>Interest Rate</th> -->
+                <th>Borrower</th>
                 <th>Loan Date</th>
                 <th>Product Code</th>
                 <th>Total Amount Pay</th>
-                <th>Desired Deductible Amount</th>
+                <th>Status</th>
                 <th>Action</th>
                 <th>
                 </th>
@@ -22,15 +23,16 @@
         <ng-template pTemplate="body" let-loan>
             <tr>
                 <td>{{ loan.loanNumber }}</td>
+                <td>{{ loan.loanPurpose}}</td>
                 <td>{{ loan.fspCode }}</td>
                 <td>{{ loan.tenure }}</td>
                 <td>{{ loan.applicationNumber }}</td>
                 <td>{{ loan.loanAmount }}</td>
-                <!-- <td>{{ loan.interestRate }}</td> -->
+                <td>{{ loan.borrower }}</td>
                 <td>{{ loan.loanDate }}</td>
                 <td>{{ loan.productCode }}</td>
                 <td>{{ loan.totalAmountToPay }}</td>
-                <td>{{ loan.desiredDeductibleAmount }}</td>
+                <td>{{ loan.loanStatus }}</td>
                 <td>
                     <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true"></p-button>
                     <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true"></p-button>

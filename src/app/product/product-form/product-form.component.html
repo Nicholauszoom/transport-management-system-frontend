@@ -1,31 +1,151 @@
-
 <app-main-layout>
-    <div id="account-form" class="flex justify-content-center flex-wrap">
-        <p-card id="auth-block" [style]="{ width: '40rem', height: '25rem' }">
-            <ng-template  pTemplate="header">
-                <div class="p-card-header">
-                    <h2>Create Product</h2>
-                </div>
-                <form>
-                    <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="exampleInputPassword1">
-                    </div>
-                    <div class="mb-3 form-check">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-        </ng-template>
+  <div id="account-form" class="flex justify-content-center flex-wrap">
+    <p-card id="auth-block" [style]="{ width: '50rem' }">
+      <ng-template pTemplate="header">
+        <div class="p-card-header">
+          <h2>Create Product</h2>
+        </div>
+      </ng-template>
 
-        </p-card>
-    </div>
+      <form [formGroup]="productForm" (ngSubmit)="submitProductData()">
+        <div class="p-fluid formgrid grid">
+
+          <!-- Product Code -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="productCode" type="text" formControlName="productCode" pInputText />
+              <label for="productCode">Product Code</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('productCode')?.hasError('required') && productForm.get('productCode')?.touched" class="error">
+              *Product code is required.
+            </small>
+          </div>
+
+          <!-- Product Name -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="productName" type="text" formControlName="productName" pInputText />
+              <label for="productName">Product Name</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('productName')?.hasError('required') && productForm.get('productName')?.touched" class="error">
+              *Product name is required.
+            </small>
+          </div>
+
+          <!-- Minimum Tenure -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="minimumTenure" type="number" formControlName="minimumTenure" pInputNumber />
+              <label for="minimumTenure">Minimum Tenure</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('minimumTenure')?.hasError('required') && productForm.get('minimumTenure')?.touched" class="error">
+              *Minimum tenure is required.
+            </small>
+          </div>
+
+          <!-- Maximum Tenure -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="maximumTenure" type="number" formControlName="maximumTenure" pInputNumber />
+              <label for="maximumTenure">Maximum Tenure</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('maximumTenure')?.hasError('required') && productForm.get('maximumTenure')?.touched" class="error">
+              *Maximum tenure is required.
+            </small>
+          </div>
+
+          <!-- Minimum Loan Amount -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="minLoanAmount" type="number" formControlName="minLoanAmount" pInputNumber />
+              <label for="minLoanAmount">Minimum Loan Amount</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('minLoanAmount')?.hasError('required') && productForm.get('minLoanAmount')?.touched" class="error">
+              *Minimum loan amount is required.
+            </small>
+          </div>
+
+          <!-- Maximum Loan Amount -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="maxLoanAmount" type="number" formControlName="maxLoanAmount" pInputNumber />
+              <label for="maxLoanAmount">Maximum Loan Amount</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('maxLoanAmount')?.hasError('required') && productForm.get('maxLoanAmount')?.touched" class="error">
+              *Maximum loan amount is required.
+            </small>
+          </div>
+
+          <!-- Interest Rate -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="interestRate" type="number" formControlName="interestRate" pInputNumber />
+              <label for="interestRate">Interest Rate (%)</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('interestRate')?.hasError('required') && productForm.get('interestRate')?.touched" class="error">
+              *Interest rate is required.
+            </small>
+          </div>
+
+          <!-- Insurance -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="insurance" type="number" formControlName="insurance" pInputNumber />
+              <label for="insurance">Insurance (%)</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('insurance')?.hasError('required') && productForm.get('insurance')?.touched" class="error">
+              *Insurance is required.
+            </small>
+          </div>
+
+          <!-- FSP Code -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="fspCode" type="text" formControlName="fspCode" pInputText />
+              <label for="fspCode">FSP Code</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('fspCode')?.hasError('required') && productForm.get('fspCode')?.touched" class="error">
+              *FSP code is required.
+            </small>
+          </div>
+
+          <!-- FSP Name -->
+          <div class="field col-6">
+            <p-floatLabel>
+              <input id="fspName" type="text" formControlName="fspName" pInputText />
+              <label for="fspName">FSP Name</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('fspName')?.hasError('required') && productForm.get('fspName')?.touched" class="error">
+              *FSP name is required.
+            </small>
+          </div>
+
+          <!-- Product Description -->
+          <div class="field col-12">
+            <p-floatLabel>
+              <textarea id="productDescription" formControlName="productDescription" pInputTextarea rows="3"></textarea>
+              <label for="productDescription">Product Description</label>
+            </p-floatLabel>
+          </div>
+
+          <!-- Currency Name -->
+          <div class="field col-12">
+            <p-floatLabel>
+              <input id="currencyName" type="text" formControlName="currencyName" pInputText />
+              <label for="currencyName">Currency Name</label>
+            </p-floatLabel>
+            <small *ngIf="productForm.get('currencyName')?.hasError('required') && productForm.get('currencyName')?.touched" class="error">
+              *Currency name is required.
+            </small>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="field col-12">
+            <p-button type="submit" label="Create Product" class="w-full" [loading]="inProgress"></p-button>
+          </div>
+
+        </div>
+      </form>
+    </p-card>
+  </div>
 </app-main-layout>
-
-  

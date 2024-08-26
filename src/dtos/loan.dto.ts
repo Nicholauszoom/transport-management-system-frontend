@@ -34,6 +34,9 @@ export interface LoanDto{
     swiftCode:string;
     mnoChannels:string;
     paymentReferenceNumber:string;
+    borrowerId:number;
+    borrower:string;
+    loanStatus:string;
    
 
 }
