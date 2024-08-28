@@ -7,14 +7,15 @@ import { MenuComponent } from '../partials/main-layout/main-layout.component';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [MenuComponent, TableModule, DropdownModule, InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule],
+  imports: [MenuComponent, TableModule, DropdownModule, InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule,FormsModule  ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
 })
@@ -23,6 +24,7 @@ export class ProductComponent implements OnInit{
   totalRecords: number = 0; // Total number of records for pagination
   currentPage: number = 1;
   pageSize: number = 10;
+  term: string = '';
 
   constructor(
     private productService: ProductService,

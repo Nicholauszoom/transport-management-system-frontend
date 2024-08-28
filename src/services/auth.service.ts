@@ -1,18 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { env } from '../constants/env.constant';
 import { MessageService } from 'primeng/api';
 import { DataResponse } from '../dtos/api.dto';
 import { Router } from '@angular/router';
 import { ErrorToast } from './error.service';
+import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private authUri: string = env.baseUrl + "/user";
+  private logoutUrl:string = env.baseUrl+ "/logout"
   private progressSubject = new BehaviorSubject<boolean>(false);
   inProgress$ = this.progressSubject.asObservable();
 
@@ -62,4 +66,25 @@ export class AuthService {
     this.toast.add({ severity: 'success', summary: 'Success', detail: response.message });
     this.router.navigate(['fsp-categories']);
   }
+
+  logout(): Observable<any> {
+    return this.http.post(this.logoutUrl, {}).pipe(
+      tap(() => {
+        this.clearLocalStorage();
+      }),
+      catchError((error) => {
+        console.error('Logout failed', error);
+        this.clearLocalStorage();
+        return of(null); // Return an observable with null value
+      })
+    );
+  }
+  
+  private clearLocalStorage(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+  }
+  
+
 }

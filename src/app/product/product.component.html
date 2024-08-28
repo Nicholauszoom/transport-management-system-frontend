@@ -2,6 +2,12 @@
     <p-table [value]="product" [tableStyle]="{ 'min-width': '50rem' }"
              [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords"
              (onPageChange)="onPageChange($event)">
+             <!-- <div>
+                <input type="text" [(ngModel)]="term">
+        <div *ngFor = "let product of product | filter:term" >
+          <p>{{product.productName}}</p>
+</div>
+             </div> -->
         <ng-template pTemplate="header">
             <tr>
                 <th></th>

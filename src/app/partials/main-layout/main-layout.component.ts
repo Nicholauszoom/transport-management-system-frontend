@@ -9,11 +9,13 @@ import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
 import { MenubarModule } from 'primeng/menubar';
 import { CardModule } from 'primeng/card';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ProfileComponent } from '../../profile/profile.component';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [PanelMenuModule, NgIf, BadgeModule, MenuModule, RippleModule, AvatarModule, MenubarModule, CardModule],
+  imports: [PanelMenuModule, NgIf, BadgeModule, MenuModule, RippleModule, AvatarModule, MenubarModule, CardModule,OverlayPanelModule, ProfileComponent ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css'
 })

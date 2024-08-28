@@ -25,6 +25,7 @@ export const routes: Routes = [
     { path: 'create-product', component: ProductFormComponent},
     { path: 'loan', component: LoanComponent},
     { path: 'fsp',  component: FspComponent},
-    { path: 'fsp-form', component: FspFormComponent}
+    { path: 'fsp-form', component: FspFormComponent},
+    { path: 'profile', component: ProductComponent}
     // { path: 'search', component: SearchComponent },
 ];

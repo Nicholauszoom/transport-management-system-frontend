@@ -54,7 +54,7 @@ export class AuthComponent {
         username: this.username.value,
         password: this.password.value
       };
-
+      
       this.authService.login(credentials);
     }
   }

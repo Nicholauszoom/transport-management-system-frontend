@@ -1,0 +1,23 @@
+<p-avatar
+  image="https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
+  shape="circle"
+  class="cursor-pointer"
+  (click)="toggleProfileCard($event)">
+</p-avatar>
+
+
+<!-- Profile Popup Card -->
+<p-overlayPanel #op [dismissable]="true" [showCloseIcon]="true" [style]="{width: '300px'}" appendTo="body">
+  <ng-template pTemplate>
+    <div *ngIf="profile">
+      <h3>{{ profile.email}}</h3>
+      <!-- Logout Button -->
+      <p-button
+        icon="pi pi-sign-out"
+        label="Logout"
+        class="p-button-danger"
+        (click)="logout()">
+      </p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
