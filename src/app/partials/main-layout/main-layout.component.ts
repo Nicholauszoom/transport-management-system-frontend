@@ -38,30 +38,14 @@ export class MenuComponent implements OnInit{
                 icon: 'pi pi-file',
                 items: [
                     {
-                        label: 'FSP Categories',
+                        label: 'FSP',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-plus',
                         command: () => {
-                            this.router.navigate(['fsp-categories']);
-                        }
-                    },
-                    {
-                        label: 'FSPs',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-print',
-                        command: () => {
                             this.router.navigate(['fsp']);
-                            // this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No printer connected', life: 3000 });
-                        }
-                    },
-                    {
-                        label: 'FSP Branches',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-search',
-                        command: () => {
-                            // this.messageService.add({ severity: 'warn', summary: 'Search Results', detail: 'No results found', life: 3000 });
                         }
                     }
+                   
                 ]
             },
             {
@@ -74,79 +58,86 @@ export class MenuComponent implements OnInit{
                         // icon: 'pi pi-cloud-download',
                         command: () => {
                             this.router.navigate(['app-product']);                        }
-                    },
-                    {
-                        label: 'product decommision',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-upload',
-                        command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-                        }
                     }
                 ]
             },
-            {
-                label: 'Loan',
-                icon: 'pi pi-bookmark',
-                items: [
-                    {
-                        label: 'calculator',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-download',
-                        command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-                        }
-                    },
-                    {
-                        label: 'new loan',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-upload',
-                        command: () => {
-                            this.router.navigate(['loan']);
-                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-                        }
-                    },
-                    {
-                        label: 'top up loan',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-upload',
-                        command: () => {
-                            // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-                        }
-                    },
+            // {
+            //     label: 'Loan',
+            //     icon: 'pi pi-bookmark',
+            //     items: [
+            //         {
+            //             label: 'calculator',
+            //             styleClass: 'custom-submenu-item',
+            //             // icon: 'pi pi-cloud-download',
+            //             command: () => {
+            //                 // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+            //             }
+            //         },
+            //         {
+            //             label: 'new loan',
+            //             styleClass: 'custom-submenu-item',
+            //             // icon: 'pi pi-cloud-upload',
+            //             command: () => {
+            //                 this.router.navigate(['loan']);
+            //                 // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+            //             }
+            //         },
+            //         {
+            //             label: 'top up loan',
+            //             styleClass: 'custom-submenu-item',
+            //             // icon: 'pi pi-cloud-upload',
+            //             command: () => {
+            //                 // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
+            //             }
+            //         },
                    
-                ]
-            },
+            //     ]
+            // },
+            // {
+            //     label: 'Borrower',
+            //     icon: 'pi pi-folder-open',
+            //     items: [
+            //         {
+            //             label: 'borrowers',
+            //             styleClass: 'custom-submenu-item',
+            //             // icon: 'pi pi-cloud-download',
+            //             command: () => {
+            //                 this.router.navigate(['borrowers']);
+            //             }
+            //         },
+                    
+            //     ]
+            // },
             {
-                label: 'Borrower',
+                label: 'System Logs',
                 icon: 'pi pi-folder-open',
                 items: [
                     {
-                        label: 'borrowers',
+                        label: 'logs',
                         styleClass: 'custom-submenu-item',
                         // icon: 'pi pi-cloud-download',
                         command: () => {
-                            this.router.navigate(['borrowers']);
-                        }
-                    },
-                    
-                ]
-            },
-            {
-                label: 'ESS Accounts',
-                icon: 'pi pi-book',
-                items: [
-                    {
-                        label: 'ess accounts',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-download',
-                        command: () => {
-                            this.router.navigate(['accounts']);
+                            this.router.navigate(['logs']);
                             // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
                         }
                     }
                 ]
             },
+            // {
+            //     label: 'ESS Accounts',
+            //     icon: 'pi pi-book',
+            //     items: [
+            //         {
+            //             label: 'ess accounts',
+            //             styleClass: 'custom-submenu-item',
+            //             // icon: 'pi pi-cloud-download',
+            //             command: () => {
+            //                 this.router.navigate(['accounts']);
+            //                 // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
+            //             }
+            //         }
+            //     ]
+            // },
             // {
             //     label: 'Sync',
             //     icon: 'pi pi-cloud',

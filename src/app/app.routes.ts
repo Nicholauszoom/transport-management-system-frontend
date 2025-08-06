@@ -10,6 +10,7 @@ import { ProductComponent } from './product/product.component';
 import { LoanComponent } from './loan/loan.component';
 import { FspComponent } from './fsp/fsp/fsp.component';
 import { FspFormComponent } from './fsp/fsp-form/fsp-form.component';
+import { LogsComponent } from './logs/logs.component';
 
 
 export const routes: Routes = [
@@ -26,6 +27,7 @@ export const routes: Routes = [
     { path: 'loan', component: LoanComponent},
     { path: 'fsp',  component: FspComponent},
     { path: 'fsp-form', component: FspFormComponent},
-    { path: 'profile', component: ProductComponent}
+    { path: 'profile', component: ProductComponent},
+    { path: 'logs', component: LogsComponent}
     // { path: 'search', component: SearchComponent },
 ];
