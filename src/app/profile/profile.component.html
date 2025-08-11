@@ -1,23 +1,55 @@
-<p-avatar
+<p-avatar 
   image="https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
   shape="circle"
   class="cursor-pointer"
   (click)="toggleProfileCard($event)">
 </p-avatar>
 
-
-<!-- Profile Popup Card -->
-<p-overlayPanel #op [dismissable]="true" [showCloseIcon]="true" [style]="{width: '300px'}" appendTo="body">
-  <ng-template pTemplate>
-    <div *ngIf="profile">
-      <h3>{{ profile.email}}</h3>
-      <!-- Logout Button -->
+<p-overlayPanel #op [dismissable]="true" [showCloseIcon]="true" [style]="{width: '320px', padding: '1rem'}" appendTo="body">
+  <ng-template pTemplate="content">
+    <div *ngIf="profile; else loading">
+      <div class="profile-header">
+        <h4 class="username">{{ profile.userName }}</h4>
+        <small class="role-label">{{ profile.role || 'User' }}</small>
+      </div>
+      <p class="email">{{ profile.email }}</p>
       <p-button
         icon="pi pi-sign-out"
         label="Logout"
-        class="p-button-danger"
+        class="p-button-danger logout-btn"
         (click)="logout()">
       </p-button>
     </div>
+    <ng-template #loading>
+      <p>Loading profile...</p>
+    </ng-template>
   </ng-template>
 </p-overlayPanel>
+
+<style>
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--surface-border);
+    padding-bottom: 0.5rem;
+  }
+  .username {
+    margin: 0;
+    font-weight: 600;
+  }
+  .role-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 2px;
+  }
+  .email {
+    margin: 0.5rem 0 1rem;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    word-break: break-word;
+  }
+  .logout-btn {
+    width: 50%;
+  }
+</style>

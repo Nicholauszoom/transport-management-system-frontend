@@ -30,141 +30,15 @@ export class MenuComponent implements OnInit{
                 label: 'Dashboard',
                 icon: 'pi pi-home',
                 command: () => {
-                    // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-                }
+                    this.router.navigate(['dashboard']);}
             },
             {
-                label: 'Financial Service Providers',
-                icon: 'pi pi-file',
-                items: [
-                    {
-                        label: 'FSP',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-plus',
-                        command: () => {
-                            this.router.navigate(['fsp']);
-                        }
-                    }
-                   
-                ]
+                label: 'Users',
+                icon: 'pi pi-users',
+                command: () => {
+                    this.router.navigate(['user']);}
             },
-            {
-                label: 'Product',
-                icon: 'pi pi-tag',
-                items: [
-                    {
-                        label: 'product catalogues',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-download',
-                        command: () => {
-                            this.router.navigate(['app-product']);                        }
-                    }
-                ]
-            },
-            // {
-            //     label: 'Loan',
-            //     icon: 'pi pi-bookmark',
-            //     items: [
-            //         {
-            //             label: 'calculator',
-            //             styleClass: 'custom-submenu-item',
-            //             // icon: 'pi pi-cloud-download',
-            //             command: () => {
-            //                 // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-            //             }
-            //         },
-            //         {
-            //             label: 'new loan',
-            //             styleClass: 'custom-submenu-item',
-            //             // icon: 'pi pi-cloud-upload',
-            //             command: () => {
-            //                 this.router.navigate(['loan']);
-            //                 // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-            //             }
-            //         },
-            //         {
-            //             label: 'top up loan',
-            //             styleClass: 'custom-submenu-item',
-            //             // icon: 'pi pi-cloud-upload',
-            //             command: () => {
-            //                 // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-            //             }
-            //         },
-                   
-            //     ]
-            // },
-            // {
-            //     label: 'Borrower',
-            //     icon: 'pi pi-folder-open',
-            //     items: [
-            //         {
-            //             label: 'borrowers',
-            //             styleClass: 'custom-submenu-item',
-            //             // icon: 'pi pi-cloud-download',
-            //             command: () => {
-            //                 this.router.navigate(['borrowers']);
-            //             }
-            //         },
-                    
-            //     ]
-            // },
-            {
-                label: 'System Logs',
-                icon: 'pi pi-folder-open',
-                items: [
-                    {
-                        label: 'logs',
-                        styleClass: 'custom-submenu-item',
-                        // icon: 'pi pi-cloud-download',
-                        command: () => {
-                            this.router.navigate(['logs']);
-                            // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-                        }
-                    }
-                ]
-            },
-            // {
-            //     label: 'ESS Accounts',
-            //     icon: 'pi pi-book',
-            //     items: [
-            //         {
-            //             label: 'ess accounts',
-            //             styleClass: 'custom-submenu-item',
-            //             // icon: 'pi pi-cloud-download',
-            //             command: () => {
-            //                 this.router.navigate(['accounts']);
-            //                 // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-            //             }
-            //         }
-            //     ]
-            // },
-            // {
-            //     label: 'Sync',
-            //     icon: 'pi pi-cloud',
-            //     items: [
-            //         {
-            //             label: 'Import',
-            //             icon: 'pi pi-cloud-download',
-            //             command: () => {
-            //                 // this.messageService.add({ severity: 'info', summary: 'Downloads', detail: 'Downloaded from cloud', life: 3000 });
-            //             }
-            //         },
-            //         {
-            //             label: 'Export',
-            //             icon: 'pi pi-cloud-upload',
-            //             command: () => {
-            //                 // this.messageService.add({ severity: 'info', summary: 'Shared', detail: 'Exported to cloud', life: 3000 });
-            //             }
-            //         }
-            //     ]
-            // },
-            // {
-            //     label: 'Sign Out',
-            //     icon: 'pi pi-sign-out',
-            //     command: () => {
-            //         // this.messageService.add({ severity: 'info', summary: 'Signed out', detail: 'User logged out', life: 3000 });
-            //     }
-            // }
+                     
         ];
     }
 }

@@ -1,5 +1,6 @@
 export interface ProfileDto{
-    id: Int32Array,
-    firstName: String,
+    id: number,
+    userName: String,
+    role: String
     email: String,
 }

@@ -28,31 +28,26 @@ export class ProfileComponent implements OnInit {
     this.fetchProfile();
   }
 
-  fetchProfile(): void {
-    this.profileService.fetchProfile().subscribe({
-      next: (profileData) => {
-        this.profile = profileData;
-      },
-      error: (error) => {
-        console.error('Error fetching profile data:', error);
-      }
-    });
-  }
+ fetchProfile(): void {
+  this.profileService.fetchProfile().subscribe({
+    next: (profileData) => {
+      console.log('Profile loaded:', profileData);
+      this.profile = profileData;
+    },
+    error: (error) => {
+      console.error('Error fetching profile data:', error);
+    }
+  });
+}
+
 
   toggleProfileCard(event: Event): void {
     this.overlayPanel?.toggle(event);
   }
 
   logout(): void {
-    this.authService.logout().subscribe(
-      () => {
-        this.overlayPanel.hide(); // Close the overlay panel
-        this.router.navigate(['/login']); // Navigate to login page
-      },
-      (error) => {
-        console.error('Error during logout', error);
-        this.router.navigate(['/login']); // Navigate to login even if logout fails
-      }
-    );
-  }
+  this.overlayPanel.hide(); // Close the profile overlay
+  this.authService.logout(); // This now handles storage clearing + navigation
+}
+
 }

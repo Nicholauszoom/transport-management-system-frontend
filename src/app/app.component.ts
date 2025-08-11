@@ -12,5 +12,5 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
   styleUrl: './app.component.css'
 })
 export class AppComponent{
-  title = 'e-mkopo-webapp';
+  title = 'bayport-mandate-webapp';
 }

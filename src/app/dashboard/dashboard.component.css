@@ -1,0 +1,45 @@
+.dashboard-cards {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 2rem;
+}
+
+.dashboard-card {
+  flex: 1;
+  min-width: 250px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.card-content i {
+  font-size: 2.5rem;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.card-content p {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+

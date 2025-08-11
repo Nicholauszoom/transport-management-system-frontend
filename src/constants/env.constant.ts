@@ -1,7 +1,7 @@
 const protocol = "http";
 const host = "localhost";
-const port = 8083;
-const api = "/v1";
+const port = 8080;
+const api = "/";
 
 export const env = {
     "baseUrl": protocol+"://"+host+":"+port

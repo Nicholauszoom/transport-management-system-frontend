@@ -10,7 +10,7 @@ import { ErrorToast } from './error.service';
   providedIn: 'root'
 })
 export class ProfileServiceService {
-  private profileUri: string = env.baseUrl+"/user/profile";
+  private profileUri: string = env.baseUrl+"/api/user/detail";
 
 
   private profileSubject = new BehaviorSubject<ProfileDto | null>(null);
@@ -19,16 +19,17 @@ export class ProfileServiceService {
   constructor(private http: HttpClient, private err: ErrorToast) {}
 
   fetchProfile(): Observable<ProfileDto> {
-    return this.http.get<{ data: ProfileDto }>(this.profileUri, { withCredentials: true })
-      .pipe(
-        map(response => {
-          this.profileSubject.next(response.data);
-          return response.data;
-        }),
-        catchError(error => {
-          this.err.show(error);
-          throw error;
-        })
-      );
-  }
+  return this.http.get<ProfileDto>(this.profileUri, { withCredentials: true })
+    .pipe(
+      map(profile => {
+        this.profileSubject.next(profile);
+        return profile;
+      }),
+      catchError(error => {
+        this.err.show(error);
+        throw error;
+      })
+    );
+}
+
 }
