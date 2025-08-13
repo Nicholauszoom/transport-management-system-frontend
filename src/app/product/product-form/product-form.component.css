@@ -1,22 +1,53 @@
-.p-card-header{
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
-}   
-
-form{
-    /* background-color: red; */
-    height: 15em;
-    display: grid;
-    justify-content: center;
-    align-items: center;
+#error-message {
+  color: #f44336;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
-#footer{
-    display: flex;
-    justify-content: center;
+.p-fluid .field {
+  margin-bottom: 1rem;
 }
 
-#category-form{
-    width: 100%;
+.p-card-header h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+#productDescription {
+  width: 100%;
+  max-width: 600px; 
+}
+
+/* .field.col-12 {
+  max-width: 800px; 
+} */
+
+.p-grid {
+  margin: 0 -0.5rem;
+}
+
+.field {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.p-float-label {
+  width: 100%;
+}
+
+.p-inputtext, .p-dropdown, .p-checkbox {
+  width: 100%;
+}
+
+.error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .field {
+    padding: 0.5rem 0;
+  }
 }

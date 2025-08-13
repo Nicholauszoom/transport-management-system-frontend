@@ -38,6 +38,12 @@ export class MenuComponent implements OnInit{
                 command: () => {
                     this.router.navigate(['user']);}
             },
+             {
+                label: 'Products',
+                icon: 'pi pi-chevron-circle-right',
+                command: () => {
+                    this.router.navigate(['product']);}
+            },
                      
         ];
     }

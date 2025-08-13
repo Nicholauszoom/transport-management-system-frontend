@@ -7,6 +7,6 @@ import { Observable, of } from 'rxjs';
 export class DashboardService {
   getDashboardStats(): Observable<{ users: number; products: number; loans: number }> {
     // Mock API response
-    return of({ users: 245, products: 58, loans: 134 });
+    return of({ users: 25, products: 3, loans: 500 });
   }
 }

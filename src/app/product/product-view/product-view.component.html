@@ -1,0 +1,89 @@
+<app-main-layout>
+  <div id="product-view" class="flex justify-content-center">
+    <p-card >
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-tag text-primary" style="font-size: 2rem;"></i>
+          <h2 class="m-0">Product Details</h2>
+        </div>
+      </ng-template>
+
+      <ng-container *ngIf="product; else loadingOrEmpty">
+        <!-- Basic Info -->
+        <div class="p-fluid grid">
+          <div class="col-12 md:col-6">
+            <strong>Product Code:</strong>
+            <p>{{ product.productCode }}</p>
+          </div>
+          <div class="col-12 md:col-6">
+            <strong>Product Name:</strong>
+            <p>{{ product.productName }}</p>
+          </div>
+          <div class="col-12">
+            <strong>Description:</strong>
+            <p>{{ product.productDescription || 'N/A' }}</p>
+          </div>
+        </div>
+
+        <p-divider align="center">
+          <span class="text-primary">Loan Information</span>
+        </p-divider>
+
+        <!-- Loan Info -->
+        <div class="p-fluid grid">
+          <div class="col-12 md:col-4">
+            <strong>Minimum Tenure:</strong>
+            <p>{{ product.minimumTenure }} months</p>
+          </div>
+          <div class="col-12 md:col-4">
+            <strong>Maximum Tenure:</strong>
+            <p>{{ product.maximumTenure }} months</p>
+          </div>
+          <div class="col-12 md:col-4">
+            <strong>Interest Rate:</strong>
+            <p>{{ product.interestRate }}%</p>
+          </div>
+          <div class="col-12 md:col-6">
+            <strong>Minimum Loan:</strong>
+            <p>{{ product.minLoanAmount | currency:product.currency || 'TSH ' }}</p>
+          </div>
+          <div class="col-12 md:col-6">
+            <strong>Maximum Loan:</strong>
+            <p>{{ product.maxLoanAmount | currency:product.currency || 'TSH ' }}</p>
+          </div>
+        </div>
+
+        <p-divider align="center">
+          <span class="text-primary">Charges</span>
+        </p-divider>
+
+        <!-- Charges -->
+        <div class="p-fluid grid">
+          <div class="col-12 md:col-4">
+            <strong>Process Fee:</strong>
+            <p>{{ product.processFee || 0 | currency }}</p>
+          </div>
+          <div class="col-12 md:col-4">
+            <strong>Insurance:</strong>
+            <p>{{ product.insurance }}%</p>
+          </div>
+          <div class="col-12 md:col-4">
+            <strong>Other Charges:</strong>
+            <p>{{ product.otherCharges || 0 | currency }}</p>
+          </div>
+        </div>
+
+          <p-button label="Decommission Product" icon="pi pi-trash" severity="danger" (click)="decommission(product.id)"/>
+      </ng-container>
+
+      <ng-template #loadingOrEmpty>
+        <div class="text-center">
+          <p *ngIf="inProgress" class="text-primary">
+            <i class="pi pi-spin pi-spinner"></i> Loading product details...
+          </p>
+          <p *ngIf="!inProgress" class="text-secondary">No product data available.</p>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</app-main-layout>

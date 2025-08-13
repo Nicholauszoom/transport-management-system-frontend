@@ -13,9 +13,25 @@ export interface Product{
     productDescription?: string;
     interestRate: number;
     insurance: number;
-    currencyName: string; 
+    repaymentType: string;
+    currency: string; 
+    processFee: number;
+    otherCharges:number;
+    action: string;
     category?: string;
     createdAt?: Date;
     updatedAt?: Date;
-    
+}
+
+export interface DataResponse {
+  data: any;
+  message?: string;
+}
+
+export interface ProductListResponse {
+  data: {
+    content: Product[];
+    totalElements: number;
+  };
+  message?: string;
 }
