@@ -13,16 +13,16 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProfileComponent } from '../../profile/profile.component';
 
 @Component({
-  selector: 'app-main-layout',
-  standalone: true,
-  imports: [PanelMenuModule, NgIf, BadgeModule, MenuModule, RippleModule, AvatarModule, MenubarModule, CardModule,OverlayPanelModule, ProfileComponent ],
-  templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.css'
+    selector: 'app-main-layout',
+    standalone: true,
+    imports: [PanelMenuModule, NgIf, BadgeModule, MenuModule, RippleModule, AvatarModule, MenubarModule, CardModule, OverlayPanelModule, ProfileComponent],
+    templateUrl: './main-layout.component.html',
+    styleUrl: './main-layout.component.css'
 })
-export class MenuComponent implements OnInit{
-  items: MenuItem[] = [];
+export class MenuComponent implements OnInit {
+    items: MenuItem[] = [];
 
-    constructor(private router: Router) {}
+    constructor(private router: Router) { }
 
     ngOnInit() {
         this.items = [
@@ -30,21 +30,51 @@ export class MenuComponent implements OnInit{
                 label: 'Dashboard',
                 icon: 'pi pi-home',
                 command: () => {
-                    this.router.navigate(['dashboard']);}
+                    this.router.navigate(['dashboard']);
+                }
             },
             {
                 label: 'Users',
                 icon: 'pi pi-users',
                 command: () => {
-                    this.router.navigate(['user']);}
+                    this.router.navigate(['user']);
+                }
             },
-             {
+            {
                 label: 'Products',
                 icon: 'pi pi-chevron-circle-right',
                 command: () => {
-                    this.router.navigate(['product']);}
+                    this.router.navigate(['product']);
+                }
             },
-                     
+            {
+                label: 'Charges and Pricing',
+                icon: 'pi pi-chart-pie',
+                items: [
+                    {
+                        label: 'UploadPrice Schedule',
+                        icon: '',
+                        command: () => {
+                            this.router.navigate(['price-schedule']);
+                        }
+                    },
+                    {
+                        label: 'Upload Client RV',
+                        icon: '',
+                        command: () => {
+                            this.router.navigate(['client-rv']);
+                        }
+                    },
+                    {
+                        label: 'Charges',
+                        icon: '',
+                        command: () => {
+                            this.router.navigate(['charge']);
+                        }
+                    }
+                ]
+            }
+
         ];
     }
 }

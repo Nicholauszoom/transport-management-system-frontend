@@ -12,7 +12,6 @@ import { MatInputModule } from '@angular/material/input';
 import { Subject } from 'rxjs';
 import { DropdownModule } from 'primeng/dropdown';
 
-
 @Component({
   selector: 'app-product-form',
    standalone: true,
@@ -35,11 +34,10 @@ import { DropdownModule } from 'primeng/dropdown';
 export class ProductFormComponent implements OnInit, OnDestroy {
 
   productForm!: FormGroup;
-  inProgress = false; // controls the spinner
-  submitted = false;  // tracks form submission
+  inProgress = false;
+  submitted = false;
   private destroy$ = new Subject<void>();
 
-  // Dropdown options
   repaymentTypes = [
     { label: 'Monthly', value: 'MONTHLY' },
     { label: 'Quarterly', value: 'QUARTERLY' },
@@ -64,7 +62,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
-  // Initialize the form with validations
   private initForm() {
     this.productForm = this.fb.group({
       productCode: ['', Validators.required],
@@ -85,7 +82,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Submit handler
 submitProductData() {
   this.submitted = true;
   this.productForm.markAllAsTouched();
@@ -108,7 +104,6 @@ submitProductData() {
       }
     });
 }
-
 
   ngOnDestroy() {
     this.destroy$.next();

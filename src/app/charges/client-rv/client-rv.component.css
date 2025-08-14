@@ -1,0 +1,15 @@
+.p-card {
+  margin: 1rem;
+}
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.p-progressSpinner {
+  width: 2rem;
+  height: 2rem;
+}

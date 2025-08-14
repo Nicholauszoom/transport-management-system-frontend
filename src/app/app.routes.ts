@@ -5,6 +5,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { ProductFormComponent } from './product/product-form/product-form.component';
 import { ProductViewComponent } from './product/product-view/product-view.component';
+import { PriceSheduleComponent } from './charges/price-shedule/price-shedule.component';
+import { ClientRvComponent } from './charges/client-rv/client-rv.component';
+import { ChargeListComponent } from './charges/charge-list/charge-list.component';
 
 
 export const routes: Routes = [
@@ -15,6 +18,9 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent},
     { path: 'product', component: ProductComponent},
     { path: 'product-add', component: ProductFormComponent},
-    { path: 'product-view/:id', component: ProductViewComponent }
+    { path: 'product-view/:id', component: ProductViewComponent },
+    { path: 'price-schedule', component: PriceSheduleComponent },
+    { path: 'client-rv', component: ClientRvComponent },
+    { path: 'charge', component: ChargeListComponent }
     // { path: 'search', component: SearchComponent },
 ];
