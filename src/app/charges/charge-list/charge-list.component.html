@@ -34,7 +34,6 @@
           <tr>
             <th>#</th>
             <th>Check Number</th>
-            <th>Net Salary</th>
             <th>One Third Amount</th>
             <th>Requested Amount</th>
             <th>Deductible Amount</th>
@@ -43,6 +42,7 @@
             <th>Terms of Employment</th>
             <th>Tenure</th>
             <th>Total Employee Deduction</th>
+            <th>Created Date</th>
             <th>Actions</th>
           </tr>
         </ng-template>
@@ -51,7 +51,6 @@
           <tr>
             <td>{{ (currentPage - 1) * pageSize + rowIndex + 1 }}</td>
             <td>{{ charge.checkNumber }}</td>
-            <td>{{ charge.netSalary | number:'1.2-2' }}</td>
             <td>{{ charge.oneThirdAmount | number:'1.2-2' }}</td>
             <td>{{ charge.requestedAmount | number:'1.2-2' }}</td>
             <td>{{ charge.deductibleAmount | number:'1.2-2' }}</td>
@@ -60,12 +59,9 @@
             <td>{{ charge.termsOfEmployment }}</td>
             <td>{{ charge.tenure }}</td>
             <td>{{ charge.totalEmployeeDeduction | number:'1.2-2' }}</td>
+            <td>{{ charge.createdDate }}</td>
             <td>
-              <p-button
-                label="View"
-                icon="pi pi-eye"
-                styleClass="p-button-text p-button-sm"
-              ></p-button>
+              <p-button label="View" icon="pi pi-eye" styleClass="p-button-text" (click)="viewCharge(charge.id)" />
             </td>
           </tr>
         </ng-template>

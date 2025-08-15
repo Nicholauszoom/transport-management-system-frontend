@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserDto } from '../../../dtos/user.dto';
 import { UserServiceService } from '../../../services/user-service.service';
 import { Router } from '@angular/router';
-import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { MenuComponent } from '../../partials/main-layout/main-layout.component';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
@@ -27,6 +27,7 @@ export class UserListComponent implements OnInit {
   constructor(
     private userService: UserServiceService,
     private router: Router,
+    private toast: MessageService,
     private primengConfig: PrimeNGConfig // Import this for PrimeNG configuration
   ) {}
 
@@ -40,6 +41,25 @@ export class UserListComponent implements OnInit {
     this.user = data;
     });
   }
+
+  deleteUser(id: number): void {
+  if (!id) {
+    this.toast.add({ severity: 'error', summary: 'Error', detail: 'User ID is not defined' });
+    return;
+  }
+  if (confirm('Are you sure you want to delete this user?')) {
+    this.userService.deleteUser(id).subscribe({
+      next: () => {
+        this.router.navigate(['user']);
+        this.toast.add({ severity: 'success', summary: 'Success', detail: 'User deleted successfully' });
+
+      },
+      error: (error) => {
+        this.toast.add({ severity: 'error', summary: 'Error', detail: error.error?.message || 'Failed to delete charge' });
+      },
+    });
+  }
+}
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;

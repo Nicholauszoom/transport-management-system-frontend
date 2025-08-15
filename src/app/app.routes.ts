@@ -8,6 +8,8 @@ import { ProductViewComponent } from './product/product-view/product-view.compon
 import { PriceSheduleComponent } from './charges/price-shedule/price-shedule.component';
 import { ClientRvComponent } from './charges/client-rv/client-rv.component';
 import { ChargeListComponent } from './charges/charge-list/charge-list.component';
+import { ChargeViewComponent } from './charges/charge-view/charge-view.component';
+import { UserCreateComponent } from './user/user-create/user-create.component';
 
 
 export const routes: Routes = [
@@ -21,6 +23,8 @@ export const routes: Routes = [
     { path: 'product-view/:id', component: ProductViewComponent },
     { path: 'price-schedule', component: PriceSheduleComponent },
     { path: 'client-rv', component: ClientRvComponent },
-    { path: 'charge', component: ChargeListComponent }
+    { path: 'charge', component: ChargeListComponent },
+    { path: 'charge-view/:id', component: ChargeViewComponent },
+    { path: 'user-add', component: UserCreateComponent },
     // { path: 'search', component: SearchComponent },
 ];

@@ -16,13 +16,12 @@
         <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
             <tr>
                 <td>{{ rowIndex + 1 + (currentPage - 1) * pageSize }}</td>
-                <td>{{ user.userName}}</td>
+                <td>{{ user.username}}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
                 <td>
                     <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true"></p-button>
-                    <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true"></p-button>
-                    <!-- Add more buttons if needed -->
+                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteUser(user.id)" />
                 </td>
             </tr>
         </ng-template>

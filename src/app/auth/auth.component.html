@@ -5,25 +5,37 @@
         </div>
     </ng-template>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
+    
         <p-floatLabel>
-            <input id="email" type="email" [formControl]="email" pInputText />
+            <input id="email" type="email" [formControl]="email" pInputText class="p-inputtext p-component"
+                style="width: 100%; height: 3rem;" />
             <label for="email">Email</label>
         </p-floatLabel>
-        @if(email.hasError("required") && (email.touched || submitted)){
-            <small id="email-help-required" class="error">*Email is required.</small>
+
+        @if (email.hasError('required') && (email.touched || submitted)) {
+        <small id="email-help-required" class="error">*Email is required.</small>
         }
-        @if(email.hasError("email") && (email.touched || submitted)){
-            <small id="email-help-invalid" class="error">*Please enter a valid email.</small>
-        }
-        
-        <p-floatLabel>
-            <p-password [formControl]="password" [feedback]="false" />
-            <label for="password">Password</label>
-        </p-floatLabel>
-        @if(password.hasError("required") && (password.touched || submitted)){
-            <small id="password-help" class="error">*Password is required.</small>
+        @if (email.hasError('email') && (email.touched || submitted)) {
+        <small id="email-help-invalid" class="error">*Please enter a valid email.</small>
         }
 
+
+        <p-floatLabel>
+            <p-password [formControl]="password" [feedback]="false" [toggleMask]="true" inputId="password"></p-password>
+            <label for="password">Password</label>
+        </p-floatLabel>
+
+        @if (password.hasError('required') && (password.touched || submitted)) {
+        <small id="password-help" class="error">*Password is required.</small>
+        }
+
+
         <p-button type="submit" label="Login" class="w-full" styleClass="w-full" [loading]="inProgress" />
+   
+         <!-- Verification Link -->
+        <div class="text-center mt-3">
+           Click <a [routerLink]="['/verify']" class="verify-link">Here</a> verify your account ?
+        </div>
+   
     </form>
 </p-card>

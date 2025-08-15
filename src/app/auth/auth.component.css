@@ -31,3 +31,15 @@ form{
   margin-top: 0.25rem;
   display: block;
 }
+
+.verify-link {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1890ec;
+  text-decoration: underline;
+}
+
+/* .verify-link:hover {
+  color: #005fa3;
+} */

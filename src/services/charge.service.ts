@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ErrorToast } from './error.service';
+import { DataResponse } from '../dtos/api.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -67,10 +68,43 @@ export class ChargeService {
     );
   }
 
+    getCharge(id: string): Observable<DataResponse> {
+      this.setProgress(true);
+      console.log('Fetching charge from:', `${this.chargeUri}/${id}`);
+  
+      return this.http.get<DataResponse>(`${this.chargeUri}/${id}`, { withCredentials: true }).pipe(
+        tap((response) => {
+          console.log('Charge fetch response:', response);
+        }),
+        catchError((err) => {
+          console.error('Charge fetch error:', err);
+          this.err.show(err);
+          return throwError(() => err);
+        }),
+        finalize(() => {
+          this.setProgress(false);
+        })
+      );
+    }
+
+
    searchCharges(term: string): Observable<ChargeDto[]> {
     return this.http.get<ChargeDto[]>(`${this.chargeUri}/search`, {
       params: { term }
     });
   }
+
+  deleteCharge(id: number): Observable<any> {
+  return this.http.post<any>(`${this.chargeUri}/${id}/delete`, {}, { withCredentials: true }).pipe(
+    tap((res) => {
+      console.log('Charge delete:', res);
+    }),
+    catchError((err) => {
+      console.error('Delete error:', err);
+      this.err.show(err);
+      return throwError(() => err);
+    })
+  );
+}
  
 }

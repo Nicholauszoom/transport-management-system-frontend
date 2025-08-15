@@ -8,7 +8,7 @@ import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../../services/auth.service';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'auth-component',
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
   providers: [MessageService],
-  imports: [CardModule, ButtonModule, FloatLabelModule, InputTextModule, PasswordModule, ReactiveFormsModule, ToastModule]
+  imports: [CardModule, ButtonModule, FloatLabelModule, InputTextModule, PasswordModule, ReactiveFormsModule, ToastModule, RouterModule]
 })
 export class AuthComponent {
   submitted = false;
@@ -43,6 +43,11 @@ export class AuthComponent {
         this.submitted = false;
       }
     });
+  }
+
+  showPassword: boolean = false;
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   public login() {

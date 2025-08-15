@@ -78,6 +78,10 @@ export class ChargeListComponent implements OnInit, OnDestroy {
     });
   }
 
+   viewCharge(id: string) {
+    this.router.navigate(['charge-view', id]);
+  }
+
   onPageChange(event: any) {
     this.currentPage = event.page + 1; 
     this.pageSize = event.rows;

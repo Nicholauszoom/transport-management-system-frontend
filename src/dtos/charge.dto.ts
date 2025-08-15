@@ -1,5 +1,5 @@
 export interface ChargeDto{
-checkNumber?: string;
+  checkNumber?: string;
   designationCode?: string;
   designationName?: string;
   basicSalary?: number;
@@ -15,4 +15,14 @@ checkNumber?: string;
   voteCode?: string;
   totalEmployeeDeduction?: number;
   jobClassCode?: string;
+  createdDate?: Date;
+
+  totalInsurance:number;
+  totalProcessingFee:number;
+  totalInterestRateAmount:number;
+  otherCharges:number;
+  netLoanAmount:number;
+  totalAmountToPay:number;
+  eligibleAmount: number;
+  monthlyReturnAmount: number;
 }
