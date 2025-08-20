@@ -10,6 +10,7 @@ import { ClientRvComponent } from './charges/client-rv/client-rv.component';
 import { ChargeListComponent } from './charges/charge-list/charge-list.component';
 import { ChargeViewComponent } from './charges/charge-view/charge-view.component';
 import { UserCreateComponent } from './user/user-create/user-create.component';
+import { AccountVerificationComponent } from './auth/account-verification/account-verification.component';
 
 
 export const routes: Routes = [
@@ -26,5 +27,6 @@ export const routes: Routes = [
     { path: 'charge', component: ChargeListComponent },
     { path: 'charge-view/:id', component: ChargeViewComponent },
     { path: 'user-add', component: UserCreateComponent },
+    { path: 'verify', component: AccountVerificationComponent },
     // { path: 'search', component: SearchComponent },
 ];

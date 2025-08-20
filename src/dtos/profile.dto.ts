@@ -1,6 +1,6 @@
 export interface ProfileDto{
     id: number,
-    userName: String,
+    username: String,
     role: String
     email: String,
 }

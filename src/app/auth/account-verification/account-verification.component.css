@@ -1,0 +1,45 @@
+#auth-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    color: black;
+}
+
+.p-card-header{
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}   
+
+form{
+    /* background-color: red; */
+    height: 15em;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+#footer{
+    display: flex;
+    justify-content: center;
+}
+
+.error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.verify-link {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1890ec;
+  text-decoration: underline;
+}
+
+/* .verify-link:hover {
+  color: #005fa3;
+} */

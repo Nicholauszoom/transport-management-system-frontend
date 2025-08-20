@@ -8,6 +8,8 @@ import { CardModule } from 'primeng/card';
 import { CurrencyPipe, NgIf } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-charge-view',
@@ -18,7 +20,9 @@ import { ButtonModule } from 'primeng/button';
       NgIf,
       DividerModule,
       CurrencyPipe,
-      ButtonModule
+      ButtonModule,
+      TableModule,
+      TabViewModule
     ],
   templateUrl: './charge-view.component.html',
   styleUrl: './charge-view.component.css'

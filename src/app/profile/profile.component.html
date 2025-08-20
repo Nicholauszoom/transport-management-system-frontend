@@ -9,7 +9,7 @@
   <ng-template pTemplate="content">
     <div *ngIf="profile; else loading">
       <div class="profile-header">
-        <h4 class="username">{{ profile.userName }}</h4>
+        <h4 class="username">{{ profile.username }}</h4>
         <small class="role-label">{{ profile.role || 'User' }}</small>
       </div>
       <p class="email">{{ profile.email }}</p>

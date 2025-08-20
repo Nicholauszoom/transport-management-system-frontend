@@ -61,7 +61,7 @@
         <div class="p-fluid grid">
           <div class="col-12 md:col-4">
             <strong>Process Fee:</strong>
-            <p>{{ product.processFee || 0 | currency }}</p>
+            <p>{{ product.processFee | currency:product.currency || 'TSH ' }}</p>
           </div>
           <div class="col-12 md:col-4">
             <strong>Insurance:</strong>
@@ -69,7 +69,7 @@
           </div>
           <div class="col-12 md:col-4">
             <strong>Other Charges:</strong>
-            <p>{{ product.otherCharges || 0 | currency }}</p>
+            <p>{{ product.otherCharges | currency:product.currency || 'TSH ' }}</p>
           </div>
         </div>
 

@@ -14,9 +14,9 @@ import { DataResponse } from '../dtos/api.dto';
 export class UserServiceService {
   private user: any;
 
-  private url = `${env.baseUrl}/admin/user/list`;
+  private url = `${env.baseUrl}/api/admin/user/list`;
 
-  private authUrl = `${env.baseUrl}/auth`;
+  private authUrl = `${env.baseUrl}/api/auth`;
 
    private userUrl = `${env.baseUrl}/api/user`;
 

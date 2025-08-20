@@ -25,4 +25,5 @@ export interface ChargeDto{
   totalAmountToPay:number;
   eligibleAmount: number;
   monthlyReturnAmount: number;
+  responseTenure: number;
 }

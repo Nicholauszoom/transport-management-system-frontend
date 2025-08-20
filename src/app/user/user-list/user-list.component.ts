@@ -7,14 +7,16 @@ import { MenuComponent } from '../../partials/main-layout/main-layout.component'
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { Subject, takeUntil } from 'rxjs';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [MenuComponent, TableModule, DropdownModule, InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule],
+  imports: [MenuComponent, TableModule, DropdownModule, InputTextModule, ReactiveFormsModule, CommonModule, ButtonModule, FormsModule, CardModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
@@ -23,6 +25,9 @@ export class UserListComponent implements OnInit {
   totalRecords: number = 0; 
   currentPage: number = 1;
   pageSize: number = 10;
+  term: string = '';
+  loading: boolean = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private userService: UserServiceService,
@@ -32,6 +37,10 @@ export class UserListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
+    this.userService.inProgress$.pipe(takeUntil(this.destroy$)).subscribe((progress) => {
+          this.loading = progress;
+        });
     this.fetchUser();
   }
 
@@ -60,10 +69,17 @@ export class UserListComponent implements OnInit {
     });
   }
 }
+  goToCreateUser() {
+    this.router.navigate(['user-add']);
+  }
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.pageSize = event.rows;
     this.fetchUser(this.currentPage, this.pageSize);
+  }
+   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

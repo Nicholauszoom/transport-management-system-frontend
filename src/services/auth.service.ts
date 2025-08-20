@@ -12,7 +12,7 @@ import { ErrorToast } from './error.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private authUri: string = env.baseUrl + "/auth";
+  private authUri: string = env.baseUrl + "/api/auth";
   private logoutUrl: string = env.baseUrl + "/logout";
   private progressSubject = new BehaviorSubject<boolean>(false);
   inProgress$ = this.progressSubject.asObservable();
@@ -43,6 +43,25 @@ export class AuthService {
       })
     );
 }
+
+public verify(credentials: any): Observable<string> {
+  this.setValue(true);
+
+  return this.http.post(`${this.authUri}/verify`, credentials, {
+    headers: { 'Content-Type': 'application/json' },
+    responseType: 'text'  // <-- crucial
+  }).pipe(
+    tap((res) => console.log('Backend response:', res)),
+    catchError((err) => {
+      this.err.show(err);
+      return throwError(() => err);
+    }),
+    finalize(() => this.setValue(false))
+  );
+}
+
+
+
 
 private handleLoginSuccess(response: any) {
   const { token, expiresIn } = response;
