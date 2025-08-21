@@ -38,6 +38,10 @@
                 <strong>Terms of Employment:</strong>
                 <p>{{ charge.termsOfEmployment || 'N/A' }}</p>
               </div>
+              <div class="col-12 md:col-4">
+                <strong>Retirement Date:</strong>
+                <p>{{ charge.retirementDate || 'N/A' }}</p>
+              </div>
             </div>
           </p-tabPanel>
 
@@ -60,15 +64,11 @@
                 <strong>Total Employee Deduction:</strong>
                 <p>{{ charge.totalEmployeeDeduction | currency:'Tsh ' }}</p>
               </div>
-              <div class="col-12 md:col-4">
-                <strong>Retirement Date:</strong>
-                <p>{{ charge.retirementDate || 'N/A' }}</p>
-              </div>
             </div>
           </p-tabPanel>
 
           <!-- Charge Request Info -->
-          <p-tabPanel header="Charge Request Information">
+          <p-tabPanel header="Charge Request">
             <div class="p-fluid grid">
               <div class="col-12 md:col-4">
                 <strong>Requested Amount:</strong>
@@ -94,15 +94,61 @@
           </p-tabPanel>
 
           <!-- Charges & Calculations -->
-          <p-tabPanel header="Charges & Calculations">
+          <p-tabPanel header="Charge Calculations">
             <div class="p-fluid grid">
               <div class="col-12 md:col-4">
-                <strong>Total Insurance:</strong>
+                <strong>Net Loan Amount:</strong>
+                <p>{{ charge.netLoanAmount | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Take Home Amount:</strong>
+                <p>{{ charge.takeHomeAmount | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Total Amount To Pay:</strong>
+                <p>{{ charge.totalAmountToPay | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Interest Amount:</strong>
+                <p>{{ charge.totalInterestRateAmount | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Insurance Amount:</strong>
                 <p>{{ charge.totalInsurance | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
-                <strong>Total Processing Fee:</strong>
+                <strong>Processing Fees:</strong>
                 <p>{{ charge.totalProcessingFee | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Other Charges Amount:</strong>
+                <p>{{ charge.otherCharges | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deductable Amount(/Monthly):</strong>
+                <p>{{ charge.monthlyReturnAmount | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Tenure:</strong>
+                <p>{{ charge.responseTenure }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Charge Response -->
+          <p-tabPanel header="Charge Response">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Desired Deductible Amount:</strong>
+                <p>{{ charge.monthlyReturnAmount | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Total Insurance:</strong>
+                <p>{{ charge.insuranceProcessFee | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Total Processing Fees:</strong>
+                <p>{{ 0 | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
                 <strong>Total Interest Rate Amount:</strong>
@@ -121,6 +167,10 @@
                 <p>{{ charge.totalAmountToPay | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
+                <strong>Tenure:</strong>
+                <p>{{ charge.responseTenure }}</p>
+              </div>
+              <div class="col-12 md:col-4">
                 <strong>Eligible Amount:</strong>
                 <p>{{ charge.eligibleAmount | currency:'Tsh ' }}</p>
               </div>
@@ -128,15 +178,11 @@
                 <strong>Monthly Return Amount:</strong>
                 <p>{{ charge.monthlyReturnAmount | currency:'Tsh ' }}</p>
               </div>
-              <div class="col-12 md:col-4">
-                <strong>Tenure:</strong>
-                <p>{{ charge.responseTenure }}</p>
-              </div>
             </div>
           </p-tabPanel>
 
-          <!-- Metadata -->
-          <p-tabPanel header="Metadata">
+           <!-- Meta Data -->
+          <p-tabPanel header="Meta Data">
             <div class="p-fluid grid">
               <div class="col-12">
                 <strong>Created Date:</strong>

@@ -73,7 +73,43 @@ export class MenuComponent implements OnInit {
                         }
                     }
                 ]
+            },
+
+            {
+                label: 'Loans',
+                icon: 'pi pi-code',
+                items: [
+                    {
+                        label: 'New',
+                        icon: '',
+                        command: () => {
+                            this.router.navigate(['loan']);
+                        }
+                    },
+                    {
+                        label: 'Refinance',
+                        icon: '',
+                        command: () => {
+                            // this.router.navigate(['client-rv']);
+                        }
+                    },
+                    {
+                        label: 'Takeover',
+                        icon: '',
+                        command: () => {
+                            // this.router.navigate(['charge']);
+                        }
+                    },
+                    {
+                        label: 'Restructure',
+                        icon: '',
+                        command: () => {
+                            // this.router.navigate(['charge']);
+                        }
+                    }
+                ]
             }
+
 
         ];
     }

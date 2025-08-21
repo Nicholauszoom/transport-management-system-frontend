@@ -11,6 +11,8 @@ import { ChargeListComponent } from './charges/charge-list/charge-list.component
 import { ChargeViewComponent } from './charges/charge-view/charge-view.component';
 import { UserCreateComponent } from './user/user-create/user-create.component';
 import { AccountVerificationComponent } from './auth/account-verification/account-verification.component';
+import { LoanComponent } from './loan/loan.component';
+import { LoanViewComponent } from './loan/loan-view/loan-view.component';
 
 
 export const routes: Routes = [
@@ -28,5 +30,7 @@ export const routes: Routes = [
     { path: 'charge-view/:id', component: ChargeViewComponent },
     { path: 'user-add', component: UserCreateComponent },
     { path: 'verify', component: AccountVerificationComponent },
+    { path: 'loan', component: LoanComponent },
+    { path: 'loan-view/:id', component: LoanViewComponent },
     // { path: 'search', component: SearchComponent },
 ];

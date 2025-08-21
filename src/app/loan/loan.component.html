@@ -1,44 +1,86 @@
 <app-main-layout>
-    <p-table [value]="loan" [tableStyle]="{ 'min-width': '50rem' }"
-             [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords"
-             (onPageChange)="onPageChange($event)">
+  <div class="flex justify-content-center flex-wrap w-full">
+    <p-card [style]="{ width: '100%' }" styleClass="m-3">
+      <ng-template pTemplate="header">
+        <div class="p-card-header flex justify-content-between align-items-center">
+          <h2 class="m-0">Loan Management</h2>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="term"
+              placeholder="Search loans"
+              (input)="searchLoans()"
+              style="width: 250px"
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <!-- Tab Menu -->
+      <p-tabMenu 
+        [model]="tabItems" 
+        [activeItem]="activeTab"
+        (activeItemChange)="onTabChange($event)"
+        styleClass="mb-3"
+      ></p-tabMenu>
+
+      <!-- Loans Table -->
+      <p-table
+        [value]="loans"
+        [paginator]="true"
+        [rows]="pageSize"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onLazyLoad)="onPageChange($event)"
+        [loading]="loading"
+        styleClass="p-datatable-gridlines p-datatable-striped"
+        [responsiveLayout]="'scroll'"
+        [tableStyle]="{ width: '100%' }"
+      >
         <ng-template pTemplate="header">
-            <tr>
-                <th>Loan Number</th>
-                <th>Loan</th>
-                <th>Fsp Code</th>
-                <th>Tenure</th>
-                <th>Application No</th>
-                <th>Loan Amount</th>
-                <th>Borrower</th>
-                <th>Loan Date</th>
-                <th>Product Code</th>
-                <th>Total Amount Pay</th>
-                <th>Status</th>
-                <th>Action</th>
-                <th>
-                </th>
-            </tr>
+          <tr>
+            <th>#</th>
+            <th>Check Number</th>
+            <th>Application Number</th>
+            <th>Borrower Name</th>
+            <th>Type</th>
+            <th>Bank Account</th>
+            <th>Requested Amount</th>
+            <th>Tenure</th>
+            <th>Loan Purpose</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-loan>
-            <tr>
-                <td>{{ loan.loanNumber }}</td>
-                <td>{{ loan.loanPurpose}}</td>
-                <td>{{ loan.fspCode }}</td>
-                <td>{{ loan.tenure }}</td>
-                <td>{{ loan.applicationNumber }}</td>
-                <td>{{ loan.loanAmount }}</td>
-                <td>{{ loan.borrower }}</td>
-                <td>{{ loan.loanDate }}</td>
-                <td>{{ loan.productCode }}</td>
-                <td>{{ loan.totalAmountToPay }}</td>
-                <td>{{ loan.loanStatus }}</td>
-                <td>
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true"></p-button>
-                    <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true"></p-button>
-                    <!-- Add more buttons if needed -->
-                </td>
-            </tr>
+
+        <ng-template pTemplate="body" let-loan let-rowIndex="rowIndex">
+          <tr>
+            <td>{{ (currentPage - 1) * pageSize + rowIndex + 1 }}</td>
+            <td>{{ loan.checkNumber }}</td>
+            <td>{{ loan.applicationNumber }}</td>
+            <td>{{ loan.firstName }} {{ loan.middleName || '' }} {{ loan.lastName }}</td>
+            <td>{{ loan.loanType }}</td>
+            <td>{{ loan.bankAccountNumber }}</td>
+            <td>{{ loan.requestedAmount | number:'1.2-2' }}</td>
+            <td>{{ loan.tenure }}</td>
+            <td>{{ loan.loanPurpose }}</td>
+            <td>{{ loan.createdDate }}</td>
+            <td>
+              <p-button label="View" icon="pi pi-eye" styleClass="p-button-text" (click)="viewLoan(loan.id)" />
+            </td>
+          </tr>
         </ng-template>
-    </p-table>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="11" class="text-center">
+              No {{ activeTab?.label?.toLowerCase() }} loans found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
 </app-main-layout>

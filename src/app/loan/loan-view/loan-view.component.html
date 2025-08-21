@@ -1,0 +1,259 @@
+<app-main-layout>
+  <div id="product-view" class="flex justify-content-center">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-tag text-primary" style="font-size: 2rem;"></i>
+          <h2 class="m-0">Loan Details</h2>
+        </div>
+      </ng-template>
+
+      <ng-container *ngIf="loan; else loadingOrEmpty">
+        <p-tabView>
+
+          <!-- Employee Information -->
+          <p-tabPanel header="Employee Information">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Check Number:</strong>
+                <p>{{ loan.checkNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>First Name:</strong>
+                <p>{{ loan.firstName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Middle Name:</strong>
+                <p>{{ loan.middleName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Last Name:</strong>
+                <p>{{ loan.lastName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Sex:</strong>
+                <p>{{ loan.sex || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>NIN:</strong>
+                <p>{{ loan.NIN || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Marital Status:</strong>
+                <p>{{ loan.maritalStatus || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Employment Date:</strong>
+                <p>{{ loan.employmentDate  }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Confirmation Date:</strong>
+                <p>{{ loan.confirmationDate  }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Designation Code:</strong>
+                <p>{{ loan.designationCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Designation Name:</strong>
+                <p>{{ loan.designationName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Vote Code:</strong>
+                <p>{{ loan.voteCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Vote Name:</strong>
+                <p>{{ loan.voteName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Terms of Employment:</strong>
+                <p>{{ loan.termsOfEmployment || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Retirement Date:</strong>
+                <p>{{ loan.retirementDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Physical Address:</strong>
+                <p>{{ loan.physicalAddress || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Email Address:</strong>
+                <p>{{ loan.emailAddress || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Mobile Number:</strong>
+                <p>{{ loan.mobileNumber || 'N/A' }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Salary Information -->
+          <p-tabPanel header="Salary Information">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Basic Salary:</strong>
+                <p>{{ loan.basicSalary }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Net Salary:</strong>
+                <p>{{ loan.netSalary}}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>One Third Amount:</strong>
+                <p>{{ loan.oneThirdAmount}}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Total Employee Deduction:</strong>
+                <p>{{ loan.totalEmployeeDeduction }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Loan Request -->
+          <p-tabPanel header="Loan Request">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Application Number:</strong>
+                <p>{{ loan.applicationNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Loan Type:</strong>
+                <p>{{ loan.loanType || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Product Code:</strong>
+                <p>{{ loan.productCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Requested Amount:</strong>
+                <p>{{ loan.requestedAmount }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Desired Deductible Amount:</strong>
+                <p>{{ loan.desiredDeductibleAmount}}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Tenure:</strong>
+                <p>{{ loan.tenure }} months</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Interest Rate:</strong>
+                <p>{{ loan.interestRate }}%</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Processing Fee:</strong>
+                <p>{{ loan.processingFee }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Insurance:</strong>
+                <p>{{ loan.insurance }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Loan Purpose:</strong>
+                <p>{{ loan.loanPurpose || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Contract Start Date:</strong>
+                <p>{{ loan.contractStartDate }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Contract End Date:</strong>
+                <p>{{ loan.contractEndDate }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Disbursement -->
+          <p-tabPanel header="Disbursement">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Bank Account Number:</strong>
+                <p>{{ loan.bankAccountNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Swift Code:</strong>
+                <p>{{ loan.swiftCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Nearest Branch Name:</strong>
+                <p>{{ loan.nearestBranchName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Nearest Branch Code:</strong>
+                <p>{{ loan.nearestBranchCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Funding:</strong>
+                <p>{{ loan.funding || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Processing Fee:</strong>
+                <p>{{ loan.processingFee  }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Insurance Amount:</strong>
+                <p>{{ loan.insurance }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Interest Rate:</strong>
+                <p>{{ loan.interestRate }}%</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Metadata -->
+          <p-tabPanel header="Metadata">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-6">
+                <strong>Record ID:</strong>
+                <p>{{ loan.id }}</p>
+              </div>
+              <div class="col-12 md:col-6">
+                <strong>Created Date:</strong>
+                <p>{{ loan.createdDate }}</p>
+              </div>
+              <div class="col-12 md:col-6">
+                <strong>Application Number:</strong>
+                <p>{{ loan.applicationNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6">
+                <strong>Check Number:</strong>
+                <p>{{ loan.checkNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6">
+                <strong>Product Code:</strong>
+                <p>{{ loan.productCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6">
+                <strong>Loan Type:</strong>
+                <p>{{ loan.loanType || 'N/A' }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+        </p-tabView>
+
+        <div class="mt-4">
+          <p-button 
+            label="Back to List" 
+            icon="pi pi-arrow-left" 
+            severity="secondary" 
+            class="mr-2"
+            />
+         
+        </div>
+      </ng-container>
+
+      <ng-template #loadingOrEmpty>
+        <div class="text-center">
+          <p *ngIf="inProgress" class="text-primary">
+            <i class="pi pi-spin pi-spinner"></i> Loading loan details...
+          </p>
+          <p *ngIf="!inProgress" class="text-secondary">No loan data available.</p>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</app-main-layout>

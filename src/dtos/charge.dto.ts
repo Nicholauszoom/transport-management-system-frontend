@@ -26,4 +26,6 @@ export interface ChargeDto{
   eligibleAmount: number;
   monthlyReturnAmount: number;
   responseTenure: number;
+  insuranceProcessFee:number;
+  takeHomeAmount: number;
 }
