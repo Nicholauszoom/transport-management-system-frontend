@@ -18,6 +18,8 @@ export type LoanRequestType =
   | 'disbursement_approved' 
   | 'disbursement_rejected';
 
+  export type LoanAction = 'APPROVED' | 'REJECTED';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -218,6 +220,43 @@ export class LoanService {
       })
     );
   }
+
+
+// Approve loans by request type
+  loanApproveAction(id: string, requestAction: LoanAction): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+  let params = new HttpParams()
+    .set('requestAction', requestAction);
+
+  return this.http.post<any>(`${this.loanUri}/${id}/approve`, {}, {
+    params,
+    withCredentials: true
+  }).pipe(
+    map((response) => {
+      let loans: LoanDto[] = [];
+      
+      if (Array.isArray(response)) {
+        loans = response;
+      } else if (response && Array.isArray(response.loans)) {
+        loans = response.loans;
+      } else if (response && Array.isArray(response.data)) {
+        loans = response.data;
+      }
+      
+      return { loans, totalRecords: loans.length };
+    }),
+    catchError((err) => {
+      console.error(`Approve ${requestAction} loans error:`, err);
+      this.err.show(err);
+      return throwError(() => err);
+    })
+  );
+}
+
+
+
+
+
+
 
   // Helper method to format request type for display
   private formatRequestType(requestType: LoanRequestType): string {

@@ -9,8 +9,28 @@
       </ng-template>
 
       <ng-container *ngIf="loan; else loadingOrEmpty">
-        <p-tabView>
 
+         <!-- Action Buttons for FSP Received Loans -->
+        <div *ngIf="loan.requestType === 'fsp_received'" class="mb-4 flex justify-content-center">
+          <p-button 
+            label="Approve" 
+            icon="pi pi-check" 
+            severity="success"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanApproveAction(loan.id,'APPROVED')"
+            class="mr-2"/>
+
+          <p-button 
+            label="Reject" 
+            icon="pi pi-times" 
+            severity="danger"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanApproveAction(loan.id,'REJECTED')" />
+        </div>
+
+        <p-tabView>
           <!-- Employee Information -->
           <p-tabPanel header="Employee Information">
             <div class="p-fluid grid">
@@ -165,40 +185,72 @@
             </div>
           </p-tabPanel>
 
-          <!-- Disbursement -->
-          <p-tabPanel header="Disbursement">
+          <!-- Loan Offer -->
+          <p-tabPanel header="Loan Offer">
             <div class="p-fluid grid">
               <div class="col-12 md:col-4">
-                <strong>Bank Account Number:</strong>
-                <p>{{ loan.bankAccountNumber || 'N/A' }}</p>
+                <strong>Net Loan Amount:</strong>
+                <p>{{ loan.netLoanAmount | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
-                <strong>Swift Code:</strong>
-                <p>{{ loan.swiftCode || 'N/A' }}</p>
+                <strong>Take Home Amount:</strong>
+                <p>{{ loan.takeHomeAmount | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
-                <strong>Nearest Branch Name:</strong>
-                <p>{{ loan.nearestBranchName || 'N/A' }}</p>
+                <strong>Total Amount To Pay:</strong>
+                <p>{{ loan.totalAmountToPay | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
-                <strong>Nearest Branch Code:</strong>
-                <p>{{ loan.nearestBranchCode || 'N/A' }}</p>
-              </div>
-              <div class="col-12 md:col-4">
-                <strong>Funding:</strong>
-                <p>{{ loan.funding || 'N/A' }}</p>
-              </div>
-              <div class="col-12 md:col-4">
-                <strong>Processing Fee:</strong>
-                <p>{{ loan.processingFee  }}</p>
+                <strong>Interest Amount:</strong>
+                <p>{{ loan.totalInterestRateAmount | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
                 <strong>Insurance Amount:</strong>
-                <p>{{ loan.insurance }}</p>
+                <p>{{ loan.totalInsurance | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
-                <strong>Interest Rate:</strong>
-                <p>{{ loan.interestRate }}%</p>
+                <strong>Processing Fees:</strong>
+                <p>{{ loan.totalProcessingFee | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Other Charges Amount:</strong>
+                <p>{{ loan.otherCharges | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deductable Amount(/Monthly):</strong>
+                <p>{{ loan.monthlyReturnAmount | currency:'Tsh ' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Tenure:</strong>
+                <p>{{ loan.responseTenure }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+           <!-- Employee Response -->
+          <p-tabPanel header="Employee Response" *ngIf="loan.requestType === 'employee_rejected'">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Action:</strong>
+                <p>REJECTED</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Reason:</strong>
+                <p>{{ loan.essApprovalReason}}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- HRO Response -->
+          <p-tabPanel header="HRO Response" *ngIf="loan.requestType === 'hro_approved'">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Action:</strong>
+                <p>{{ loan.requestType}}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Reason:</strong>
+                <p>{{ loan.essApprovalReason}}</p>
               </div>
             </div>
           </p-tabPanel>

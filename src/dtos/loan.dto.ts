@@ -39,5 +39,6 @@ export interface LoanDto{
   swiftCode: string;
   funding: string;
   loanType: string;
+  essApprovalReason: string;
   createdDate?: Date;
 }
