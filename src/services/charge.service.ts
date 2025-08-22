@@ -54,9 +54,7 @@ export class ChargeService {
         this.setCharges(charges);
         return { charges, totalRecords };
       }),
-      tap(() => {
-        this.toast.add({ severity: 'success', summary: 'Success', detail: 'charges loaded successfully' });
-      }),
+      
       catchError((err) => {
         console.error('Charges fetch error:', err);
         this.err.show(err);

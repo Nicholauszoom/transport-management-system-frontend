@@ -1,55 +1,108 @@
 <p-avatar 
-  image="https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
-  shape="circle"
-  class="cursor-pointer"
+  image="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" 
+  shape="circle" 
+  class="cursor-pointer profile-avatar" 
   (click)="toggleProfileCard($event)">
 </p-avatar>
 
-<p-overlayPanel #op [dismissable]="true" [showCloseIcon]="true" [style]="{width: '320px', padding: '1rem'}" appendTo="body">
+<p-overlayPanel 
+  #op 
+  [dismissable]="true" 
+  [showCloseIcon]="true" 
+  [style]="{width: '320px', padding: '1rem'}" 
+  [appendTo]="'body'"
+  styleClass="profile-overlay">
+  
   <ng-template pTemplate="content">
-    <div *ngIf="profile; else loading">
+    <div *ngIf="loading" class="loading-container">
+      <p>Loading profile...</p>
+    </div>
+    
+    <div *ngIf="error" class="error-container">
+      <p class="error-message">{{ error }}</p>
+      <p-button 
+        icon="pi pi-refresh" 
+        label="Retry" 
+        size="small"
+        (click)="retryFetch()">
+      </p-button>
+    </div>
+    
+    <div *ngIf="profile && !loading && !error">
       <div class="profile-header">
         <h4 class="username">{{ profile.username }}</h4>
         <small class="role-label">{{ profile.role || 'User' }}</small>
       </div>
       <p class="email">{{ profile.email }}</p>
-      <p-button
-        icon="pi pi-sign-out"
-        label="Logout"
-        class="p-button-danger logout-btn"
+      <p-button 
+        icon="pi pi-sign-out" 
+        label="Logout" 
+        class="p-button-danger logout-btn" 
         (click)="logout()">
       </p-button>
     </div>
-    <ng-template #loading>
-      <p>Loading profile...</p>
-    </ng-template>
   </ng-template>
 </p-overlayPanel>
 
 <style>
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--surface-border);
-    padding-bottom: 0.5rem;
-  }
-  .username {
-    margin: 0;
-    font-weight: 600;
-  }
-  .role-label {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-top: 2px;
-  }
-  .email {
-    margin: 0.5rem 0 1rem;
-    font-size: 0.95rem;
-    color: var(--text-color);
-    word-break: break-word;
-  }
-  .logout-btn {
-    width: 50%;
-  }
+/* Fix for zoom positioning issues */
+:host {
+  position: relative;
+}
+
+.profile-avatar {
+  position: relative;
+}
+
+/* Override PrimeNG overlay positioning to account for zoom */
+::ng-deep .profile-overlay {
+  transform-origin: top left;
+}
+
+/* Alternative: Force positioning relative to the avatar */
+::ng-deep .profile-overlay .p-overlaypanel {
+  transform: scale(1.43) !important; /* Compensate for 0.7 zoom (1/0.7 ≈ 1.43) */
+  transform-origin: top left !important;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--surface-border);
+  padding-bottom: 0.5rem;
+}
+
+.username {
+  margin: 0;
+  font-weight: 600;
+}
+
+.role-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.email {
+  margin: 0.5rem 0 1rem;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  word-break: break-word;
+}
+
+.logout-btn {
+  width: 50%;
+}
+
+.loading-container,
+.error-container {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.error-message {
+  color: var(--red-500);
+  margin-bottom: 1rem;
+}
 </style>

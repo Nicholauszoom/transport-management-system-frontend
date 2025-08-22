@@ -62,7 +62,7 @@ export class UserServiceService {
     this.http.get<UserDto[]>(`${this.url}?page=${page}&size=${size}`, { withCredentials: true })
       .subscribe({
         next: (users) => {
-          this.toast.add({ severity: 'success', summary: 'Success', detail: 'Users loaded successfully' });
+          // this.toast.add({ severity: 'success', summary: 'Success', detail: 'Users loaded successfully' });
           this.setUsers(users);
         },
         error: err => {

@@ -25,6 +25,7 @@ export type LoanRequestType =
 })
 export class LoanService {
   private loanUri: string = env.baseUrl + '/api/loan';
+  private disbursementUri: string = env.baseUrl + '/api/disbursement';
   private progressSubject = new BehaviorSubject<boolean>(false);
   inProgress$ = this.progressSubject.asObservable();
   private loanSubject = new BehaviorSubject<LoanDto[]>([]);
@@ -67,9 +68,7 @@ export class LoanService {
         this.setLoans(loans);
         return { loans, totalRecords };
       }),
-      tap(() => {
-        this.toast.add({ severity: 'success', summary: 'Success', detail: 'Loans loaded successfully' });
-      }),
+      
       catchError((err) => {
         console.error('Loans fetch error:', err);
         this.err.show(err);
@@ -129,13 +128,6 @@ export class LoanService {
         
         this.setLoans(loans);
         return { loans, totalRecords };
-      }),
-      tap(() => {
-        this.toast.add({ 
-          severity: 'success', 
-          summary: 'Success', 
-          detail: `${this.formatRequestType(requestType)} loans loaded successfully` 
-        });
       }),
       catchError((err) => {
         console.error(`${requestType} loans fetch error:`, err);
@@ -253,10 +245,41 @@ export class LoanService {
 }
 
 
+// Disburse loans by request type with reason
+loanDisbursementAction(
+  id: string,
+  requestAction: LoanAction,
+  reason: string
+): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+  let params = new HttpParams().set('requestAction', requestAction);
 
+  // send reason in body
+  const body = { reason };
 
+  return this.http.post<any>(`${this.disbursementUri}/${id}/disburse`, body, {
+    params,
+    withCredentials: true
+  }).pipe(
+    map((response) => {
+      let loans: LoanDto[] = [];
 
+      if (Array.isArray(response)) {
+        loans = response;
+      } else if (response && Array.isArray(response.loans)) {
+        loans = response.loans;
+      } else if (response && Array.isArray(response.data)) {
+        loans = response.data;
+      }
 
+      return { loans, totalRecords: loans.length };
+    }),
+    catchError((err) => {
+      console.error(`Approve ${requestAction} loans error:`, err);
+      this.err.show(err);
+      return throwError(() => err);
+    })
+  );
+}
 
   // Helper method to format request type for display
   private formatRequestType(requestType: LoanRequestType): string {

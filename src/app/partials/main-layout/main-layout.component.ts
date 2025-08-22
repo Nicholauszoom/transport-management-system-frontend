@@ -48,28 +48,28 @@ export class MenuComponent implements OnInit {
                 }
             },
             {
-                label: 'Charges and Pricing',
+                label: 'Pricings',
                 icon: 'pi pi-chart-pie',
                 items: [
                     {
-                        label: 'UploadPrice Schedule',
+                        label: 'charges',
                         icon: '',
                         command: () => {
-                            this.router.navigate(['price-schedule']);
+                            this.router.navigate(['charge']);
                         }
                     },
                     {
-                        label: 'Upload Client RV',
+                        label: 'client rv',
                         icon: '',
                         command: () => {
                             this.router.navigate(['client-rv']);
                         }
                     },
                     {
-                        label: 'Charges',
+                       label: 'price schedule',
                         icon: '',
                         command: () => {
-                            this.router.navigate(['charge']);
+                            this.router.navigate(['price-schedule']);
                         }
                     }
                 ]
@@ -80,37 +80,62 @@ export class MenuComponent implements OnInit {
                 icon: 'pi pi-code',
                 items: [
                     {
-                        label: 'New',
+                        label: 'new & refinance',
                         icon: '',
                         command: () => {
                             this.router.navigate(['loan']);
                         }
                     },
                     {
-                        label: 'Refinance',
-                        icon: '',
-                        command: () => {
-                            // this.router.navigate(['client-rv']);
-                        }
-                    },
-                    {
-                        label: 'Takeover',
+                        label: 'takeover',
                         icon: '',
                         command: () => {
                             // this.router.navigate(['charge']);
                         }
                     },
                     {
-                        label: 'Restructure',
+                        label: 'restructure',
                         icon: '',
                         command: () => {
                             // this.router.navigate(['charge']);
                         }
                     }
                 ]
+            },
+             {
+                label: 'Liquidations',
+                icon: 'pi pi-ban',
+                items: [
+                    {
+                        label: 'existing loan',
+                        icon: '',
+                        command: () => {
+                            // this.router.navigate(['']);
+                        }
+                    },
+                    {
+                        label: 'non existing loan',
+                        icon: '',
+                        command: () => {
+                            // this.router.navigate(['']);
+                        }
+                    }
+                ]
+            },
+            {
+                label: 'Reports',
+                icon: 'pi pi-folder-open',
+                command: () => {
+                    // this.router.navigate(['']);
+                }
+            },
+            {
+                label: 'Settings',
+                icon: 'pi pi-wrench',
+                command: () => {
+                    // this.router.navigate(['']);
+                }
             }
-
-
         ];
     }
 }

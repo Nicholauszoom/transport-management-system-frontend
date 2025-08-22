@@ -63,9 +63,7 @@ export class ProductService {
         this.setProducts(products);
         return { products, totalRecords };
       }),
-      tap(() => {
-        this.toast.add({ severity: 'success', summary: 'Success', detail: 'Products loaded successfully' });
-      }),
+      
       catchError((err) => {
         console.error('Products fetch error:', err);
         this.err.show(err);

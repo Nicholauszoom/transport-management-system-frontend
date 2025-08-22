@@ -3,33 +3,106 @@
     <p-card>
       <ng-template pTemplate="header">
         <div class="flex align-items-center gap-2">
-          <i class="pi pi-tag text-primary" style="font-size: 2rem;"></i>
-          <h2 class="m-0">Loan Details</h2>
+          <h2 class="m-0"><i class="pi pi-tag text-primary" style="font-size: 2rem;"></i>  Loan Details</h2>
+        </div>
+
+        <!-- Progress Bar Section -->
+        <div class="progress-container" *ngIf="loan">
+          <div class="progress-bar">
+            <div class="progress-step" 
+                 [ngClass]="{'completed': isStepCompleted('fsp_received'), 'active': isCurrentStep('fsp_received')}">
+              <div class="step-circle">
+                <i class="pi pi-file" *ngIf="!isStepCompleted('fsp_received')"></i>
+                <i class="pi pi-check" *ngIf="isStepCompleted('fsp_received')"></i>
+              </div>
+              <span class="step-label">FSP Received</span>
+            </div>
+            
+            <div class="progress-line" [ngClass]="{'completed': isStepCompleted('hro_approved')}"></div>
+            
+            <div class="progress-step" 
+                 [ngClass]="{'completed': isStepCompleted('hro_approved'), 'active': isCurrentStep('hro_approved')}">
+              <div class="step-circle">
+                <i class="pi pi-user" *ngIf="!isStepCompleted('hro_approved')"></i>
+                <i class="pi pi-check" *ngIf="isStepCompleted('hro_approved')"></i>
+              </div>
+              <span class="step-label">HRO Approved</span>
+            </div>
+            
+            <div class="progress-line" [ngClass]="{'completed': isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected')}"></div>
+            
+            <div class="progress-step" 
+                 [ngClass]="{'completed': isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected'), 
+                            'active': isCurrentStep('disbursement_approved') || isCurrentStep('disbursement_rejected'),
+                            'rejected': isCurrentStep('disbursement_rejected')}">
+              <div class="step-circle">
+                <i class="pi pi-money-bill" *ngIf="!isStepCompleted('disbursement_approved') && !isStepCompleted('disbursement_rejected')"></i>
+                <i class="pi pi-check" *ngIf="isStepCompleted('disbursement_approved')"></i>
+                <i class="pi pi-times" *ngIf="isStepCompleted('disbursement_rejected')"></i>
+              </div>
+              <span class="step-label">Disbursement</span>
+            </div>
+          </div>
+          
+          <!-- Current Status Badge -->
+          <div class="current-status">
+            <span class="status-badge" [ngClass]="getStatusClass(loan.requestType)">
+              {{ getStatusLabel(loan.requestType) }}
+            </span>
+          </div>
         </div>
       </ng-template>
-
+      
       <ng-container *ngIf="loan; else loadingOrEmpty">
+         <div class="button-group">
+           <p-button 
+            label="Back to List" 
+            icon="pi pi-arrow-left" 
+            severity="secondary" 
+            size="small"
+            (click)="goBack()"/>
 
-         <!-- Action Buttons for FSP Received Loans -->
-        <div *ngIf="loan.requestType === 'fsp_received'" class="mb-4 flex justify-content-center">
+          <!-- Action Buttons for FSP Received Loans -->
+        <div *ngIf="loan.requestType === 'fsp_received'">
+           <div class="button-group">
           <p-button 
-            label="Approve" 
+            label="Fsp Approve" 
             icon="pi pi-check" 
             severity="success"
             size="small"
             [loading]="isProcessing"
-            (click)="loanApproveAction(loan.id,'APPROVED')"
-            class="mr-2"/>
+            (click)="loanApproveAction(loan.id,'APPROVED')"/>
 
           <p-button 
-            label="Reject" 
+            label="Fsp Reject" 
             icon="pi pi-times" 
             severity="danger"
             size="small"
             [loading]="isProcessing"
-            (click)="loanApproveAction(loan.id,'REJECTED')" />
+            (click)="loanApproveAction(loan.id,'REJECTED')"/>
+            </div>
         </div>
+        <!-- Action Buttons for FSP Disburse Loans -->
+        <div *ngIf="loan.requestType === 'hro_approved'">
+           <div class="button-group">
+          <p-button 
+            label="Disburse Approve" 
+            icon="pi pi-check" 
+            severity="success"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanDisbursementAction(loan.id,'APPROVED')"/>
 
+          <p-button 
+            label="Disburse Reject" 
+            icon="pi pi-times" 
+            severity="danger"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanDisbursementAction(loan.id,'REJECTED')"/>
+            </div>
+        </div>
+       </div>
         <p-tabView>
           <!-- Employee Information -->
           <p-tabPanel header="Employee Information">
@@ -255,6 +328,34 @@
             </div>
           </p-tabPanel>
 
+           <!-- HRO Response -->
+          <p-tabPanel header="HRO Response" *ngIf="loan.requestType === 'hro_approved'">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Action:</strong>
+                <p>{{ loan.requestType}}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Reason:</strong>
+                <p>{{ loan.essApprovalReason}}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+            <!-- Disbursement -->
+            <p-tabPanel header="Disbursement" 
+            *ngIf="loan.requestType === 'disbursement_approved' || loan.requestType === 'disbursement_rejected'">            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Action:</strong>
+                <p>{{ loan.requestType}}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Disbuese Date:</strong>
+                <p>{{ loan.disbursementDate}}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
           <!-- Metadata -->
           <p-tabPanel header="Metadata">
             <div class="p-fluid grid">
@@ -286,16 +387,6 @@
           </p-tabPanel>
 
         </p-tabView>
-
-        <div class="mt-4">
-          <p-button 
-            label="Back to List" 
-            icon="pi pi-arrow-left" 
-            severity="secondary" 
-            class="mr-2"
-            />
-         
-        </div>
       </ng-container>
 
       <ng-template #loadingOrEmpty>

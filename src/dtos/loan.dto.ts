@@ -40,5 +40,6 @@ export interface LoanDto{
   funding: string;
   loanType: string;
   essApprovalReason: string;
+  disbursementDate: string;
   createdDate?: Date;
 }
