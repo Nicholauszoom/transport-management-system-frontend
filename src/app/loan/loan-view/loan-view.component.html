@@ -6,51 +6,111 @@
           <h2 class="m-0"><i class="pi pi-tag text-primary" style="font-size: 2rem;"></i>  Loan Details</h2>
         </div>
 
-        <!-- Progress Bar Section -->
-        <div class="progress-container" *ngIf="loan">
-          <div class="progress-bar">
-            <div class="progress-step" 
-                 [ngClass]="{'completed': isStepCompleted('fsp_received'), 'active': isCurrentStep('fsp_received')}">
-              <div class="step-circle">
-                <i class="pi pi-file" *ngIf="!isStepCompleted('fsp_received')"></i>
-                <i class="pi pi-check" *ngIf="isStepCompleted('fsp_received')"></i>
-              </div>
-              <span class="step-label">FSP Received</span>
-            </div>
-            
-            <div class="progress-line" [ngClass]="{'completed': isStepCompleted('hro_approved')}"></div>
-            
-            <div class="progress-step" 
-                 [ngClass]="{'completed': isStepCompleted('hro_approved'), 'active': isCurrentStep('hro_approved')}">
-              <div class="step-circle">
-                <i class="pi pi-user" *ngIf="!isStepCompleted('hro_approved')"></i>
-                <i class="pi pi-check" *ngIf="isStepCompleted('hro_approved')"></i>
-              </div>
-              <span class="step-label">HRO Approved</span>
-            </div>
-            
-            <div class="progress-line" [ngClass]="{'completed': isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected')}"></div>
-            
-            <div class="progress-step" 
-                 [ngClass]="{'completed': isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected'), 
-                            'active': isCurrentStep('disbursement_approved') || isCurrentStep('disbursement_rejected'),
-                            'rejected': isCurrentStep('disbursement_rejected')}">
-              <div class="step-circle">
-                <i class="pi pi-money-bill" *ngIf="!isStepCompleted('disbursement_approved') && !isStepCompleted('disbursement_rejected')"></i>
-                <i class="pi pi-check" *ngIf="isStepCompleted('disbursement_approved')"></i>
-                <i class="pi pi-times" *ngIf="isStepCompleted('disbursement_rejected')"></i>
-              </div>
-              <span class="step-label">Disbursement</span>
-            </div>
-          </div>
-          
-          <!-- Current Status Badge -->
-          <div class="current-status">
-            <span class="status-badge" [ngClass]="getStatusClass(loan.requestType)">
-              {{ getStatusLabel(loan.requestType) }}
-            </span>
-          </div>
-        </div>
+    <!-- Enhanced Progress Bar Section -->
+<div class="progress-container" *ngIf="loan">
+  <div class="progress-bar">
+    <!-- Step 1: FSP Received -->
+    <div class="progress-step" 
+         [ngClass]="{'completed': isStepCompleted('fsp_received'), 'active': isCurrentStep('fsp_received')}">
+      <div class="step-circle">
+        <i class="pi pi-file" *ngIf="!isStepCompleted('fsp_received')"></i>
+        <i class="pi pi-check" *ngIf="isStepCompleted('fsp_received')"></i>
+      </div>
+      <span class="step-label">FSP Received</span>
+    </div>
+    
+    <!-- Progress Line 1 -->
+    <div class="progress-line" [ngClass]="{'completed': isStepCompleted('fsp_accepted') || isStepCompleted('fsp_rejected')}"></div>
+    
+    <!-- Step 2: FSP Decision (Approved/Rejected) -->
+    <div class="progress-step" 
+         [ngClass]="{'completed': isStepCompleted('fsp_accepted') || isStepCompleted('fsp_rejected'), 
+                    'active': isCurrentStep('fsp_accepted') || isCurrentStep('fsp_rejected'),
+                    'rejected': isCurrentStep('fsp_rejected') || (isStepCompleted('fsp_rejected') && !canProceedAfterRejection('fsp_rejected'))}">
+      <div class="step-circle">
+        <i class="pi pi-thumbs-up" *ngIf="!isStepCompleted('fsp_accepted') && !isStepCompleted('fsp_rejected')"></i>
+        <i class="pi pi-check" *ngIf="isStepCompleted('fsp_accepted')"></i>
+        <i class="pi pi-times" *ngIf="isStepCompleted('fsp_rejected')"></i>
+      </div>
+      <span class="step-label">FSP Decision</span>
+      <!-- Branch indicator -->
+      <div class="branch-indicator" *ngIf="isCurrentStep('fsp_accepted') || isCurrentStep('fsp_rejected') || isStepCompleted('fsp_accepted') || isStepCompleted('fsp_rejected')">
+        <span class="branch-label" [ngClass]="{'success': isCurrentStep('fsp_accepted') || isStepCompleted('fsp_accepted'), 'danger': isCurrentStep('fsp_rejected') || isStepCompleted('fsp_rejected')}">
+          {{ isCurrentStep('fsp_accepted') || isStepCompleted('fsp_accepted') ? 'Approved' : 'Rejected' }}
+        </span>
+      </div>
+    </div>
+    
+    <!-- Progress Line 2 (only show if FSP was approved) -->
+    <div class="progress-line" 
+         [ngClass]="{'completed': (isStepCompleted('employee_rejected') || isStepCompleted('hro_approved') || isStepCompleted('hro_rejected')),
+                    'blocked': isStepCompleted('fsp_rejected')}"
+         *ngIf="!isStepCompleted('fsp_rejected') || canProceedAfterRejection('fsp_rejected')"></div>
+    
+    <!-- Step 3: Employee/HRO Decision (only show if FSP approved) -->
+    <div class="progress-step" 
+         [ngClass]="{'completed': isStepCompleted('employee_rejected') || isStepCompleted('hro_approved') || isStepCompleted('hro_rejected'), 
+                    'active': isCurrentStep('employee_rejected') || isCurrentStep('hro_approved') || isCurrentStep('hro_rejected'),
+                    'rejected': isCurrentStep('employee_rejected') || isCurrentStep('hro_rejected'),
+                    'hidden': isStepCompleted('fsp_rejected') && !canProceedAfterRejection('fsp_rejected')}"
+         *ngIf="!isStepCompleted('fsp_rejected') || canProceedAfterRejection('fsp_rejected')">
+      <div class="step-circle">
+        <i class="pi pi-user" *ngIf="!isStepCompleted('employee_rejected') && !isStepCompleted('hro_approved') && !isStepCompleted('hro_rejected')"></i>
+        <i class="pi pi-check" *ngIf="isStepCompleted('hro_approved')"></i>
+        <i class="pi pi-times" *ngIf="isStepCompleted('employee_rejected') || isStepCompleted('hro_rejected')"></i>
+      </div>
+      <span class="step-label">HRO Review</span>
+      <!-- Branch indicator -->
+      <div class="branch-indicator" *ngIf="isCurrentStep('employee_rejected') || isCurrentStep('hro_approved') || isCurrentStep('hro_rejected') || isStepCompleted('employee_rejected') || isStepCompleted('hro_approved') || isStepCompleted('hro_rejected')">
+        <span class="branch-label" [ngClass]="{'success': isCurrentStep('hro_approved') || isStepCompleted('hro_approved'), 'danger': isCurrentStep('employee_rejected') || isCurrentStep('hro_rejected') || isStepCompleted('employee_rejected') || isStepCompleted('hro_rejected')}">
+          {{ getHRODecisionLabel() }}
+        </span>
+      </div>
+    </div>
+    
+    <!-- Progress Line 3 (only show if HRO approved) -->
+    <div class="progress-line" 
+         [ngClass]="{'completed': isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected'),
+                    'blocked': isStepCompleted('employee_rejected') || isStepCompleted('hro_rejected') || isStepCompleted('fsp_rejected')}"
+         *ngIf="!isStepCompleted('employee_rejected') && !isStepCompleted('hro_rejected') && !isStepCompleted('fsp_rejected')"></div>
+    
+    <!-- Step 4: Disbursement (only show if HRO approved) -->
+    <div class="progress-step" 
+         [ngClass]="{'completed': isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected'), 
+                    'active': isCurrentStep('disbursement_approved') || isCurrentStep('disbursement_rejected'),
+                    'rejected': isCurrentStep('disbursement_rejected') || isStepCompleted('disbursement_rejected'),
+                    'hidden': isStepCompleted('employee_rejected') || isStepCompleted('hro_rejected') || isStepCompleted('fsp_rejected')}"
+         *ngIf="!isStepCompleted('employee_rejected') && !isStepCompleted('hro_rejected') && !isStepCompleted('fsp_rejected')">
+      <div class="step-circle">
+        <i class="pi pi-money-bill" *ngIf="!isStepCompleted('disbursement_approved') && !isStepCompleted('disbursement_rejected')"></i>
+        <i class="pi pi-check" *ngIf="isStepCompleted('disbursement_approved')"></i>
+        <i class="pi pi-times" *ngIf="isStepCompleted('disbursement_rejected')"></i>
+      </div>
+      <span class="step-label">Disbursement</span>
+      <!-- Branch indicator -->
+      <div class="branch-indicator" *ngIf="isCurrentStep('disbursement_approved') || isCurrentStep('disbursement_rejected') || isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected')">
+        <span class="branch-label" [ngClass]="{'success': isCurrentStep('disbursement_approved') || isStepCompleted('disbursement_approved'), 'danger': isCurrentStep('disbursement_rejected') || isStepCompleted('disbursement_rejected')}">
+          {{ isCurrentStep('disbursement_approved') || isStepCompleted('disbursement_approved') ? 'Approved' : 'Rejected' }}
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Current Status Badge -->
+  <!-- <div class="current-status">
+    <span class="status-badge" [ngClass]="getStatusClass(loan.requestType)">
+      {{ getStatusLabel(loan.requestType) }}
+    </span>
+  </div> -->
+  
+  <!-- Flow Status Summary -->
+  <div class="flow-summary">
+    <div class="flow-path">
+      <span class="path-label">Process Flow:</span>
+      <span class="path-steps">{{ getFlowPath() }}</span>
+    </div>
+  </div>
+</div>
       </ng-template>
       
       <ng-container *ngIf="loan; else loadingOrEmpty">
@@ -100,6 +160,19 @@
             size="small"
             [loading]="isProcessing"
             (click)="loanDisbursementAction(loan.id,'REJECTED')"/>
+            </div>
+        </div>
+
+         <!-- Action Buttons for Approved FSP Disburse Loans -->
+        <div *ngIf="loan.requestType === 'disbursement_approved'||loan.requestType === 'disbursement_rejected'">
+           <div class="button-group">
+          <p-button 
+            label="Liquidate" 
+            icon="pi pi-ban" 
+            severity="danger"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanLiquidationAction(loan.id)"/>
             </div>
         </div>
        </div>
@@ -279,11 +352,11 @@
               </div>
               <div class="col-12 md:col-4">
                 <strong>Insurance Amount:</strong>
-                <p>{{ loan.totalInsurance | currency:'Tsh ' }}</p>
+                <p>{{ loan.insuranceProcessFee | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
                 <strong>Processing Fees:</strong>
-                <p>{{ loan.totalProcessingFee | currency:'Tsh ' }}</p>
+                <p>{{ 0 | currency:'Tsh ' }}</p>
               </div>
               <div class="col-12 md:col-4">
                 <strong>Other Charges Amount:</strong>
@@ -315,20 +388,6 @@
           </p-tabPanel>
 
           <!-- HRO Response -->
-          <p-tabPanel header="HRO Response" *ngIf="loan.requestType === 'hro_approved'">
-            <div class="p-fluid grid">
-              <div class="col-12 md:col-4">
-                <strong>Action:</strong>
-                <p>{{ loan.requestType}}</p>
-              </div>
-              <div class="col-12 md:col-4">
-                <strong>Reason:</strong>
-                <p>{{ loan.essApprovalReason}}</p>
-              </div>
-            </div>
-          </p-tabPanel>
-
-           <!-- HRO Response -->
           <p-tabPanel header="HRO Response" *ngIf="loan.requestType === 'hro_approved'">
             <div class="p-fluid grid">
               <div class="col-12 md:col-4">
@@ -382,6 +441,22 @@
               <div class="col-12 md:col-6">
                 <strong>Loan Type:</strong>
                 <p>{{ loan.loanType || 'N/A' }}</p>
+              </div>
+               <div class="col-12 md:col-6" *ngIf="loan.initialApproveDate != null">
+                <strong>Fsp Initial Approval Date:</strong>
+                <p>{{ loan.initialApproveDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6" *ngIf="loan.hroApproveDate != null">
+                <strong>HRO Approval Date:</strong>
+                <p>{{ loan.hroApproveDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6" *ngIf="loan.liquidationDate != null">
+                <strong>Liquidate Date:</strong>
+                <p>{{ loan.liquidationDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6"  *ngIf="loan.employeeCancellDate != null">
+                <strong>Employee Cancell:</strong>
+                <p>{{ loan.employeeCancellDate || 'N/A' }}</p>
               </div>
             </div>
           </p-tabPanel>

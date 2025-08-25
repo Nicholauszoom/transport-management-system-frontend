@@ -1,0 +1,53 @@
+<app-main-layout>
+  <div id="account-form" class="flex justify-content-center flex-wrap">
+    <p-card id="auth-block" >
+      <ng-template pTemplate="header">
+        <div class="p-card-header">
+          <h2>Liquidation</h2>
+        </div>
+      </ng-template>
+
+      <form [formGroup]="loanForm" (ngSubmit)="submitLoanData()" class="p-fluid">
+        <div class="p-grid">
+          <!-- Application Number -->
+          <div class="field col-6 md:col-6">
+            <p-floatLabel>
+              <input id="applicationNumber" type="text" formControlName="applicationNumber" pInputText />
+              <label for="applicationNumber">Appplication Number</label>
+            </p-floatLabel>
+            @if (loanForm.get('applicationNumber')?.hasError('required') && loanForm.get('applicationNumber')?.touched) {
+              <small class="error">*Application number is required.</small>
+            }
+          </div>
+
+          <!-- Loan Number -->
+          <div class="field col-6 md:col-6">
+            <p-floatLabel>
+              <input id="loanNumber" type="text" formControlName="loanNumber" pInputText />
+              <label for="loanNumber">Loan Number</label>
+            </p-floatLabel>
+            @if (loanForm.get('loanNumber')?.hasError('required') && loanForm.get('loanNumber')?.touched) {
+              <small class="error">*Loan Number is required.</small>
+            }
+          </div>
+
+          <!-- Remarks -->
+         <div class="field col-6 md:col-6">
+            <p-floatLabel>
+              <input id="remarks" type="text" formControlName="remarks" pInputText />
+              <label for="remarks">Remarks</label>
+            </p-floatLabel>
+            @if (loanForm.get('remarks')?.hasError('required') && loanForm.get('remarks')?.touched) {
+              <small class="error">*Remarks is required.</small>
+            }
+          </div>
+
+          <!-- Submit Button -->
+          <div class="field col-6">
+            <p-button type="submit" label="Liquidate" class="w-full" [loading]="inProgress"></p-button>
+          </div>
+        </div>
+      </form>
+    </p-card>
+  </div>
+</app-main-layout>

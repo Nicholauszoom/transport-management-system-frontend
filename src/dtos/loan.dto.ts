@@ -41,5 +41,10 @@ export interface LoanDto{
   loanType: string;
   essApprovalReason: string;
   disbursementDate: string;
+  initialApproveDate: string;
+  hroApproveDate: string;
+  liquidationDate: string;
+  employeeCancellDate: string;
+  insuranceProcessFee: number;
   createdDate?: Date;
 }

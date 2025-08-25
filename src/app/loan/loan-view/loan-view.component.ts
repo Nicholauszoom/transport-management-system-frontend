@@ -102,19 +102,21 @@ export class LoanViewComponent implements OnInit, OnDestroy {
 
     this.loanService.loanApproveAction(loanId, loanAction).subscribe({
       next: (response) => {
-        this.isProcessing = false;
-        console.log('Loan action response:', response);
-        
-        // Navigate back to loans list
-        this.router.navigate(['loan']);
-        
-        // Show success message with specific action
-        this.toast.add({ 
-          severity: 'success', 
-          summary: 'Success', 
-          detail: `Loan ${actionText}d successfully` 
-        });
-      },
+  this.isProcessing = false;
+  console.log('Loan action response:', response);
+
+  this.router.navigate(['loan']);
+
+  // ✅ Use backend message if available, otherwise fallback
+  const successMessage = (response as any)?.message || `Loan ${actionText}d successfully`;
+
+  this.toast.add({ 
+    severity: 'success', 
+    summary: 'Success', 
+    detail: successMessage
+  });
+},
+
       error: (error) => {
         this.isProcessing = false;
         console.error('Loan action error:', error);
@@ -161,7 +163,7 @@ loanDisbursementAction(loanId: string, loanAction: LoanAction): void {
             this.toast.add({ 
               severity: 'success', 
               summary: 'Success', 
-              detail: `Loan ${actionText}d successfully`
+              detail: `Loan ${actionText} successfully`
             });
           },
           error: (error) => {
@@ -180,26 +182,98 @@ loanDisbursementAction(loanId: string, loanAction: LoanAction): void {
   }
 
 
+  // loanLiquidationAction
+  loanLiquidationAction(loanId: string): void {
+    const confirmMessage = `Are you sure you want to End Deduction for this loan application? Please provide a reason.`;
+
+    const ref = this.dialogService.open(DialogFormComponent, {
+      header: 'Confirm Loan Action',
+      width: '500px',
+      data: { message: confirmMessage }
+    });
+
+    ref.onClose.subscribe((reason: string | null) => {
+      if (reason !== null) {
+        this.isProcessing = true;
+
+        this.loanService.loanLiquidationAction(loanId, reason).subscribe({
+          next: (response) => {
+            this.isProcessing = false;
+            this.router.navigate(['loan']);
+            this.toast.add({ 
+              severity: 'success', 
+              summary: 'Success', 
+              detail: `Loan Liquidate successfully`
+            });
+          },
+         error: (error) => {
+  this.isProcessing = false;
+
+  let errorMessage = 'Failed to Liquidate loan';
+
+  if (error.error?.message) {
+    // Backend sent JSON with a message
+    errorMessage = error.error.message;
+  } else if (typeof error.error === 'string') {
+    // Sometimes backend sends plain text
+    errorMessage = error.error;
+  } else if (error.message) {
+    // Fallback: Angular HttpClient network error
+    errorMessage = error.message;
+  }
+
+  this.toast.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+}
+        });
+      }
+    });
+  }
+
+
+
   goBack() {
     // Navigate back logic
     this.router.navigate(['/loan']); // Adjust route as needed
   }
 
-  /**
- * Check if a step is completed based on loan progression
+/**
+ * Check if a step is completed based on loan progression with branching logic
  */
 isStepCompleted(stepType: string): boolean {
   const currentType = this.loan?.requestType;
   
   switch (stepType) {
     case 'fsp_received':
-      return currentType !== 'fsp_received';
+      // FSP Received is completed when we move to any next step
+      return !['fsp_received'].includes(currentType || '');
+    
+    case 'fsp_accepted':
+      // FSP Approved is completed when current status is fsp_accepted or beyond (excluding rejected paths)
+      return currentType === 'fsp_accepted' || 
+             ['hro_approved', 'employee_rejected', 'hro_rejected', 'disbursement_approved', 'disbursement_rejected'].includes(currentType || '');
+    
+    case 'fsp_rejected':
+      // FSP Rejected is completed when current status is fsp_rejected (terminal state)
+      return currentType === 'fsp_rejected';
+    
+    case 'employee_rejected':
+      // Employee rejected is completed when current status is employee_rejected (terminal state)
+      return currentType === 'employee_rejected';
+    
     case 'hro_approved':
+      // HRO Approved is completed when we move to disbursement stage
       return ['disbursement_approved', 'disbursement_rejected'].includes(currentType || '');
+    
+    case 'hro_rejected':
+      // HRO Rejected is completed when current status is hro_rejected (terminal state)
+      return currentType === 'hro_rejected';
+    
     case 'disbursement_approved':
       return currentType === 'disbursement_approved';
+    
     case 'disbursement_rejected':
       return currentType === 'disbursement_rejected';
+    
     default:
       return false;
   }
@@ -210,6 +284,28 @@ isStepCompleted(stepType: string): boolean {
  */
 isCurrentStep(stepType: string): boolean {
   return this.loan?.requestType === stepType;
+}
+
+/**
+ * Check if process can proceed after a rejection (for future enhancements)
+ */
+canProceedAfterRejection(rejectionType: string): boolean {
+  // For now, rejections are terminal states
+  // This method can be enhanced later if there are appeal/retry mechanisms
+  return false;
+}
+
+/**
+ * Get HRO decision label based on current status
+ */
+getHRODecisionLabel(): string {
+  const currentType = this.loan?.requestType;
+  
+  if (currentType === 'employee_rejected') return 'Employee Rejected';
+  if (currentType === 'hro_approved' || this.isStepCompleted('hro_approved')) return 'HRO Approved';
+  if (currentType === 'hro_rejected') return 'HRO Rejected';
+  
+  return 'Pending';
 }
 
 /**
@@ -225,13 +321,55 @@ getStatusClass(requestType: string): string {
 getStatusLabel(requestType: string): string {
   const labels: { [key: string]: string } = {
     'fsp_received': 'FSP Received',
+    'fsp_accepted': 'FSP Approved',
+    'fsp_rejected': 'FSP Rejected',
+    'employee_rejected': 'Employee Rejected',
     'hro_approved': 'HRO Approved',
+    'hro_rejected': 'HRO Rejected',
     'disbursement_approved': 'Disbursement Approved',
-    'disbursement_rejected': 'Disbursement Rejected',
-    'employee_rejected': 'Employee Rejected'
+    'disbursement_rejected': 'Disbursement Rejected'
   };
   
   return labels[requestType] || requestType?.replace(/_/g, ' ').toUpperCase() || 'Unknown Status';
+}
+
+/**
+ * Get the flow path description
+ */
+getFlowPath(): string {
+  const currentType = this.loan?.requestType;
+  
+  const pathMap: { [key: string]: string } = {
+    'fsp_received': 'FSP Received → Pending Review',
+    'fsp_accepted': 'FSP Received → FSP Approved → Awaiting HRO',
+    'fsp_rejected': 'FSP Received → FSP Rejected (Terminal)',
+    'employee_rejected': 'FSP Approved → Employee Rejected (Terminal)',
+    'hro_approved': 'FSP Approved → HRO Approved → Awaiting Disbursement',
+    'hro_rejected': 'FSP Approved → HRO Rejected (Terminal)',
+    'disbursement_approved': 'FSP Approved → HRO Approved → Disbursement Approved (Complete)',
+    'disbursement_rejected': 'FSP Approved → HRO Approved → Disbursement Rejected (Terminal)'
+  };
+  
+  return pathMap[currentType || ''] || 'Unknown Path';
+}
+
+/**
+ * Check if the current status represents a terminal state (process ended)
+ */
+isTerminalState(): boolean {
+  const terminalStates = ['fsp_rejected', 'employee_rejected', 'hro_rejected', 'disbursement_rejected', 'disbursement_approved'];
+  return terminalStates.includes(this.loan?.requestType || '');
+}
+
+/**
+ * Get the overall process status
+ */
+getProcessStatus(): 'in-progress' | 'completed' | 'rejected' {
+  const currentType = this.loan?.requestType;
+  
+  if (currentType === 'disbursement_approved') return 'completed';
+  if (['fsp_rejected', 'employee_rejected', 'hro_rejected', 'disbursement_rejected'].includes(currentType || '')) return 'rejected';
+  return 'in-progress';
 }
 
 

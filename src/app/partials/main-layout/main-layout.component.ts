@@ -105,22 +105,10 @@ export class MenuComponent implements OnInit {
              {
                 label: 'Liquidations',
                 icon: 'pi pi-ban',
-                items: [
-                    {
-                        label: 'existing loan',
-                        icon: '',
-                        command: () => {
-                            // this.router.navigate(['']);
+                command: () => {
+                            this.router.navigate(['loan-liquidation']);
                         }
-                    },
-                    {
-                        label: 'non existing loan',
-                        icon: '',
-                        command: () => {
-                            // this.router.navigate(['']);
-                        }
-                    }
-                ]
+                   
             },
             {
                 label: 'Reports',

@@ -1,5 +1,33 @@
 <app-main-layout>
   <div class="flex justify-content-center flex-wrap">
+ <p-card [style]="{ width: '100%' }" styleClass="m-3">
+        <ng-template pTemplate="header">
+        <div class="p-card-header">
+          <h2>User List</h2>
+        </div>
+       <div class="flex justify-content-between mb-3" style="gap: 1rem;">
+        <p-button label="Add User" icon="pi pi-plus" (click)="goToCreateUser()" />
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" [(ngModel)]="term" placeholder="Search products" (input)="fetchUser()" />
+        </span>
+      </div>
+      </ng-template>
+
+      <p-table
+        [value]="user"
+        [paginator]="true"
+        [rows]="pageSize"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onLazyLoad)="onPageChange($event)"
+        [loading]="loading"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+
+
+<!-- <app-main-layout>
+  <div class="flex justify-content-center flex-wrap">
     <p-card [style]="{ width: '80rem' }">
       <ng-template pTemplate="header">
         <div class="p-card-header">
@@ -23,7 +51,7 @@
         (onLazyLoad)="onPageChange($event)"
         [loading]="loading"
         [tableStyle]="{ 'min-width': '50rem' }"
-      >
+      > -->
         <ng-template pTemplate="header">
           <tr>
              <th>SN</th>

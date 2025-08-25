@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subject } from 'rxjs';
 import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-product-form',
@@ -35,6 +36,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   productForm!: FormGroup;
   inProgress = false;
+   isProcessing = false;
   submitted = false;
   private destroy$ = new Subject<void>();
 
@@ -55,7 +57,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private productService: ProductService
+    private productService: ProductService,
+    private toast: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -99,9 +102,23 @@ submitProductData() {
         this.productForm.reset();
         this.submitted = false;
       },
-      error: () => {
-        this.inProgress = false;
-      }
+      error: (error) => {
+  this.isProcessing = false;
+  console.error('Loan action error:', error);
+
+  let errorMessage = 'Failed to Liquidate loan';
+
+  if (error.error?.message) {
+    errorMessage = error.error.message;
+  } else if (typeof error.error === 'string') {
+    errorMessage = error.error;
+  } else if (error.message) {
+    errorMessage = error.message;
+  }
+
+  this.toast.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+}
+
     });
 }
 

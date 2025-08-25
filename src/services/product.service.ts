@@ -75,28 +75,73 @@ export class ProductService {
     );
   }
 
-  createProduct(payload: any): Observable<DataResponse> {
-    this.setProgress(true);
-    console.log('Sending product creation request to:', `${this.productUri}/create`);
-    console.log('Request body:', payload);
 
-    return this.http.post<DataResponse>(`${this.productUri}/create`, payload, { withCredentials: true }).pipe(
-      tap((res) => {
-        const data = res.data;
-        const productCreated = `Product Code \nCode: ${data.productCode}\nName: ${data.productName}`;
-        this.toast.add({ severity: 'success', summary: 'Success', detail: productCreated });
-        this.router.navigate(['product']);
-      }),
-      catchError((err) => {
-        console.error('Product creation error:', err);
-        this.err.show(err);
-        return throwError(() => err);
-      }),
-      finalize(() => {
-        this.setProgress(false);
-      })
-    );
-  }
+  createProduct(payload: any): Observable<any> {
+  this.setProgress(true);
+  console.log('Sending product creation request to:', `${this.productUri}/create`);
+  console.log('Request body:', payload);
+
+  return this.http.post<any>(`${this.productUri}/create`, payload, { withCredentials: true }).pipe(
+    map((res) => {
+      // ✅ check backend response code if needed
+      if (res?.code && res.code !== 200) {
+        throw { error: { message: res.message || 'Product creation failed' } };
+      }
+
+      const data = res.data;
+      const productCreated = `Product Created\nCode: ${data.productCode}\nName: ${data.productName}`;
+
+      // ✅ success toast + navigation
+      this.toast.add({ severity: 'success', summary: 'Success', detail: productCreated });
+      this.router.navigate(['product']);
+
+      // ✅ return the actual response so subscribers can still use it
+      return res;
+    }),
+    catchError((err) => {
+      console.error('Product creation error:', err);
+
+      let errorMessage = 'Failed to create product';
+      if (err.error?.message) {
+        errorMessage = err.error.message;
+      } else if (typeof err.error === 'string') {
+        errorMessage = err.error;
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+
+      this.toast.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+
+      return throwError(() => err);
+    }),
+    finalize(() => {
+      this.setProgress(false);
+    })
+  );
+}
+
+  // createProduct(payload: any): Observable<DataResponse> {
+  //   this.setProgress(true);
+  //   console.log('Sending product creation request to:', `${this.productUri}/create`);
+  //   console.log('Request body:', payload);
+
+  //   return this.http.post<DataResponse>(`${this.productUri}/create`, payload, { withCredentials: true }).pipe(
+  //     map((res) => {
+  //       const data = res.data;
+  //       const productCreated = `Product Code \nCode: ${data.productCode}\nName: ${data.productName}`;
+  //       this.toast.add({ severity: 'success', summary: 'Success', detail: productCreated });
+  //       this.router.navigate(['product']);
+  //     }),
+  //     catchError((err) => {
+  //       console.error('Product creation error:', err);
+  //       this.err.show(err);
+  //       return throwError(() => err);
+  //     }),
+  //     finalize(() => {
+  //       this.setProgress(false);
+  //     })
+  //   );
+  // }
 
   updateProduct(id: string, payload: any): Observable<DataResponse> {
     this.setProgress(true);

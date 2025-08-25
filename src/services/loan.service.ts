@@ -8,17 +8,17 @@ import { Router } from '@angular/router';
 import { ErrorToast } from './error.service';
 import { DataResponse } from '../dtos/api.dto';
 
-export type LoanRequestType = 
-  | 'fsp_received' 
-  | 'fsp_accepted' 
-  | 'fsp_rejected' 
-  | 'employee_rejected' 
-  | 'hro_approved' 
-  | 'hro_rejected' 
-  | 'disbursement_approved' 
+export type LoanRequestType =
+  | 'fsp_received'
+  | 'fsp_accepted'
+  | 'fsp_rejected'
+  | 'employee_rejected'
+  | 'hro_approved'
+  | 'hro_rejected'
+  | 'disbursement_approved'
   | 'disbursement_rejected';
 
-  export type LoanAction = 'APPROVED' | 'REJECTED';
+export type LoanAction = 'APPROVED' | 'REJECTED';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +59,7 @@ export class LoanService {
     const url = `${this.loanUri}/list?page=${page}&size=${size}`;
     console.log('Fetching loans from:', url);
     this.setProgress(true);
-    
+
     return this.http.get<LoanDto[]>(url, { withCredentials: true }).pipe(
       map((response) => {
         console.log('Loans fetch response:', response);
@@ -68,7 +68,7 @@ export class LoanService {
         this.setLoans(loans);
         return { loans, totalRecords };
       }),
-      
+
       catchError((err) => {
         console.error('Loans fetch error:', err);
         this.err.show(err);
@@ -82,8 +82,8 @@ export class LoanService {
 
   // New method to fetch loans by request type (for tabs)
   fetchLoansByRequestType(
-    requestType: LoanRequestType, 
-    page: number = 1, 
+    requestType: LoanRequestType,
+    page: number = 1,
     size: number = 10
   ): Observable<{ loans: LoanDto[]; totalRecords: number }> {
     let params = new HttpParams()
@@ -94,20 +94,20 @@ export class LoanService {
     const url = `${this.loanUri}/list`;
     console.log(`Fetching ${requestType} loans from:`, url);
     console.log('Params:', params.toString());
-    
+
     this.setProgress(true);
-    
-    return this.http.get<any>(url, { 
-      params, 
-      withCredentials: true 
+
+    return this.http.get<any>(url, {
+      params,
+      withCredentials: true
     }).pipe(
       map((response) => {
         console.log(`${requestType} loans fetch response:`, response);
-        
+
         // Handle different response formats
         let loans: LoanDto[] = [];
         let totalRecords = 0;
-        
+
         if (response && Array.isArray(response)) {
           // Simple array response
           loans = response;
@@ -125,7 +125,67 @@ export class LoanService {
           loans = [];
           totalRecords = 0;
         }
-        
+
+        this.setLoans(loans);
+        return { loans, totalRecords };
+      }),
+      catchError((err) => {
+        console.error(`${requestType} loans fetch error:`, err);
+        this.err.show(err);
+        return throwError(() => err);
+      }),
+      finalize(() => {
+        this.setProgress(false);
+      })
+    );
+  }
+
+
+  fetchLiquidatedLoans(
+    requestType: string,
+    page: number = 1,
+    size: number = 10
+  ): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+    let params = new HttpParams()
+      .set('requestType', requestType)
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    const url = `${this.loanUri}/list`;
+    console.log(`Fetching ${requestType} loans from:`, url);
+    console.log('Params:', params.toString());
+
+    this.setProgress(true);
+
+    return this.http.get<any>(url, {
+      params,
+      withCredentials: true
+    }).pipe(
+      map((response) => {
+        console.log(`${requestType} loans fetch response:`, response);
+
+        // Handle different response formats
+        let loans: LoanDto[] = [];
+        let totalRecords = 0;
+
+        if (response && Array.isArray(response)) {
+          // Simple array response
+          loans = response;
+          totalRecords = response.length;
+        } else if (response && response.loans && Array.isArray(response.loans)) {
+          // Paginated response with loans property
+          loans = response.loans;
+          totalRecords = response.totalRecords || response.total || response.loans.length;
+        } else if (response && response.data && Array.isArray(response.data)) {
+          // Response with data property
+          loans = response.data;
+          totalRecords = response.totalRecords || response.total || response.data.length;
+        } else {
+          // Fallback
+          loans = [];
+          totalRecords = 0;
+        }
+
         this.setLoans(loans);
         return { loans, totalRecords };
       }),
@@ -142,7 +202,7 @@ export class LoanService {
 
   // Search loans by request type
   searchLoansByRequestType(
-    requestType: LoanRequestType, 
+    requestType: LoanRequestType,
     term: string
   ): Observable<{ loans: LoanDto[]; totalRecords: number }> {
     let params = new HttpParams()
@@ -154,8 +214,9 @@ export class LoanService {
       withCredentials: true
     }).pipe(
       map((response) => {
+
         let loans: LoanDto[] = [];
-        
+
         if (Array.isArray(response)) {
           loans = response;
         } else if (response && Array.isArray(response.loans)) {
@@ -163,7 +224,7 @@ export class LoanService {
         } else if (response && Array.isArray(response.data)) {
           loans = response.data;
         }
-        
+
         return { loans, totalRecords: loans.length };
       }),
       catchError((err) => {
@@ -202,7 +263,7 @@ export class LoanService {
 
   deleteLoan(id: number): Observable<any> {
     return this.http.post<any>(`${this.loanUri}/${id}/delete`, {}, { withCredentials: true }).pipe(
-      tap((res) => {
+      map((res) => {
         console.log('Loan delete:', res);
       }),
       catchError((err) => {
@@ -213,73 +274,152 @@ export class LoanService {
     );
   }
 
-
-// Approve loans by request type
+  // Approve loans by request type
   loanApproveAction(id: string, requestAction: LoanAction): Observable<{ loans: LoanDto[]; totalRecords: number }> {
-  let params = new HttpParams()
-    .set('requestAction', requestAction);
+    let params = new HttpParams()
+      .set('requestAction', requestAction);
 
-  return this.http.post<any>(`${this.loanUri}/${id}/approve`, {}, {
-    params,
-    withCredentials: true
-  }).pipe(
-    map((response) => {
-      let loans: LoanDto[] = [];
-      
-      if (Array.isArray(response)) {
-        loans = response;
-      } else if (response && Array.isArray(response.loans)) {
-        loans = response.loans;
-      } else if (response && Array.isArray(response.data)) {
-        loans = response.data;
-      }
-      
-      return { loans, totalRecords: loans.length };
-    }),
-    catchError((err) => {
-      console.error(`Approve ${requestAction} loans error:`, err);
-      this.err.show(err);
-      return throwError(() => err);
-    })
-  );
-}
+    return this.http.post(`${this.loanUri}/${id}/approve`, {}, {
+      params,
+      withCredentials: true,
+       responseType: 'text' as 'json'
+    }).pipe(
+      map((response: any) => {
+  if (response?.code && response.code !== 200) {
+    throw { error: { message: response.message || 'Approve failed' } };
+  }
+
+  let loans: LoanDto[] = [];
+
+  if (Array.isArray(response)) {
+    loans = response;
+  } else if (response && Array.isArray(response.loans)) {
+    loans = response.loans;
+  } else if (response && Array.isArray(response.data)) {
+    loans = response.data;
+  }
+
+  // ✅ include backend message so component can use it
+  return { loans, totalRecords: loans.length, message: response.message };
+}),
+
+      catchError((err) => {
+        console.error(`Approve ${requestAction} loans error:`, err);
+        this.err.show(err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  // Disburse loans by request type with reason
+  loanDisbursementAction(
+    id: string,
+    requestAction: LoanAction,
+    reason: string
+  ): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+    let params = new HttpParams().set('requestAction', requestAction);
+
+    // send reason in body
+    const body = { reason };
+
+    return this.http.post<any>(`${this.disbursementUri}/${id}/disburse`, body, {
+      params,
+      withCredentials: true,
+       responseType: 'text' as 'json'
+    }).pipe(
+      map((response) => {
+
+        // ✅ check for backend code
+        if (response?.code && response.code !== 200) {
+          throw { error: { message: response.message || 'Didbursement failed' } };
+        }
+
+        let loans: LoanDto[] = [];
+
+        if (Array.isArray(response)) {
+          loans = response;
+        } else if (response && Array.isArray(response.loans)) {
+          loans = response.loans;
+        } else if (response && Array.isArray(response.data)) {
+          loans = response.data;
+        }
+
+        return { loans, totalRecords: loans.length };
+      }),
+      catchError((err) => {
+        console.error(`Approve ${requestAction} loans error:`, err);
+        this.err.show(err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  // Liquidation loans by request type with reason
+  loanLiquidationAction(
+    id: string,
+    remark: string
+  ): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+    const body = { remark };
+
+    return this.http.post<any>(`${this.loanUri}/${id}/liquidate`, body, {
+      withCredentials: true
+    }).pipe(
+      map((response) => {
+        // ✅ check for backend code
+        if (response?.code && response.code !== 200) {
+          throw { error: { message: response.message || 'Liquidation failed' } };
+        }
+
+        let loans: LoanDto[] = [];
+
+        if (Array.isArray(response)) {
+          loans = response;
+        } else if (response && Array.isArray(response.loans)) {
+          loans = response.loans;
+        } else if (response && Array.isArray(response.data)) {
+          loans = response.data;
+        }
+
+        return { loans, totalRecords: loans.length };
+      }),
+      catchError((err) => {
+        console.error(`Liquidate loans error:`, err);
+        return throwError(() => err);
+      })
+    );
+  }
 
 
-// Disburse loans by request type with reason
-loanDisbursementAction(
-  id: string,
-  requestAction: LoanAction,
-  reason: string
-): Observable<{ loans: LoanDto[]; totalRecords: number }> {
-  let params = new HttpParams().set('requestAction', requestAction);
+  // createLiquidation
+  liquidation(payload: any): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+    this.setProgress(true);
+    console.log('Submit liquidation request to:', `${this.loanUri}/liquidation`);
+    console.log('Request body:', payload);
+    return this.http.post<any>(`${this.loanUri}/liquidation`, payload, { withCredentials: true }).pipe(
+      map((response) => {
+        // ✅ check for backend code
+        if (response?.code && response.code !== 200) {
+          throw { error: { message: response.message || 'Liquidation failed' } };
+        }
 
-  // send reason in body
-  const body = { reason };
+        let loans: LoanDto[] = [];
 
-  return this.http.post<any>(`${this.disbursementUri}/${id}/disburse`, body, {
-    params,
-    withCredentials: true
-  }).pipe(
-    map((response) => {
-      let loans: LoanDto[] = [];
+        if (Array.isArray(response)) {
+          loans = response;
+        } else if (response && Array.isArray(response.loans)) {
+          loans = response.loans;
+        } else if (response && Array.isArray(response.data)) {
+          loans = response.data;
+        }
 
-      if (Array.isArray(response)) {
-        loans = response;
-      } else if (response && Array.isArray(response.loans)) {
-        loans = response.loans;
-      } else if (response && Array.isArray(response.data)) {
-        loans = response.data;
-      }
-
-      return { loans, totalRecords: loans.length };
-    }),
-    catchError((err) => {
-      console.error(`Approve ${requestAction} loans error:`, err);
-      this.err.show(err);
-      return throwError(() => err);
-    })
-  );
-}
+        return { loans, totalRecords: loans.length };
+      }),
+      catchError((err) => {
+        console.error(`Liquidate loans error:`, err);
+        return throwError(() => err);
+      })
+    );
+  }
 
   // Helper method to format request type for display
   private formatRequestType(requestType: LoanRequestType): string {

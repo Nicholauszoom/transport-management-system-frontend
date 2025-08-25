@@ -13,6 +13,8 @@ import { UserCreateComponent } from './user/user-create/user-create.component';
 import { AccountVerificationComponent } from './auth/account-verification/account-verification.component';
 import { LoanComponent } from './loan/loan.component';
 import { LoanViewComponent } from './loan/loan-view/loan-view.component';
+import { LiquidationComponent } from './liquidation/liquidation/liquidation.component';
+import { LiquidationCreateComponent } from './liquidation/liquidation-create/liquidation-create.component';
 
 
 export const routes: Routes = [
@@ -32,5 +34,7 @@ export const routes: Routes = [
     { path: 'verify', component: AccountVerificationComponent },
     { path: 'loan', component: LoanComponent },
     { path: 'loan-view/:id', component: LoanViewComponent },
+    { path: 'loan-liquidation', component: LiquidationComponent },
+    { path: 'liquidation-create', component: LiquidationCreateComponent }, 
     // { path: 'search', component: SearchComponent },
 ];
