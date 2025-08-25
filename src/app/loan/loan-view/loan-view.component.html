@@ -86,7 +86,7 @@
         <i class="pi pi-check" *ngIf="isStepCompleted('disbursement_approved')"></i>
         <i class="pi pi-times" *ngIf="isStepCompleted('disbursement_rejected')"></i>
       </div>
-      <span class="step-label">Disbursement</span>
+      <span class="step-label">Disburse</span>
       <!-- Branch indicator -->
       <div class="branch-indicator" *ngIf="isCurrentStep('disbursement_approved') || isCurrentStep('disbursement_rejected') || isStepCompleted('disbursement_approved') || isStepCompleted('disbursement_rejected')">
         <span class="branch-label" [ngClass]="{'success': isCurrentStep('disbursement_approved') || isStepCompleted('disbursement_approved'), 'danger': isCurrentStep('disbursement_rejected') || isStepCompleted('disbursement_rejected')}">
@@ -426,22 +426,6 @@
                 <strong>Created Date:</strong>
                 <p>{{ loan.createdDate }}</p>
               </div>
-              <div class="col-12 md:col-6">
-                <strong>Application Number:</strong>
-                <p>{{ loan.applicationNumber || 'N/A' }}</p>
-              </div>
-              <div class="col-12 md:col-6">
-                <strong>Check Number:</strong>
-                <p>{{ loan.checkNumber || 'N/A' }}</p>
-              </div>
-              <div class="col-12 md:col-6">
-                <strong>Product Code:</strong>
-                <p>{{ loan.productCode || 'N/A' }}</p>
-              </div>
-              <div class="col-12 md:col-6">
-                <strong>Loan Type:</strong>
-                <p>{{ loan.loanType || 'N/A' }}</p>
-              </div>
                <div class="col-12 md:col-6" *ngIf="loan.initialApproveDate != null">
                 <strong>Fsp Initial Approval Date:</strong>
                 <p>{{ loan.initialApproveDate || 'N/A' }}</p>
@@ -457,6 +441,10 @@
               <div class="col-12 md:col-6"  *ngIf="loan.employeeCancellDate != null">
                 <strong>Employee Cancell:</strong>
                 <p>{{ loan.employeeCancellDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4" *ngIf="loan.disbursementDate != null">
+                <strong>Disbuese Date:</strong>
+                <p>{{ loan.disbursementDate}}</p>
               </div>
             </div>
           </p-tabPanel>

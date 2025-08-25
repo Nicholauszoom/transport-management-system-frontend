@@ -30,8 +30,20 @@ import { DropdownModule } from 'primeng/dropdown';
                 class="w-full p-inputtext"></textarea>
 
       <div class="flex justify-content-end gap-2 mt-4">
-        <p-button label="Cancel" (click)="ref.close(null)" severity="secondary"></p-button>
-        <p-button label="Submit" (click)="ref.close(reason)" severity="primary"></p-button>
+        <div class="flex justify-content-end gap-2 mt-4">
+  <button pButton type="button" 
+          label="Cancel" 
+          severity="secondary" 
+          (click)="ref.close(null)">
+  </button>
+
+  <button pButton type="button" 
+          label="Submit" 
+          severity="primary" 
+          (click)="ref.close(reason)">
+  </button>
+</div>
+
       </div>
     </div>
   `
