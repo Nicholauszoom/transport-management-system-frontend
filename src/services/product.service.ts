@@ -81,9 +81,19 @@ export class ProductService {
   console.log('Sending product creation request to:', `${this.productUri}/create`);
   console.log('Request body:', payload);
 
-  return this.http.post<any>(`${this.productUri}/create`, payload, { withCredentials: true }).pipe(
-    map((res) => {
-      // ✅ check backend response code if needed
+  return this.http.post(`${this.productUri}/create`, payload, { 
+    withCredentials: true, 
+    responseType: 'text' as 'json'   // 👈 accept plain text
+  }).pipe(
+    map((res: any) => {
+      // Case 1: plain text response like "PRODUCT REGISTRATION SUCCESSFUL"
+      if (typeof res === 'string') {
+        this.toast.add({ severity: 'success', summary: 'Success', detail: res });
+        this.router.navigate(['product']);
+        return { message: res };
+      }
+
+      // Case 2: JSON response
       if (res?.code && res.code !== 200) {
         throw { error: { message: res.message || 'Product creation failed' } };
       }
@@ -91,11 +101,8 @@ export class ProductService {
       const data = res.data;
       const productCreated = `Product Created\nCode: ${data.productCode}\nName: ${data.productName}`;
 
-      // ✅ success toast + navigation
       this.toast.add({ severity: 'success', summary: 'Success', detail: productCreated });
       this.router.navigate(['product']);
-
-      // ✅ return the actual response so subscribers can still use it
       return res;
     }),
     catchError((err) => {
@@ -111,7 +118,6 @@ export class ProductService {
       }
 
       this.toast.add({ severity: 'error', summary: 'Error', detail: errorMessage });
-
       return throwError(() => err);
     }),
     finalize(() => {
@@ -119,6 +125,7 @@ export class ProductService {
     })
   );
 }
+
 
   // createProduct(payload: any): Observable<DataResponse> {
   //   this.setProgress(true);
@@ -187,8 +194,8 @@ export class ProductService {
 
   
 decommissionProduct(id: number): Observable<any> {
-  return this.http.post<any>(`${this.productUri}/${id}/decommission`, {}, { withCredentials: true }).pipe(
-    tap((res) => {
+  return this.http.post(`${this.productUri}/${id}/decommission`, {}, { withCredentials: true, responseType: 'text' as 'json' }).pipe(
+    tap((res: any) => {
       console.log('Product decommissioned:', res);
     }),
     catchError((err) => {
