@@ -1,0 +1,141 @@
+<app-main-layout>
+  <div id="balance-view" class="flex justify-content-center">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <h2 class="m-0">
+            <i class="pi pi-wallet text-primary" style="font-size: 2rem;"></i>
+            Consolidation Balance Details
+          </h2>
+        </div>
+      </ng-template>
+
+      <ng-container *ngIf="balance; else loadingOrEmpty">
+        <p-tabView>
+
+          <!-- Request Tab -->
+          <p-tabPanel header="Request">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>Check Number:</strong>
+                <p>{{ balance.checkNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Loan Number:</strong>
+                <p>{{ balance.loanNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>First Name:</strong>
+                <p>{{ balance.firstName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Middle Name:</strong>
+                <p>{{ balance.middleName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Last Name:</strong>
+                <p>{{ balance.lastName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Vote Code:</strong>
+                <p>{{ balance.voteCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Vote Name:</strong>
+                <p>{{ balance.voteName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deduction Amount:</strong>
+                <p>{{ balance.deductionAmount || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deduction Code:</strong>
+                <p>{{ balance.deductionCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deduction Name:</strong>
+                <p>{{ balance.deductionName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deduction Balance:</strong>
+                <p>{{ balance.deductionBalance || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Payment Option:</strong>
+                <p>{{ balance.paymentOption || 'N/A' }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Response Tab -->
+          <p-tabPanel header="Response">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4">
+                <strong>FSP Code:</strong>
+                <p>{{ balance.fspCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>FSP Reference Number:</strong>
+                <p>{{ balance.fSPReferenceNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Payment Reference Number:</strong>
+                <p>{{ balance.paymentReferenceNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Total Payoff Amount:</strong>
+                <p>{{ balance.totalPayoffAmount || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Outstanding Balance:</strong>
+                <p>{{ balance.outstandingBalance || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>FSP Bank Account:</strong>
+                <p>{{ balance.fspBankAccount || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>FSP Bank Account Name:</strong>
+                <p>{{ balance.fspBankAccountName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>SWIFT Code:</strong>
+                <p>{{ balance.swiftCode || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>MNO Channels:</strong>
+                <p>{{ balance.mnoChannels || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Final Payment Date:</strong>
+                <p>{{ balance.finalPaymentDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Last Deduction Date:</strong>
+                <p>{{ balance.lastDeductionDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Deduction End Date:</strong>
+                <p>{{ balance.deductionEndDate || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4">
+                <strong>Created Date:</strong>
+                <p>{{ balance.createdDate || 'N/A' }}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+        </p-tabView>
+      </ng-container>
+
+      <ng-template #loadingOrEmpty>
+        <div class="text-center">
+          <p *ngIf="inProgress" class="text-primary">
+            <i class="pi pi-spin pi-spinner"></i> Loading balance details...
+          </p>
+          <p *ngIf="!inProgress" class="text-secondary">No balance data available.</p>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</app-main-layout>

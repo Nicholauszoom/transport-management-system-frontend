@@ -29,7 +29,7 @@ export class PriceScheduleService {
     this.progressSubject.next(progress);
   }
 
-  uploadFile(file: File): Observable<DataResponse> {
+uploadFile(file: File): Observable<DataResponse> {
   if (!file) {
     this.toast.add({ severity: 'error', summary: 'Error', detail: 'No file selected' });
     return throwError(() => new Error('No file selected'));
@@ -56,10 +56,11 @@ export class PriceScheduleService {
   console.log('Uploading file:', file.name);
 
   this.setProgress(true);
-  return this.http.post<DataResponse>(`${this.baseUrl}/upload`, formData, { withCredentials: true }).pipe(
+  return this.http.post<DataResponse>(`${this.baseUrl}/upload`, formData, { withCredentials: true,   responseType: 'text' as 'json' // This tells Angular to expect text but keeps typing
+ }).pipe(
     tap((response) => {
       console.log('File upload response:', response);
-      this.toast.add({ severity: 'success', summary: 'Success', detail: 'File uploaded successfully' });
+      // REMOVED: Success toast from here - let component handle it
     }),
     catchError((err) => {
       console.error('File upload error:', err);

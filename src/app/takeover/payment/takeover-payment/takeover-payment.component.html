@@ -1,0 +1,92 @@
+<app-main-layout>
+  <div class="flex justify-content-center flex-wrap w-full">
+    <p-card [style]="{ width: '100%' }" styleClass="m-3">
+      <ng-template pTemplate="header">
+        <div class="p-card-header flex justify-content-between align-items-center">
+          <h2 class="m-0">Takeover Payment Management</h2>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="term"
+              placeholder="Search payments"
+              (input)="searchPayments()"
+              style="width: 250px"
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <!-- Tab Menu -->
+      <p-tabMenu 
+        [model]="tabItems" 
+        [activeItem]="activeTab"
+        (activeItemChange)="onTabChange($event)"
+        styleClass="mb-3"
+      ></p-tabMenu>
+
+      <!-- Payments Table -->
+      <p-table
+        [value]="payments"
+        [paginator]="true"
+        [rows]="pageSize"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onLazyLoad)="onPageChange($event)"
+        [loading]="loading"
+        styleClass="p-datatable-gridlines p-datatable-striped"
+        [responsiveLayout]="'scroll'"
+        [tableStyle]="{ width: '100%' }"
+      >
+        <!-- Table Header -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>Application Number</th>
+            <th>Loan Number</th>
+            <th>Reason</th>
+            <th>FSP Reference</th>
+            <th>Payment Reference</th>
+            <th>Total Payoff Amount</th>
+            <th>Payment Date</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+
+        <!-- Table Body -->
+        <ng-template pTemplate="body" let-payment let-rowIndex="rowIndex">
+          <tr>
+            <td>{{ (currentPage - 1) * pageSize + rowIndex + 1 }}</td>
+            <td>{{ payment.applicationNumber }}</td>
+            <td>{{ payment.loanNumber }}</td>
+            <td>{{ payment.reason }}</td>
+            <td>{{ payment.fspReferenceNumber }}</td>
+            <td>{{ payment.paymentReferenceNumber }}</td>
+            <td>{{ payment.totalPayoffAmount | number:'1.2-2' }}</td>
+            <td>{{ payment.paymentDate | date:'yyyy-MM-dd' }}</td>
+            <td>{{ payment.createdDate | date:'yyyy-MM-dd HH:mm' }}</td>
+            <td>
+              <p-button 
+                label="View" 
+                icon="pi pi-eye" 
+                styleClass="p-button-text" 
+                (click)="viewPayments(payment.id)" 
+              />
+            </td>
+          </tr>
+        </ng-template>
+
+        <!-- Empty Message -->
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="12" class="text-center">
+              No {{ activeTab?.label?.toLowerCase() }} payments found.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</app-main-layout>

@@ -8,6 +8,7 @@ import { Subject, takeUntil } from "rxjs";
 import { PriceScheduleService } from "../../../services/price-schedule.service";
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-price-schedule',
@@ -30,7 +31,9 @@ export class PriceSheduleComponent implements OnInit, OnDestroy {
   inProgress: boolean = false;
   private destroy$ = new Subject<void>();
 
-  constructor(private priceScheduleService: PriceScheduleService) {}
+  constructor(private priceScheduleService: PriceScheduleService,
+    private toast: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.priceScheduleService.inProgress$.pipe(takeUntil(this.destroy$)).subscribe((progress) => {
@@ -46,19 +49,33 @@ export class PriceSheduleComponent implements OnInit, OnDestroy {
   }
 
   uploadFile() {
-    const file = this.fileControl.value;
-    if (!file) return;
-
-    this.priceScheduleService.uploadFile(file).subscribe({
-      next: () => {
-        this.fileControl.reset(); // Clear file input
-        this.selectedFileName = null;
-      },
-      error: () => {
-        // Error handled in service
-      },
-    });
+  const file = this.fileControl.value;
+  if (!file) {
+    this.toast.add({ severity: 'error', summary: 'Error', detail: 'Please select a file first' });
+    return;
   }
+
+  this.priceScheduleService.uploadFile(file).subscribe({
+    next: (response) => {
+      // Show success toast here after everything is confirmed successful
+      this.toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: response?.message || 'File uploaded successfully' 
+      });
+      
+      this.fileControl.reset(); // Clear file input
+      this.selectedFileName = null;
+      console.log('Upload completed successfully:', response);
+    },
+    error: (error) => {
+      // Error already handled in service, but you can add component-specific error handling here if needed
+      console.error('Component level error:', error);
+      // Optional: Add a fallback error toast if service didn't handle it
+      // this.toast.add({ severity: 'error', summary: 'Error', detail: 'Upload failed. Please try again.' });
+    },
+  });
+}
 
   ngOnDestroy() {
     this.destroy$.next();

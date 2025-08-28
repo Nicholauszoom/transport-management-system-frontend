@@ -15,6 +15,12 @@ import { LoanComponent } from './loan/loan.component';
 import { LoanViewComponent } from './loan/loan-view/loan-view.component';
 import { LiquidationComponent } from './liquidation/liquidation/liquidation.component';
 import { LiquidationCreateComponent } from './liquidation/liquidation-create/liquidation-create.component';
+import { BalanceViewComponent } from './balance/balance-view/balance-view.component';
+import { BalanceListComponent } from './balance/balance-list/balance-list.component';
+import { TakeoverBalanceListComponent } from './takeover/balance/takeover-balance-list/takeover-balance-list.component';
+import { TakeoverPaymentComponent } from './takeover/payment/takeover-payment/takeover-payment.component';
+import { TakeoverPaymentViewComponent } from './takeover/payment/takeover-payment-view/takeover-payment-view.component';
+import { TakeoverBalanceViewComponent } from './takeover/balance/takeover-balance-view/takeover-balance-view.component';
 
 
 export const routes: Routes = [
@@ -35,6 +41,12 @@ export const routes: Routes = [
     { path: 'loan', component: LoanComponent },
     { path: 'loan-view/:id', component: LoanViewComponent },
     { path: 'loan-liquidation', component: LiquidationComponent },
-    { path: 'liquidation-create', component: LiquidationCreateComponent }, 
+    { path: 'liquidation-create', component: LiquidationCreateComponent },
+    { path: 'balance-list', component: BalanceListComponent }, 
+    { path: 'balance-view/:id', component: BalanceViewComponent }, 
+    { path: 'takeover-balance-list', component: TakeoverBalanceListComponent },
+    { path: 'takeover-balance-view/:id', component: TakeoverBalanceViewComponent },
+    { path: 'takeover-payment-list', component: TakeoverPaymentComponent },
+    { path: 'view-takeover-payment/:id', component: TakeoverPaymentViewComponent },
     // { path: 'search', component: SearchComponent },
 ];

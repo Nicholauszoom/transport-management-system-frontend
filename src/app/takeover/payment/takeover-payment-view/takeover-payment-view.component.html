@@ -1,0 +1,134 @@
+<app-main-layout>
+  <div id="takeover-payment-view" class="flex justify-content-center">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <h2 class="m-0">
+            <i class="pi pi-credit-card text-primary" style="font-size: 2rem;"></i>
+            Takeover Payment Details
+          </h2>
+        </div>
+      </ng-template>
+
+      <ng-container *ngIf="payment as p; else loadingOrEmpty">
+        <div class="button-group">
+           <p-button 
+            label="Back to List" 
+            icon="pi pi-arrow-left" 
+            severity="secondary" 
+            size="small"
+            (click)="goBack()"/>
+
+          <!-- Action Buttons for FSP Received Loans -->
+        <div *ngIf="payment.requestType === 'takeover_payment'">
+           <div class="button-group">
+          <p-button 
+            label="Settle Payment" 
+            icon="pi pi-check" 
+            severity="success"
+            size="small"
+            [loading]="isProcessing"
+            (click)="paymentAcknoledgementAction(payment.id,'SETTLED')"/>
+
+          <p-button 
+            label="Unsettle Payment" 
+            icon="pi pi-times" 
+            severity="danger"
+            size="small"
+            [loading]="isProcessing"
+            (click)="paymentAcknoledgementAction(payment.id,'UNSETTLED')"/>
+            </div>
+        </div>
+       </div>
+       
+        <p-tabView>
+          
+          <!-- Payment Info -->
+          <p-tabPanel header="Payment Information">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4"><strong>ID:</strong><p>{{ p.id }}</p></div>
+              <div class="col-12 md:col-4"><strong>Application Number:</strong><p>{{ p.applicationNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Loan Number:</strong><p>{{ p.loanNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Reason:</strong><p>{{ p.reason || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>FSP Reference:</strong><p>{{ p.fspReferenceNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Payment Reference:</strong><p>{{ p.paymentReferenceNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Total Payoff Amount:</strong><p>{{ p.totalPayoffAmount || 'N/A'}}</p></div>
+              <div class="col-12 md:col-4"><strong>Payment Date:</strong><p>{{ p.paymentDate || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4">
+                <strong>Payment Advice:</strong>
+                <p *ngIf="p.paymentAdviceAttachment; else noAdvice">
+                  <a [href]="p.paymentAdviceAttachment" target="_blank">{{ p.paymentAdvice || 'Download Advice' }}</a>
+                </p>
+                <ng-template #noAdvice>{{ p.paymentAdvice || 'N/A' }}</ng-template>
+              </div>
+              <div class="col-12 md:col-4"><strong>Created Date:</strong><p>{{ p.createdDate || 'N/A' }}</p></div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Balance Info -->
+          <p-tabPanel header="Balance Information">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4"><strong>Check Number:</strong><p>{{ p.balanceCheckNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Loan Number:</strong><p>{{ p.balanceLoanNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>FSP Code:</strong><p>{{ p.balanceFspCode || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>FSP Reference:</strong><p>{{ p.balanceFSPReferenceNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Payment Reference:</strong><p>{{ p.balancePaymentReferenceNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Total Payoff:</strong><p>{{ p.balanceTotalPayoffAmount || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Outstanding Balance:</strong><p>{{ p.balanceOutstandingBalance || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Bank Account:</strong><p>{{ p.balanceFspBankAccount || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Bank Account Name:</strong><p>{{ p.balanceFspBankAccountName || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>SWIFT Code:</strong><p>{{ p.balanceSwiftCode || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>MNO Channels:</strong><p>{{ p.balanceMnoChannels || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Final Payment Date:</strong><p>{{ p.balanceFinalPaymentDate || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Last Deduction Date:</strong><p>{{ p.balanceLastDeductionDate || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Deduction End Date:</strong><p>{{ p.balanceDeductionEndDate || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>First Name:</strong><p>{{ p.balanceFirstName || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Middle Name:</strong><p>{{ p.balanceMiddleName || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Last Name:</strong><p>{{ p.balanceLastName || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Vote Code:</strong><p>{{ p.balanceVoteCode || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Vote Name:</strong><p>{{ p.balanceVoteName || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Deduction Amount:</strong><p>{{ p.balanceDeductionAmount || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Deduction Code:</strong><p>{{ p.balanceDeductionCode || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Deduction Name:</strong><p>{{ p.balanceDeductionName || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Deduction Balance:</strong><p>{{ p.balanceDeductionBalance || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Payment Option:</strong><p>{{ p.balancePaymentOption || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Created Date:</strong><p>{{ p.balanceCreatedDate || 'N/A' }}</p></div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Preview document Info -->
+        <p-tabPanel header="Payment Advice Document" *ngIf="payment?.paymentAdviceAttachment">
+    <div class="flex flex-column gap-3">
+      <iframe
+        *ngIf="pdfUrl"
+        [src]="pdfUrl"
+        width="100%"
+        height="600px"
+        style="border:none;"
+      ></iframe>
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-download"
+        label="Download PDF"
+        class="p-button-primary"
+        (click)="downloadPdf()"
+      ></button>
+    </div>
+  </p-tabPanel>
+
+        </p-tabView>
+      </ng-container>
+
+      <ng-template #loadingOrEmpty>
+        <div class="text-center">
+          <p *ngIf="inProgress" class="text-primary">
+            <i class="pi pi-spin pi-spinner"></i> Loading takeover payment details...
+          </p>
+          <p *ngIf="!inProgress" class="text-secondary">No takeover payment data available.</p>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</app-main-layout>

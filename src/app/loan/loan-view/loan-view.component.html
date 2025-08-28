@@ -409,7 +409,7 @@
                 <p>{{ loan.requestType}}</p>
               </div>
               <div class="col-12 md:col-4">
-                <strong>Disbuese Date:</strong>
+                <strong>Disbursement Review Date:</strong>
                 <p>{{ loan.disbursementDate}}</p>
               </div>
             </div>
@@ -427,15 +427,15 @@
                 <p>{{ loan.createdDate }}</p>
               </div>
                <div class="col-12 md:col-6" *ngIf="loan.initialApproveDate != null">
-                <strong>Fsp Initial Approval Date:</strong>
+                <strong>Fsp Initial Review Date:</strong>
                 <p>{{ loan.initialApproveDate || 'N/A' }}</p>
               </div>
               <div class="col-12 md:col-6" *ngIf="loan.hroApproveDate != null">
-                <strong>HRO Approval Date:</strong>
+                <strong>HRO Review Date:</strong>
                 <p>{{ loan.hroApproveDate || 'N/A' }}</p>
               </div>
               <div class="col-12 md:col-6" *ngIf="loan.liquidationDate != null">
-                <strong>Liquidate Date:</strong>
+                <strong>Liquidation Date:</strong>
                 <p>{{ loan.liquidationDate || 'N/A' }}</p>
               </div>
               <div class="col-12 md:col-6"  *ngIf="loan.employeeCancellDate != null">
@@ -443,7 +443,7 @@
                 <p>{{ loan.employeeCancellDate || 'N/A' }}</p>
               </div>
               <div class="col-12 md:col-4" *ngIf="loan.disbursementDate != null">
-                <strong>Disbuese Date:</strong>
+                <strong>Disbursement Review Date:</strong>
                 <p>{{ loan.disbursementDate}}</p>
               </div>
             </div>

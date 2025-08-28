@@ -202,7 +202,7 @@ loanLiquidationAction(loanId: string): void {
   });
 
   ref.onClose.subscribe((reason: string | null) => {
-    if (reason && reason.trim().length > 0) {  // ✅ make sure reason is provided
+    if (reason && reason.trim().length > 0) {
       this.isProcessing = true;
 
       this.loanService.loanLiquidationAction(loanId, reason).subscribe({

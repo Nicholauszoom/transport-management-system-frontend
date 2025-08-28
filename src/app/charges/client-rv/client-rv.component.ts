@@ -45,20 +45,23 @@ export class ClientRvComponent implements OnInit, OnDestroy {
     console.log('Selected file:', file?.name);
   }
 
-  uploadFile() {
-    const file = this.fileControl.value;
-    if (!file) return;
+uploadFile() {
+  const file = this.fileControl.value;
+  if (!file) return;
 
-    this.clientRvSerice.uploadFile(file).subscribe({
-      next: () => {
-        this.fileControl.reset(); // Clear file input
-        this.selectedFileName = null;
-      },
-      error: () => {
-        // Error handled in service
-      },
-    });
-  }
+  this.clientRvSerice.uploadFile(file).subscribe({
+    next: (response) => {
+      console.log('Upload successful:', response);
+      this.fileControl.reset(); // Clear file input
+      this.selectedFileName = null;
+      // Success message is already handled in the service
+    },
+    error: (error) => {
+      console.error('Upload failed:', error);
+      // Error handling is already done in the service
+    },
+  });
+}
 
   ngOnDestroy() {
     this.destroy$.next();

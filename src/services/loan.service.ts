@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ErrorToast } from './error.service';
 import { DataResponse } from '../dtos/api.dto';
+import { BalanceDto } from '../dtos/balance.dto';
 
 export type LoanRequestType =
   | 'fsp_received'
@@ -25,6 +26,7 @@ export type LoanAction = 'APPROVED' | 'REJECTED';
 })
 export class LoanService {
   private loanUri: string = env.baseUrl + '/api/loan';
+  private balanceUri: string = env.baseUrl + '/api/balance';
   private disbursementUri: string = env.baseUrl + '/api/disbursement';
   private progressSubject = new BehaviorSubject<boolean>(false);
   inProgress$ = this.progressSubject.asObservable();
@@ -51,6 +53,14 @@ export class LoanService {
   }
 
   getLoans() {
+    return this.loanSubject.getValue();
+  }
+
+   setBalances(loans: LoanDto[]) {
+    this.loanSubject.next(loans);
+  }
+
+  getBalances() {
     return this.loanSubject.getValue();
   }
 
