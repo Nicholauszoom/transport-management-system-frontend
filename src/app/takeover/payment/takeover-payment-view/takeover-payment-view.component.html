@@ -40,7 +40,7 @@
             </div>
         </div>
        </div>
-       
+
         <p-tabView>
           
           <!-- Payment Info -->
@@ -97,7 +97,7 @@
           </p-tabPanel>
 
           <!-- Preview document Info -->
-        <p-tabPanel header="Payment Advice Document" *ngIf="payment?.paymentAdviceAttachment">
+    <p-tabPanel header="Payment Advice Document" *ngIf="payment?.paymentAdviceAttachment">
     <div class="flex flex-column gap-3">
       <iframe
         *ngIf="pdfUrl"
@@ -117,6 +117,17 @@
       ></button>
     </div>
   </p-tabPanel>
+
+   <!-- Acknowledgement Info -->
+          <p-tabPanel header="Payment Acknowledge Info" *ngIf="payment.requestType === 'takeover_settlement'">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4"><strong>Application Number:</strong><p>{{ p.applicationNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Remarks:</strong><p>{{ p.acknoledgeRemarks || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>FSP Reference:</strong><p>{{ p.fspReferenceNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Loan Number:</strong><p>{{ p.loanNumber || 'N/A' }}</p></div>
+              </div>
+          </p-tabPanel>
+
 
         </p-tabView>
       </ng-container>

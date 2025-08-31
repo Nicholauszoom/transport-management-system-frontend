@@ -143,7 +143,7 @@
             </div>
         </div>
         <!-- Action Buttons for FSP Disburse Loans -->
-        <div *ngIf="loan.requestType === 'hro_approved'">
+        <div *ngIf="loan.requestType === 'hro_approved'&& loan.loanType !== 'TAKEOVER'">
            <div class="button-group">
           <p-button 
             label="Disburse Approve" 
@@ -152,6 +152,27 @@
             size="small"
             [loading]="isProcessing"
             (click)="loanDisbursementAction(loan.id,'APPROVED')"/>
+
+          <p-button 
+            label="Disburse Reject" 
+            icon="pi pi-times" 
+            severity="danger"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanDisbursementAction(loan.id,'REJECTED')"/>
+            </div>
+        </div>
+
+         <!-- Action Buttons for FSP Disburse Takeover Loans -->
+        <div *ngIf="loan.requestType === 'hro_approved'&& loan.loanType == 'TAKEOVER'">
+           <div class="button-group">
+          <p-button 
+            label="Takeover Disburse Approve" 
+            icon="pi pi-check" 
+            severity="success"
+            size="small"
+            [loading]="isProcessing"
+            (click)="loanTakeoverDisbursementAction(loan.id,'APPROVED')"/>
 
           <p-button 
             label="Disburse Reject" 

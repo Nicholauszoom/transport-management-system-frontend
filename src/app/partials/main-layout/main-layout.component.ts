@@ -95,14 +95,14 @@ export class MenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'New/Refinance',
+                label: 'Loans',
                 icon: 'pi pi-code',
                         command: () => {
                             this.router.navigate(['loan']);
                         }
             },
             {
-                label: 'Consolidation',
+                label: 'Payment & Settlement',
                 icon: 'pi pi-chevron-circle-right',
                 command: () => {
                     this.router.navigate(['takeover-payment-list']);

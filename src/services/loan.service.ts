@@ -364,6 +364,43 @@ export class LoanService {
     );
   }
 
+  // Takeover Disburse loans by request type with reason + description + document
+loanTakeoverDisbursementAction(
+  id: string,
+  requestAction: LoanAction,
+  formData: { reason: string; paymentAdvice: string; paymentAdviceAttachment: string }
+): Observable<{ loans: LoanDto[]; totalRecords: number }> {
+  let params = new HttpParams().set('requestAction', requestAction);
+
+  return this.http.post<any>(`${this.disbursementUri}/${id}/takeover`, formData, {
+    params,
+    withCredentials: true,
+    responseType: 'text' as 'json'
+  }).pipe(
+    map((response) => {
+      if (response?.code && response.code !== 200) {
+        throw { error: { message: response.message || 'Disbursement failed' } };
+      }
+
+      let loans: LoanDto[] = [];
+      if (Array.isArray(response)) {
+        loans = response;
+      } else if (response && Array.isArray(response.loans)) {
+        loans = response.loans;
+      } else if (response && Array.isArray(response.data)) {
+        loans = response.data;
+      }
+
+      return { loans, totalRecords: loans.length };
+    }),
+    catchError((err) => {
+      console.error(`Approve ${requestAction} loans error:`, err);
+      this.err.show(err);
+      return throwError(() => err);
+    })
+  );
+}
+
   // Liquidation loans by request type with reason
   loanLiquidationAction(
     id: string,

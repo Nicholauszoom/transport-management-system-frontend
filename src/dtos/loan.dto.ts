@@ -47,4 +47,6 @@ export interface LoanDto{
   employeeCancellDate: string;
   insuranceProcessFee: number;
   createdDate?: Date;
+   paymentAdvice?: string; 
+   paymentAdviceAttachment?: string
 }

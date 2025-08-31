@@ -12,6 +12,7 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { DialogFormComponent } from '../../common/dialog-form/dialog-form.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { TakeoverDialogFormComponent } from '../../common/takeover-dialog-form/takeover-dialog-form.component';
 
 
 export type LoanAction = 'APPROVED' | 'REJECTED';
@@ -189,6 +190,50 @@ export class LoanViewComponent implements OnInit, OnDestroy {
   }
 });
   }
+
+
+  // loan takeover disbursement action
+  loanTakeoverDisbursementAction(loanId: string, loanAction: LoanAction): void {
+  const actionText = loanAction === 'APPROVED' ? 'approve disbursement' : 'reject disbursement';
+  const confirmMessage = `Are you sure you want to ${actionText} this loan application? Please provide details.`;
+
+  const ref = this.dialogService.open(TakeoverDialogFormComponent, {
+    header: 'Confirm Loan Action',
+    width: '500px',
+    data: { actionText, message: confirmMessage }
+  });
+
+ref.onClose.subscribe((formData: { reason: string; paymentAdvice: string; paymentAdviceAttachment: string } | null) => {
+  if (formData) {
+    this.isProcessing = true;
+    this.loanService.loanTakeoverDisbursementAction(loanId, loanAction, formData).subscribe({
+      next: () => {
+        this.isProcessing = false;
+        this.router.navigate(['loan']);
+        this.toast.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Loan ${actionText} successfully`
+        });
+      },
+        error: (error) => {
+          this.isProcessing = false;
+          let errorMessage = `Failed to ${actionText} loan`;
+          if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          this.toast.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+        }
+      });
+    } else {
+      console.log("Dialog closed without form data, ignoring...");
+    }
+  });
+}
+
+
 
 
   // loanLiquidationAction

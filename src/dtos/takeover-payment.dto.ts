@@ -40,4 +40,5 @@ export interface TakeoverPaymentDto {
   balanceDeductionBalance: number;
   balancePaymentOption: string;
   balanceCreatedDate: Date;
+  acknoledgeRemarks: string;
 }
