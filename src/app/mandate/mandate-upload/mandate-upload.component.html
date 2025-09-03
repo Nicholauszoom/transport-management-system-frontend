@@ -1,0 +1,52 @@
+<app-main-layout>
+  <div class="flex justify-content-center flex-wrap">
+    <p-card [style]="{ width: '100%' }">
+      <ng-template pTemplate="header">
+        <div class="p-card-header">
+           <h2 class="m-0" style="margin: 0; font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i>  Upload Mandates</h2>
+        </div>
+      </ng-template>
+
+        <!-- ✅ Upload Guide Section -->
+      <div class="mb-4 p-3 border-round surface-100">
+        <p class="m-0 text-sm">
+          Please upload your mandates file in <strong>Excel (.xlsx)</strong> or <strong>CSV (.csv)</strong> format.
+          Make sure the file follows the required column structure (e.g., 
+          <em>phoneNumber, debitAccount, totalAmount, installmentAmount, startDate, endDate, frequencyType, frequency, billDetails</em>).
+        </p>
+        <p class="mt-2 text-sm">
+          You can download a ready-to-use template here:
+          <a href="assets/templates/Bayport-Mandate-Template.xlsx" download class="text-primary font-bold">
+            <i class="pi pi-download"></i> Download Template
+          </a>
+        </p>
+      </div>
+
+      <div class="file-upload-container">
+        <p-fileUpload
+          mode="basic"
+          chooseLabel="Select File"
+          [auto]="true"
+          accept=".csv,.xlsx"
+          (onSelect)="onFileSelect($event)"
+          [disabled]="inProgress"
+        ></p-fileUpload>
+
+        <!-- Show selected file name -->
+        <p *ngIf="selectedFileName" class="mt-2">
+          <strong>Selected File:</strong> {{ selectedFileName }}
+        </p>
+
+        <p-button
+          label="Upload"
+          icon="pi pi-upload"
+          [disabled]="!fileControl.value || inProgress"
+          (click)="uploadFile()"
+          styleClass="mt-2"
+        ></p-button>
+
+        <p-progressSpinner *ngIf="inProgress" styleClass="mt-2"></p-progressSpinner>
+      </div>
+    </p-card>
+  </div>
+</app-main-layout>

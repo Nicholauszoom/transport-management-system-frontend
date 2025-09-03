@@ -3,14 +3,17 @@
  <p-card [style]="{ width: '100%' }" styleClass="m-3">
         <ng-template pTemplate="header">
         <div class="p-card-header">
-          <h2>User List</h2>
+          <h2 style="font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i> User Management</h2>
         </div>
+        
        <div class="flex justify-content-between mb-3" style="gap: 1rem;">
+        <div class="button-group">
         <p-button label="Add User" icon="pi pi-plus" (click)="goToCreateUser()" />
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
           <input pInputText type="text" [(ngModel)]="term" placeholder="Search products" (input)="fetchUser()" />
         </span>
+        </div>
       </div>
       </ng-template>
 

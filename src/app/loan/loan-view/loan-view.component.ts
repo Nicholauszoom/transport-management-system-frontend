@@ -13,6 +13,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { DialogFormComponent } from '../../common/dialog-form/dialog-form.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { TakeoverDialogFormComponent } from '../../common/takeover-dialog-form/takeover-dialog-form.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 export type LoanAction = 'APPROVED' | 'REJECTED';
@@ -38,6 +39,7 @@ export class LoanViewComponent implements OnInit, OnDestroy {
   loanId!: number;
   inProgress = false;
   isProcessing = false;
+   pdfUrl: SafeResourceUrl | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -45,6 +47,7 @@ export class LoanViewComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private route: ActivatedRoute,
     private toast: MessageService,
+     private sanitizer: DomSanitizer,
     private router: Router
   ) { }
 
@@ -66,6 +69,12 @@ export class LoanViewComponent implements OnInit, OnDestroy {
         next: (response) => {
           console.log('Loan fetch response:', response);
           this.loan = response.data ?? response;
+
+            // if payment advice exists, convert to PDF URL
+          if (this.loan?.paymentAdviceAttachment) {
+            this.pdfUrl = this.base64ToPdfUrl(this.loan.paymentAdviceAttachment);
+          }
+
           this.toast.add({ severity: 'success', summary: 'Success', detail: response.message || 'Loan loaded' });
         },
         error: (error) => {
@@ -74,6 +83,38 @@ export class LoanViewComponent implements OnInit, OnDestroy {
         },
       });
   }
+
+  base64ToPdfUrl(base64: string): SafeResourceUrl {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+  
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+  
+    downloadPdf() {
+      if (!this.loan?.paymentAdviceAttachment) return;
+  
+      const byteCharacters = atob(this.loan.paymentAdviceAttachment);
+      const byteNumbers = new Array(byteCharacters.length);
+  
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'application/pdf' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'payment-advice.pdf';
+      link.click();
+    }
 
   loanApproveAction(loanId: string, loanAction: LoanAction): void {
     if (!loanId) {

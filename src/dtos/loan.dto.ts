@@ -47,6 +47,18 @@ export interface LoanDto{
   employeeCancellDate: string;
   insuranceProcessFee: number;
   createdDate?: Date;
-   paymentAdvice?: string; 
-   paymentAdviceAttachment?: string
+  paymentAdvice?: string; 
+  paymentAdviceAttachment?: string
+
+  // more takeover loan
+  fsp1Code: string;
+  fsp1SWIFTCode: string;
+  fsp1BankAccount: string;
+  fsp1BankAccountName: string;
+  fsp1MNOChannel: string;
+  fsp1LoanNumber: string;
+  fsp1PaymentReferenceNumber: string;
+  fsp1FinalPaymentDate: Date;
+  takeOverAmount: number;
+
 }

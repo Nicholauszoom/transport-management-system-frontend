@@ -40,82 +40,27 @@ export class MenuComponent implements OnInit {
                     this.router.navigate(['user']);
                 }
             },
+           
             {
-                label: 'Products',
-                icon: 'pi pi-chevron-circle-right',
-                command: () => {
-                    this.router.navigate(['product']);
-                }
-            },
-            {
-                label: 'Pricings',
-                icon: 'pi pi-chart-pie',
+                label: 'Uploads',
+                icon: 'pi pi-cloud-upload',
                 items: [
                     {
-                        label: 'charges',
+                       label: 'Mandate Excel Upload',
                         icon: '',
                         command: () => {
-                            this.router.navigate(['charge']);
-                        }
-                    },
-                    {
-                        label: 'client rv',
-                        icon: '',
-                        command: () => {
-                            this.router.navigate(['client-rv']);
-                        }
-                    },
-                    {
-                       label: 'price schedule',
-                        icon: '',
-                        command: () => {
-                            this.router.navigate(['price-schedule']);
+                            this.router.navigate(['upload-mandate']);
                         }
                     }
                 ]
             },
+            
             {
-                label: 'Balances',
-                icon: 'pi pi-wallet',
-                items: [
-                    {
-                        label: 'refinance',
-                        icon: '',
-                        command: () => {
-                            this.router.navigate(['balance-list']);
-                        }
-                    },
-                    {
-                        label: 'consolidation',
-                        icon: '',
-                        command: () => {
-                            this.router.navigate(['takeover-balance-list']);
-                        }
-                    }
-                ]
-            },
-            {
-                label: 'Loans',
+                label: 'Mandates',
                 icon: 'pi pi-code',
                         command: () => {
-                            this.router.navigate(['loan']);
+                            this.router.navigate(['mandate-list']);
                         }
-            },
-            {
-                label: 'Payment & Settlement',
-                icon: 'pi pi-chevron-circle-right',
-                command: () => {
-                    this.router.navigate(['takeover-payment-list']);
-                }
-            },
-         
-             {
-                label: 'Liquidations',
-                icon: 'pi pi-ban',
-                command: () => {
-                            this.router.navigate(['loan-liquidation']);
-                        }
-                   
             },
             {
                 label: 'Reports',
@@ -126,7 +71,7 @@ export class MenuComponent implements OnInit {
             },
             {
                 label: 'Settings',
-                icon: 'pi pi-wrench',
+                icon: 'pi pi-cog',
                 command: () => {
                     // this.router.navigate(['']);
                 }

@@ -1,0 +1,105 @@
+<app-main-layout>
+  <div id="mandate-view" class="flex justify-content-center">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <h2 class="m-0" style="font-size: 1.5rem; color: #003366;">
+        <i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i>
+            Mandate Details
+          </h2>
+        </div>
+
+<!-- Simplified Progress Bar Section -->
+<div class="progress-container" *ngIf="mandate">
+  <div class="progress-bar">
+
+    <!-- Step 1: Mandate Uploaded -->
+    <div class="progress-step" 
+         [ngClass]="{'completed': isStepCompleted('UPLOADED'), 'active': isCurrentStep('UPLOADED')}">
+      <div class="step-circle">
+        <i class="pi pi-file" *ngIf="!isStepCompleted('UPLOADED')"></i>
+        <i class="pi pi-check" *ngIf="isStepCompleted('UPLOADED')"></i>
+      </div>
+      <span class="step-label">Mandate Uploaded</span>
+    </div>
+
+    <!-- Progress Line -->
+    <div class="progress-line" [ngClass]="{'completed': isStepCompleted('SUBMITTED') || isStepCompleted('FAILED')}"></div>
+
+    <!-- Step 2: Mandate Submitted or Failed -->
+    <div class="progress-step" 
+         [ngClass]="{'completed': isStepCompleted('SUBMITTED') || isStepCompleted('FAILED'), 
+                     'active': isCurrentStep('SUBMITTED') || isCurrentStep('FAILED'),
+                     'failed': isCurrentStep('FAILED') || isStepCompleted('FAILED')}">
+      <div class="step-circle">
+        <i class="pi pi-upload" *ngIf="!isStepCompleted('SUBMITTED') && !isStepCompleted('FAILED')"></i>
+        <i class="pi pi-check" *ngIf="isStepCompleted('SUBMITTED')"></i>
+        <i class="pi pi-times" *ngIf="isStepCompleted('FAILED')"></i>
+      </div>
+      <span class="step-label">{{ mandate.mandateRequestType === 'FAILED' ? 'Mandate Failed' : 'Mandate Submitted' }}</span>
+    </div>
+  </div>
+
+  <!-- Flow Status Summary -->
+  <div class="flow-summary">
+    <div class="flow-path">
+      <span class="path-label">Process Flow:</span>
+      <span class="path-steps">{{ getFlowPath() }}</span>
+    </div>
+  </div>
+</div>
+
+
+      </ng-template>
+
+      <ng-container *ngIf="mandate as p; else loadingOrEmpty">
+        <div class="button-group mb-3">
+          <p-button 
+            label="Back to List" 
+            icon="pi pi-arrow-left" 
+            severity="secondary" 
+            size="small"
+            (click)="goBack()"
+          />
+        </div>
+
+        <p-tabView>
+          <!-- Mandate Info -->
+          <p-tabPanel header="Mandate Information">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4"><strong>Phone Number:</strong><p>{{ p.phoneNumber || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Debit Account:</strong><p>{{ p.debitAccount || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Total Amount:</strong><p>{{ p.totalAmount || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Installment Amount:</strong><p>{{ p.installmentAmount ||'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Start Date:</strong><p>{{ p.startDate || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>End Date:</strong><p>{{ p.endDate || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Frequency Type:</strong><p>{{ p.frequencyType || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Frequency:</strong><p>{{ p.frequency || 'N/A' }}</p></div>
+              <div class="col-12 md:col-12"><strong>Bill Details:</strong><p>{{ p.billDetails || 'N/A' }}</p></div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Metadata -->
+          <p-tabPanel header="Metadata">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-4"><strong>ID:</strong><p>{{ p.id }}</p></div>
+              <div class="col-12 md:col-4"><strong>Checksum:</strong><p>{{ p.checksum || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Partner ID:</strong><p>{{ p.partnerId || 'N/A' }}</p></div>
+              <div class="col-12 md:col-4"><strong>Created Date:</strong><p>{{ p.createdDate || 'N/A' }}</p></div>              
+            </div>
+          </p-tabPanel>
+
+        </p-tabView>
+      </ng-container>
+
+      <ng-template #loadingOrEmpty>
+        <div class="text-center">
+          <p *ngIf="inProgress" class="text-primary">
+            <i class="pi pi-spin pi-spinner"></i> Loading Mandate details...
+          </p>
+          <p *ngIf="!inProgress" class="text-secondary">No Mandate data available.</p>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</app-main-layout>

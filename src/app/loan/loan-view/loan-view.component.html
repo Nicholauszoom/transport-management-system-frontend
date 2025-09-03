@@ -394,6 +394,49 @@
             </div>
           </p-tabPanel>
 
+           <!-- Takeover Fsp1 Info -->
+          <p-tabPanel header="Fsp 1 Consolidation Info" *ngIf="loan.loanType === 'TAKEOVER'">
+            <div class="p-fluid grid">
+              <div class="col-12 md:col-6">
+                <strong>Fsp 1 Code:</strong>
+                <p>{{ loan.fsp1Code }}</p>
+              </div>
+              <div class="col-12 md:col-6">
+                <strong>Fsp 1 Swift Code:</strong>
+                <p>{{ loan.fsp1SWIFTCode }}</p>
+              </div>
+               <div class="col-12 md:col-6" *ngIf="loan.fsp1BankAccount != null">
+                <strong>Fsp 1 Bank Account:</strong>
+                <p>{{ loan.fsp1BankAccount || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6" *ngIf="loan.fsp1BankAccountName != null">
+                <strong>Fsp 1 Bank Account Name:</strong>
+                <p>{{ loan.fsp1BankAccountName || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6" *ngIf="loan.fsp1MNOChannel != null">
+                <strong>Fsp 1 MNO Channel:</strong>
+                <p>{{ loan.fsp1MNOChannel || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-6"  *ngIf="loan.fsp1LoanNumber != null">
+                <strong>Fsp 1 Loan Number:</strong>
+                <p>{{ loan.fsp1LoanNumber || 'N/A' }}</p>
+              </div>
+              <div class="col-12 md:col-4" *ngIf="loan.fsp1PaymentReferenceNumber != null">
+                <strong>Fsp 1 Payment Reference Nummber:</strong>
+                <p>{{ loan.fsp1PaymentReferenceNumber}}</p>
+              </div>
+               <div class="col-12 md:col-4" *ngIf="loan.fsp1FinalPaymentDate != null">
+                <strong>Fsp 1 Final Payment Date:</strong>
+                <p>{{ loan.fsp1FinalPaymentDate}}</p>
+              </div>
+              <div class="col-12 md:col-4" *ngIf="loan.takeOverAmount != null">
+                <strong>TakeOver Amount:</strong>
+                <p>{{ loan.takeOverAmount}}</p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+
            <!-- Employee Response -->
           <p-tabPanel header="Employee Response" *ngIf="loan.requestType === 'employee_rejected'">
             <div class="p-fluid grid">
@@ -435,6 +478,32 @@
               </div>
             </div>
           </p-tabPanel>
+
+           <!-- Preview document Info -->
+    <p-tabPanel header="Payment Advice Document" *ngIf="loan?.paymentAdviceAttachment">
+    <div class="flex flex-column gap-3">
+      <iframe
+        *ngIf="pdfUrl"
+        [src]="pdfUrl"
+        width="100%"
+        height="600px"
+        style="border:none;"
+      ></iframe>
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-download"
+        label="Download PDF"
+        class="p-button-primary"
+        (click)="downloadPdf()"
+      ></button>
+    </div>
+     <div class="col-12 md:col-4">
+          <strong>Payment Advice:</strong>
+          <p>{{ loan.paymentAdvice }}</p>
+      </div>
+  </p-tabPanel>
 
           <!-- Metadata -->
           <p-tabPanel header="Metadata">
