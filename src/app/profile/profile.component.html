@@ -1,108 +1,78 @@
-<p-avatar 
-  image="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" 
-  shape="circle" 
-  class="cursor-pointer profile-avatar" 
-  (click)="toggleProfileCard($event)">
-</p-avatar>
+<!-- Enhanced Profile Avatar with Status Indicator -->
+<div class="profile-avatar-container">
+  <p-avatar image="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" shape="circle"
+    class="cursor-pointer profile-avatar" (click)="toggleProfileCard($event)">
+  </p-avatar>
+  <div class="status-indicator" [ngClass]="getStatusClass()"></div>
+</div>
 
-<p-overlayPanel 
-  #op 
-  [dismissable]="true" 
-  [showCloseIcon]="true" 
-  [style]="{width: '320px', padding: '1rem'}" 
-  [appendTo]="'body'"
-  styleClass="profile-overlay">
-  
+<p-overlayPanel #op [dismissable]="true" [showCloseIcon]="false" [style]="{width: '350px', padding: '0'}"
+  [appendTo]="'body'" styleClass="profile-overlay-panel">
+
   <ng-template pTemplate="content">
+    <!-- Loading State -->
     <div *ngIf="loading" class="loading-container">
-      <p>Loading profile...</p>
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading profile...</div>
     </div>
-    
-    <div *ngIf="error" class="error-container">
-      <p class="error-message">{{ error }}</p>
-      <p-button 
-        icon="pi pi-refresh" 
-        label="Retry" 
-        size="small"
-        (click)="retryFetch()">
-      </p-button>
-    </div>
-    
-    <div *ngIf="profile && !loading && !error">
-      <div class="profile-header">
-        <h4 class="username">{{ profile.username }}</h4>
-        <small class="role-label">{{ profile.role || 'User' }}</small>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-container">
+      <div class="error-icon">
+        <i class="pi pi-exclamation-triangle"></i>
       </div>
-      <p class="email">{{ profile.email }}</p>
-      <p-button 
-        icon="pi pi-sign-out" 
-        label="Logout" 
-        class="p-button-danger logout-btn" 
-        (click)="logout()">
+      <div class="error-message">{{ error }}</div>
+      <p-button icon="pi pi-refresh" label="Retry" class="retry-btn" (click)="retryFetch()">
       </p-button>
+    </div>
+
+    <!-- Profile Content -->
+    <div *ngIf="profile && !loading && !error" class="profile-content">
+      <!-- Profile Header with Gradient Background -->
+      <div class="profile-header">
+        <div class="profile-image">
+          <img [src]="getProfileImage()" [alt]="profile.username + ' profile'" />
+        </div>
+        <div class="username">{{ profile.username }}</div>
+        <div class="role-badge">
+          <i class="pi" [ngClass]="getRoleIcon()"></i>
+          {{ profile.role || 'User' }}
+        </div>
+      </div>
+
+      <!-- Profile Body -->
+      <div class="profile-body">
+        <div class="profile-info">
+          <!-- Email Info -->
+          <div class="info-item">
+            <div class="info-icon email">
+              <i class="pi pi-envelope"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Email</div>
+              <div class="info-value">{{ profile.email }}</div>
+            </div>
+          </div>
+
+          <div class="info-item" >
+            <div class="info-icon department">
+              <i class="pi pi-building"></i>
+            </div>
+            <div class="info-content">
+              <div class="info-label">Organization</div>
+              <div class="info-value">BAYPORT FINANCE (TZ)</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="profile-actions">
+            <p-button icon="pi pi-user-edit" label="Edit Profile" class="edit-btn" (click)="editProfile()">
+            </p-button>
+            <p-button icon="pi pi-sign-out" label="Logout" class="logout-btn" (click)="logout()">
+            </p-button>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-template>
 </p-overlayPanel>
-
-<style>
-/* Fix for zoom positioning issues */
-:host {
-  position: relative;
-}
-
-.profile-avatar {
-  position: relative;
-}
-
-/* Override PrimeNG overlay positioning to account for zoom */
-::ng-deep .profile-overlay {
-  transform-origin: top left;
-}
-
-/* Alternative: Force positioning relative to the avatar */
-::ng-deep .profile-overlay .p-overlaypanel {
-  transform: scale(1.43) !important; /* Compensate for 0.7 zoom (1/0.7 ≈ 1.43) */
-  transform-origin: top left !important;
-}
-
-.profile-header {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid var(--surface-border);
-  padding-bottom: 0.5rem;
-}
-
-.username {
-  margin: 0;
-  font-weight: 600;
-}
-
-.role-label {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-top: 2px;
-}
-
-.email {
-  margin: 0.5rem 0 1rem;
-  font-size: 0.95rem;
-  color: var(--text-color);
-  word-break: break-word;
-}
-
-.logout-btn {
-  width: 50%;
-}
-
-.loading-container,
-.error-container {
-  text-align: center;
-  padding: 1rem 0;
-}
-
-.error-message {
-  color: var(--red-500);
-  margin-bottom: 1rem;
-}
-</style>

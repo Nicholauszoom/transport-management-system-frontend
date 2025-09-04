@@ -9,42 +9,49 @@
           </h2>
         </div>
 
-<!-- Simplified Progress Bar Section -->
+<!-- Enhanced Professional Progress Bar Section -->
 <div class="progress-container" *ngIf="mandate">
   <div class="progress-bar">
-
     <!-- Step 1: Mandate Uploaded -->
-    <div class="progress-step" 
+    <div class="progress-step"
          [ngClass]="{'completed': isStepCompleted('UPLOADED'), 'active': isCurrentStep('UPLOADED')}">
       <div class="step-circle">
-        <i class="pi pi-file" *ngIf="!isStepCompleted('UPLOADED')"></i>
+        <i class="pi pi-cloud-upload" *ngIf="!isStepCompleted('UPLOADED')"></i>
         <i class="pi pi-check" *ngIf="isStepCompleted('UPLOADED')"></i>
       </div>
       <span class="step-label">Mandate Uploaded</span>
     </div>
 
     <!-- Progress Line -->
-    <div class="progress-line" [ngClass]="{'completed': isStepCompleted('SUBMITTED') || isStepCompleted('FAILED')}"></div>
+    <div class="progress-line" 
+         [ngClass]="{'completed': isStepCompleted('SUBMITTED') || isStepCompleted('FAILED')}"></div>
 
     <!-- Step 2: Mandate Submitted or Failed -->
-    <div class="progress-step" 
-         [ngClass]="{'completed': isStepCompleted('SUBMITTED') || isStepCompleted('FAILED'), 
+    <div class="progress-step"
+         [ngClass]="{'completed': isStepCompleted('SUBMITTED') || isStepCompleted('FAILED'),
                      'active': isCurrentStep('SUBMITTED') || isCurrentStep('FAILED'),
                      'failed': isCurrentStep('FAILED') || isStepCompleted('FAILED')}">
       <div class="step-circle">
-        <i class="pi pi-upload" *ngIf="!isStepCompleted('SUBMITTED') && !isStepCompleted('FAILED')"></i>
+        <i class="pi pi-send" *ngIf="!isStepCompleted('SUBMITTED') && !isStepCompleted('FAILED')"></i>
         <i class="pi pi-check" *ngIf="isStepCompleted('SUBMITTED')"></i>
         <i class="pi pi-times" *ngIf="isStepCompleted('FAILED')"></i>
       </div>
-      <span class="step-label">{{ mandate.mandateRequestType === 'FAILED' ? 'Mandate Failed' : 'Mandate Submitted' }}</span>
+      <span class="step-label">
+        {{ mandate.mandateRequestType === 'FAILED' ? 'Mandate Failed' : 'Submitted to CRDB' }}
+      </span>
     </div>
   </div>
 
-  <!-- Flow Status Summary -->
+  <!-- Enhanced Flow Status Summary -->
   <div class="flow-summary">
+    <div class="status-badge" [ngClass]="getProcessStatus()">
+      <i class="pi" [ngClass]="getStatusIcon()"></i>
+      <span>{{ getStatusText() }}</span>
+    </div>
+    
     <div class="flow-path">
-      <span class="path-label">Process Flow:</span>
-      <span class="path-steps">{{ getFlowPath() }}</span>
+      <span class="path-label">Process Flow</span>
+      <div class="path-steps">{{ getFlowPath() }}</div>
     </div>
   </div>
 </div>

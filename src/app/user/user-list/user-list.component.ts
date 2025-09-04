@@ -73,6 +73,10 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['user-add']);
   }
 
+  editUser(user: any) {
+    this.router.navigate(['/user-edit', user.id]);
+  }
+
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.pageSize = event.rows;

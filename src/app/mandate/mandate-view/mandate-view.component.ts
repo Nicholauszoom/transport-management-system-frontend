@@ -152,17 +152,17 @@ export class MandateViewComponent implements OnInit, OnDestroy {
   /**
    * Get the flow path description
    */
-getFlowPath(): string {
-  const currentType = this.mandate?.mandateRequestType?.toUpperCase().trim();
+// getFlowPath(): string {
+//   const currentType = this.mandate?.mandateRequestType?.toUpperCase().trim();
 
-  const pathMap: { [key: string]: string } = {
-    'UPLOADED': 'Mandate Uploaded → Pending Submitted',
-    'SUBMITTED': 'Mandate Uploaded → Mandate Successful Submitted to CRDB → Awaiting Internal Processing',
-    'FAILED': 'Mandate Uploaded → Mandate Failed Submitted to CRDB (Resubmission Required)',
-  };
+//   const pathMap: { [key: string]: string } = {
+//     'UPLOADED': 'Mandate Uploaded → Pending Submitted',
+//     'SUBMITTED': 'Mandate Uploaded → Mandate Successful Submitted to CRDB → Awaiting Internal Processing',
+//     'FAILED': 'Mandate Uploaded → Mandate Failed Submitted to CRDB (Resubmission Required)',
+//   };
 
-  return pathMap[currentType || ''] || 'Unknown Path';
-}
+//   return pathMap[currentType || ''] || 'Unknown Path';
+// }
 
 
   /**
@@ -182,6 +182,57 @@ getFlowPath(): string {
     if (currentType === 'SUBMITTED') return 'completed';
     if (['FAILED'].includes(currentType || '')) return 'failed';
     return 'in-progress';
+  }
+
+  /**
+   * Get CSS class for status badge icon
+   */
+  getStatusIcon(): string {
+    const currentType = this.mandate?.mandateRequestType;
+    
+    switch (currentType) {
+      case 'UPLOADED':
+        return 'pi-clock';
+      case 'SUBMITTED':
+        return 'pi-check-circle';
+      case 'FAILED':
+        return 'pi-times-circle';
+      default:
+        return 'pi-info-circle';
+    }
+  }
+
+  /**
+   * Get status text for badge
+   */
+  getStatusText(): string {
+    const processStatus = this.getProcessStatus();
+    
+    switch (processStatus) {
+      case 'completed':
+        return 'Completed';
+      case 'failed':
+        return 'Failed';
+      case 'in-progress':
+        return 'In Progress';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  /**
+   * Enhanced flow path with more descriptive messages
+   */
+  getFlowPath(): string {
+    const currentType = this.mandate?.mandateRequestType?.toUpperCase().trim();
+
+    const pathMap: { [key: string]: string } = {
+      'UPLOADED': 'Mandate Uploaded → Pending Submission',
+      'SUBMITTED': 'Mandate Uploaded → Successfully Submitted to CRDB → Awaiting Processing',
+      'FAILED': 'Mandate Uploaded → Submission Failed → Resubmission Required',
+    };
+
+    return pathMap[currentType || ''] || 'Unknown Process Path';
   }
 
   ngOnDestroy() {

@@ -28,5 +28,6 @@ export const routes: Routes = [
     { path: 'create-mandate', component: MandateListComponent },
     { path: 'upload-mandate', component: MandateUploadComponent },
     { path: 'view-mandate/:id', component: MandateViewComponent },
+     { path: 'user-edit/:id', component: UserCreateComponent },
     // { path: 'search', component: SearchComponent },
 ];

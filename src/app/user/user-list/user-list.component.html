@@ -1,35 +1,28 @@
 <app-main-layout>
   <div class="flex justify-content-center flex-wrap">
- <p-card [style]="{ width: '100%' }" styleClass="m-3">
-        <ng-template pTemplate="header">
+    <p-card [style]="{ width: '100%' }" styleClass="m-3">
+      <ng-template pTemplate="header">
         <div class="p-card-header">
-          <h2 style="font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i> User Management</h2>
+          <h2 style="font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary"
+              style="font-size: 1.5rem"></i> User Management</h2>
         </div>
-        
-       <div class="flex justify-content-between mb-3" style="gap: 1rem;">
-        <div class="button-group">
-        <p-button label="Add User" icon="pi pi-plus" (click)="goToCreateUser()" />
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text" [(ngModel)]="term" placeholder="Search products" (input)="fetchUser()" />
-        </span>
+
+        <div class="flex justify-content-between mb-3" style="gap: 1rem;">
+          <div class="button-group">
+            <p-button label="Add User" icon="pi pi-plus" (click)="goToCreateUser()" />
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" [(ngModel)]="term" placeholder="Search products" (input)="fetchUser()" />
+            </span>
+          </div>
         </div>
-      </div>
       </ng-template>
 
-      <p-table
-        [value]="user"
-        [paginator]="true"
-        [rows]="pageSize"
-        [totalRecords]="totalRecords"
-        [lazy]="true"
-        (onLazyLoad)="onPageChange($event)"
-        [loading]="loading"
-        [tableStyle]="{ 'min-width': '50rem' }"
-      >
+      <p-table [value]="user" [paginator]="true" [rows]="pageSize" [totalRecords]="totalRecords" [lazy]="true"
+        (onLazyLoad)="onPageChange($event)" [loading]="loading" [tableStyle]="{ 'min-width': '50rem' }">
 
 
-<!-- <app-main-layout>
+        <!-- <app-main-layout>
   <div class="flex justify-content-center flex-wrap">
     <p-card [style]="{ width: '80rem' }">
       <ng-template pTemplate="header">
@@ -57,25 +50,26 @@
       > -->
         <ng-template pTemplate="header">
           <tr>
-             <th>SN</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
-                <th></th>
+            <th>SN</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+            <th></th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
-            <tr>
-                <td>{{ rowIndex + 1 + (currentPage - 1) * pageSize }}</td>
-                <td>{{ user.username}}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-                <td>
-                    <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true"></p-button>
-                    <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true" severity="danger" (click)="deleteUser(user.id)"></p-button>
-                </td>
-            </tr>
+          <tr>
+            <td>{{ rowIndex + 1 + (currentPage - 1) * pageSize }}</td>
+            <td>{{ user.username}}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="editUser(user)"></p-button>
+              <p-button icon="pi pi-trash" [rounded]="true" [outlined]="true" severity="danger"
+                (click)="deleteUser(user.id)"></p-button>
+            </td>
+          </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>

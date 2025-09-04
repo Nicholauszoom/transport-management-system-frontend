@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { UserServiceService } from '../../../services/user-service.service';
 import { MenuComponent } from '../../partials/main-layout/main-layout.component';
 import { CardModule } from 'primeng/card';
@@ -11,6 +11,8 @@ import { NgClass, NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DropdownModule } from 'primeng/dropdown';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-user-create',
@@ -36,6 +38,9 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   userForm!: FormGroup;
   inProgress = false;
   submitted = false;
+  isProcessing = false;
+  currentUserId: number | null = null;
+  editMode = false;
   private destroy$ = new Subject<void>();
 
   roles = [
@@ -47,11 +52,25 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserServiceService
+    private userService: UserServiceService,
+    private route: ActivatedRoute,
+    private toast: MessageService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
+
+     //  check if URL has an id (edit mode)
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const id = params.get('id');
+        if (id) {
+          this.editMode = true;
+          this.currentUserId = +id;
+          this.loadUser(this.currentUserId);
+        }
+      });
   }
   showPassword: boolean = false;
 
@@ -69,6 +88,19 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadUser(id: number) {
+    this.userService.getUserById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.userForm.patchValue({
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          password: '' 
+        });
+      });
+  }
+
   submitUserData() {
     this.submitted = true;
     this.userForm.markAllAsTouched();
@@ -79,18 +111,49 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
     this.inProgress = true;
 
-    this.userService.createUser(this.userForm.value)
-      .subscribe({
+    if (this.editMode && this.currentUserId) {
+      this.userService.updateUser(this.currentUserId, this.userForm.value).subscribe({
         next: () => {
           this.inProgress = false;
           this.userForm.reset();
           this.submitted = false;
+          this.editMode = false;
+          this.currentUserId = null;
         },
         error: () => {
           this.inProgress = false;
         }
       });
+    } else {
+      this.userService.createUser(this.userForm.value).subscribe({
+        next: () => {
+          this.inProgress = false;
+          this.userForm.reset();
+          this.submitted = false;
+        },
+         error: (error) => {
+          this.isProcessing = false;
+          console.error('user action error:', error);
+
+          // Enhanced error handling
+          let errorMessage = `Failed to user`;
+
+          if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+
+          this.toast.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage
+          });
+        }
+      });
+    }
   }
+
 
   ngOnDestroy() {
     this.destroy$.next();

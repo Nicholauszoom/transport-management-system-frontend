@@ -106,4 +106,37 @@ export class UserServiceService {
   );
 }
 
+updateUser(id: number, payload: any): Observable<string> {
+  this.setProgress(true);
+  return this.http.post(`${this.userUrl}/${id}/update`, payload, {
+      withCredentials: true,
+      responseType: 'text'
+    }).pipe(
+    tap((res) => {
+      console.log('Backend response:', res); // "USER UPDATED SUCCESS"
+      this.toast.add({ severity: 'success', summary: 'Success', detail: res });
+      this.router.navigate(['user']);
+    }),
+    catchError((err) => {
+      console.error('User update error:', err);
+      this.err.show(err);
+      return throwError(() => err);
+    }),
+    finalize(() => {
+      this.setProgress(false);
+    })
+  );
+}
+
+
+getUserById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.userUrl}/${id}`, { withCredentials: true }).pipe(
+    catchError((err) => {
+      console.error('Get user by ID error:', err);
+      return throwError(() => err);
+    })
+  );
+}
+
+
 }

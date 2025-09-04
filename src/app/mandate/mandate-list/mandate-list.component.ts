@@ -81,7 +81,7 @@ export class MandateListComponent implements OnInit, OnDestroy {
         id: 'UPLOADED'
       },
       {
-        label: 'Submitted Mandate',
+        label: 'Submitted to CRDB',
         icon: 'pi pi-check-circle',
         id: 'SUBMITTED'
       },
@@ -152,7 +152,7 @@ onPageChange(event: any) {
   getStatusLabel(status: string): string {
     const statusMap: { [key: string]: string } = {
       'UPLOADED': 'Uploaded Mandate',
-      'SUBMITTED': 'Submitted Mandate',
+      'SUBMITTED': 'Submitted to CRDB',
       'FAILED': 'Failed Mandate'
     };
     return statusMap[status] || status;

@@ -1,9 +1,10 @@
 <app-main-layout>
   <div id="account-form" class="flex justify-content-center flex-wrap">
-    <p-card id="auth-block" >
+    <p-card id="auth-block">
       <ng-template pTemplate="header">
         <div class="p-card-header">
-          <h2 style="margin: 0; font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i> Create User</h2>
+          <h2 style="margin: 0; font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary"
+              style="font-size: 1.5rem"></i> Create User</h2>
         </div>
       </ng-template>
 
@@ -16,7 +17,7 @@
               <label for="username">User Name</label>
             </p-floatLabel>
             @if (userForm.get('username')?.hasError('required') && userForm.get('username')?.touched) {
-              <small class="error">*UserName code is required.</small>
+            <small class="error">*UserName code is required.</small>
             }
           </div>
 
@@ -27,50 +28,44 @@
               <label for="email">Email</label>
             </p-floatLabel>
             @if (userForm.get('email')?.hasError('required') && userForm.get('email')?.touched) {
-              <small class="error">*Emial is required.</small>
+            <small class="error">*Emial is required.</small>
             }
           </div>
 
           <!-- Password -->
-         <div class="field col-6 md:col-6">
-  <p-floatLabel>
-    <div class="p-inputgroup">
-      <input
-        id="password"
-        [type]="showPassword ? 'text' : 'password'"
-        formControlName="password"
-        pInputText
-      />
-      <button
-        pButton
-        type="button"
-        icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
-        class="p-button-text p-button-plain"
-        (click)="togglePassword()"
-      ></button>
-    </div>
-    <label for="password">Password</label>
-  </p-floatLabel>
+          <div class="field col-6 md:col-6">
+            <p-floatLabel>
+              <div class="p-inputgroup">
+                <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                  pInputText />
+                <button pButton type="button" icon="{{ showPassword ? 'pi pi-eye-slash' : 'pi pi-eye' }}"
+                  class="p-button-text p-button-plain" (click)="togglePassword()"></button>
+              </div>
+              <label for="password">Password</label>
+            </p-floatLabel>
 
-  @if (userForm.get('password')?.hasError('required') && userForm.get('password')?.touched) {
-    <small class="error">*Password is required.</small>
-  }
-</div>
+            @if (userForm.get('password')?.hasError('required') && userForm.get('password')?.touched) {
+            <small class="error">*Password is required.</small>
+            }
+          </div>
 
           <!-- role -->
           <div class="field col-6 md:col-6">
             <p-floatLabel>
-              <p-dropdown id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value" placeholder="Select Role" />
+              <p-dropdown id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value"
+                placeholder="Select Role" />
               <label for="currency">Role</label>
             </p-floatLabel>
             @if (userForm.get('role')?.hasError('required') && userForm.get('role')?.touched) {
-              <small class="error">*Role is required.</small>
+            <small class="error">*Role is required.</small>
             }
           </div>
 
           <!-- Submit Button -->
           <div class="field col-6">
-            <p-button type="submit" label="Create User" class="w-full" [loading]="inProgress"></p-button>
+            <p-button type="submit" [label]="editMode ? 'Update User' : 'Create User'" class="w-20rem"
+              [loading]="inProgress">
+            </p-button>
           </div>
         </div>
       </form>
