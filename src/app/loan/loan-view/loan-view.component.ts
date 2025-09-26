@@ -145,7 +145,7 @@ export class LoanViewComponent implements OnInit, OnDestroy {
       data: { actionText, message: confirmMessage }
     });
     ref.onClose.subscribe((reason: string | null) => {
-    if (reason && reason.trim().length > 0) { 
+    if (reason && reason.trim().length > 0) {
       // if (confirm(confirmMessage)) {
       this.isProcessing = true;
 

@@ -69,65 +69,102 @@ export class MandateServiceService {
   }
 
   // New method to fetch mandates by request type (for tabs)
-  fetchMandatesByRequestType(
-    requestType: RequestType,
-    page: number = 1,
-    size: number = 10
-  ): Observable<{ mandates: MandateDto[]; totalRecords: number }> {
-    let params = new HttpParams()
-      .set('requestType', requestType)
-      .set('page', page.toString())
-      .set('size', size.toString());
+ // Updated service method to handle Spring Data Page format
+fetchMandatesByRequestType(
+  requestType: RequestType,
+  page: number = 0, // Spring uses 0-based indexing
+  size: number = 10
+): Observable<{ mandates: MandateDto[]; totalRecords: number; pageInfo: any }> {
+  let params = new HttpParams()
+    .set('requestType', requestType)
+    .set('page', page.toString())
+    .set('size', size.toString());
 
-    const url = `${this.mandateUri}/list`;
-    console.log(`Fetching ${requestType} mandates from:`, url);
-    console.log('Params:', params.toString());
+  const url = `${this.mandateUri}/list`;
+  console.log(`Fetching ${requestType} mandates from:`, url);
+  console.log('Params:', params.toString());
 
-    this.setProgress(true);
+  this.setProgress(true);
 
-    return this.http.get<any>(url, {
-      params,
-      withCredentials: true
-    }).pipe(
-      map((response) => {
-        console.log(`${requestType} mandates fetch response:`, response);
+  return this.http.get<any>(url, {
+    params,
+    withCredentials: true
+  }).pipe(
+    map((response) => {
+      console.log(`${requestType} mandates fetch response:`, response);
 
-        // Handle different response formats
-        let mandates: MandateDto[] = [];
-        let totalRecords = 0;
+      let mandates: MandateDto[] = [];
+      let totalRecords = 0;
+      let pageInfo = {};
 
-        if (response && Array.isArray(response)) {
-          // Simple array response
-          mandates = response;
-          totalRecords = response.length;
-        } else if (response && response.mandates && Array.isArray(response.mandates)) {
-          // Paginated response with loans property
-          mandates = response.mandates;
-          totalRecords = response.totalRecords || response.total || response.mandates.length;
-        } else if (response && response.data && Array.isArray(response.data)) {
-          // Response with data property
-          mandates = response.data;
-          totalRecords = response.totalRecords || response.total || response.data.length;
-        } else {
-          // Fallback
-          mandates = [];
-          totalRecords = 0;
-        }
+      if (response && response.content && Array.isArray(response.content)) {
+        // Spring Data Page response format
+        mandates = response.content;
+        totalRecords = response.totalElements || 0;
+        pageInfo = {
+          currentPage: response.number || 0, // Spring uses 0-based
+          totalPages: response.totalPages || 0,
+          pageSize: response.size || 10,
+          numberOfElements: response.numberOfElements || 0,
+          first: response.first || false,
+          last: response.last || false,
+          empty: response.empty || false
+        };
+      } else if (response && Array.isArray(response)) {
+        // Simple array response (fallback)
+        mandates = response;
+        totalRecords = response.length;
+        pageInfo = {
+          currentPage: 0,
+          totalPages: 1,
+          pageSize: response.length,
+          numberOfElements: response.length,
+          first: true,
+          last: true,
+          empty: response.length === 0
+        };
+      } else if (response && response.mandates && Array.isArray(response.mandates)) {
+        // Custom paginated response format (if you have other endpoints)
+        mandates = response.mandates;
+        totalRecords = response.totalRecords || response.total || response.mandates.length;
+        pageInfo = {
+          currentPage: page,
+          totalPages: Math.ceil(totalRecords / size),
+          pageSize: size,
+          numberOfElements: mandates.length,
+          first: page === 0,
+          last: page >= Math.ceil(totalRecords / size) - 1,
+          empty: mandates.length === 0
+        };
+      } else {
+        // Fallback for unexpected format
+        console.warn('Unexpected response format:', response);
+        mandates = [];
+        totalRecords = 0;
+        pageInfo = {
+          currentPage: 0,
+          totalPages: 0,
+          pageSize: size,
+          numberOfElements: 0,
+          first: true,
+          last: true,
+          empty: true
+        };
+      }
 
-        this.setMandates(mandates);
-        return { mandates, totalRecords };
-      }),
-      catchError((err) => {
-        console.error(`${requestType} mandates fetch error:`, err);
-        this.err.show(err);
-        return throwError(() => err);
-      }),
-      finalize(() => {
-        this.setProgress(false);
-      })
-    );
-  }
-
+      this.setMandates(mandates);
+      return { mandates, totalRecords, pageInfo };
+    }),
+    catchError((err) => {
+      console.error(`${requestType} mandates fetch error:`, err);
+      this.err.show(err);
+      return throwError(() => err);
+    }),
+    finalize(() => {
+      this.setProgress(false);
+    })
+  );
+}
   // Search mandates by request type
   searchMandatesByRequestType(
     requestType: RequestType,
@@ -159,25 +196,6 @@ export class MandateServiceService {
         console.error(`Search ${requestType} mandates error:`, err);
         this.err.show(err);
         return throwError(() => err);
-      })
-    );
-  }
-
-  getMandate(id: string): Observable<DataResponse> {
-    this.setProgress(true);
-    console.log('Fetching mandates from:', `${this.mandateUri}/${id}`);
-
-    return this.http.get<DataResponse>(`${this.mandateUri}/${id}`, { withCredentials: true }).pipe(
-      tap((response) => {
-        console.log('mandates fetch response:', response);
-      }),
-      catchError((err) => {
-        console.error('mandates fetch error:', err);
-        this.err.show(err);
-        return throwError(() => err);
-      }),
-      finalize(() => {
-        this.setProgress(false);
       })
     );
   }
@@ -226,9 +244,9 @@ export class MandateServiceService {
   );
 }
 
-sendSelectedMandates(ids: number[]): Observable<any> {
+sendSelectedMandates(ids: number[]): Observable<String> {
   const url = `${this.mandateUri}/submit/mandate`; 
-  return this.http.post(url, ids, { withCredentials: true }).pipe(
+  return this.http.post(url, ids, { withCredentials: true, responseType: 'text' }).pipe(
     tap(() => {
       this.toast.add({ severity: 'success', summary: 'Success', detail: 'Mandates sent successfully' });
     }),
@@ -260,13 +278,147 @@ sendSelectedMandates(ids: number[]): Observable<any> {
   );
 }
 
+// createMandate
+  createMandate(payload: any): Observable<{ mandates: MandateDto[]; totalRecords: number }> {
+    this.setProgress(true);
+    console.log('Submit mandate request to:', `${this.mandateUri}/create`);
+    console.log('Request body:', payload);
+    return this.http.post<any>(`${this.mandateUri}/create`, payload, { withCredentials: true }).pipe(
+      map((response) => {
+        // check for backend code
+        if (response?.code && response.code !== 200) {
+          throw { error: { message: response.message || 'Mandate failed' } };
+        }
 
+        let mandates: MandateDto[] = [];
+
+        if (Array.isArray(response)) {
+          mandates = response;
+        } else if (response && Array.isArray(response.mandates)) {
+          mandates = response.mandates;
+        } else if (response && Array.isArray(response.data)) {
+          mandates = response.data;
+        }
+
+        return { mandates, totalRecords: mandates.length };
+      }),
+      catchError((err) => {
+        console.error(`Mandate error:`, err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  //delete selected mandates
+  deleteSelectedMandates(ids: number[]): Observable<String> {
+  const url = `${this.mandateUri}/delete/mandate`; 
+  return this.http.post(url, ids, { withCredentials: true, responseType: 'text' }).pipe(
+    tap(() => {
+      this.toast.add({ severity: 'success', summary: 'Success', detail: 'Mandates deleted successfully' });
+    }),
+    catchError((err: HttpErrorResponse) => {
+      let errorMessage = 'An unknown error occurred';
+
+      // Check different error formats
+      if (err.error instanceof ErrorEvent) {
+        // Client-side error
+        errorMessage = `Client Error: ${err.error.message}`;
+      } else if (typeof err.error === 'string') {
+        // Backend returned plain text
+        errorMessage = err.error;
+      } else if (err.error?.message) {
+        // Backend returned JSON with a message field
+        errorMessage = err.error.message;
+      }
+
+      console.error('Error Deleting mandates:', errorMessage);
+
+      this.toast.add({
+        severity: 'error',
+        summary: 'Failed',
+        detail: errorMessage
+      });
+
+      return throwError(() => new Error(errorMessage));
+    })
+  );
+}
+
+  // delete mandate
+  deleteMandete(id: number): Observable<String> {
+  return this.http.post(`${this.mandateUri}/${id}/delete`, {}, { withCredentials: true, responseType: 'text' }).pipe(
+    tap((res) => {
+      console.log('Backend response:', res); // "Mandate deleted SUCCESS"
+      this.toast.add({ severity: 'success', summary: 'Success', detail: res });
+      this.router.navigate(['mandate']);
+    }),
+    catchError((err) => {
+      console.error('Mandate update error:', err);
+      this.err.show(err);
+      return throwError(() => err);
+    }),
+    finalize(() => {
+      this.setProgress(false);
+    })
+  );
+}
+
+updateMandate(id: number, payload: any): Observable<string> {
+  this.setProgress(true);
+  return this.http.post(`${this.mandateUri}/${id}/update`, payload, {
+      withCredentials: true,
+      responseType: 'text'
+    }).pipe(
+    tap((res) => {
+      console.log('Backend response:', res); // "Mandate UPDATED SUCCESS"
+      this.toast.add({ severity: 'success', summary: 'Success', detail: res });
+      this.router.navigate(['mandate']);
+    }),
+    catchError((err) => {
+      console.error('Mandate update error:', err);
+      this.err.show(err);
+      return throwError(() => err);
+    }),
+    finalize(() => {
+      this.setProgress(false);
+    })
+  );
+}
+
+  getMandate(id: string): Observable<DataResponse> {
+    this.setProgress(true);
+    console.log('Fetching mandates from:', `${this.mandateUri}/${id}`);
+
+    return this.http.get<DataResponse>(`${this.mandateUri}/${id}`, { withCredentials: true }).pipe(
+      tap((response) => {
+        console.log('mandates fetch response:', response);
+      }),
+      catchError((err) => {
+        console.error('mandates fetch error:', err);
+        this.err.show(err);
+        return throwError(() => err);
+      }),
+      finalize(() => {
+        this.setProgress(false);
+      })
+    );
+  }
+
+getMandateById(id: number): Observable<any> {
+  return this.http.get<any>(`${this.mandateUri}/${id}`, { withCredentials: true }).pipe(
+    catchError((err) => {
+      console.error('Get mandate by ID error:', err);
+      return throwError(() => err);
+    })
+  );
+}
 
   // Helper method to format request type for display
   private formatRequestType(requestType: RequestType): string {
     const typeMap: { [key in RequestType]: string } = {
       'UPLOADED': 'Mandate Upload',
-      'SUBMITTED': 'Mandate Submission',
+      'PRESUBMITTED': 'Mandate Submission',
+      'SUBMITTED': 'Succeed Mandate',
       'FAILED': 'Failed Mandate'
     };
     return typeMap[requestType] || requestType;

@@ -13,4 +13,12 @@ export interface MandateDto {
      billDetails: string;
      mandateRequestType: string;
      createdDate: Date;
+
+     // Fields for response handling
+     statusCode: string;
+     responseDescription: string;
+     errorCode: string;
+     errorMessage: string;
+     submittedDate: string;
+     
 }

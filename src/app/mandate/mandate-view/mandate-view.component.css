@@ -118,10 +118,10 @@
 }
 
 .progress-step.active .step-circle {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-color: #1d4ed8;
+  background: linear-gradient(135deg, #059669, #059669);
+  border-color: #059669;
   color: white;
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
   transform: scale(1.1);
 }
 
@@ -149,7 +149,7 @@
 }
 
 .progress-step.active .step-label {
-  color: #1d4ed8;
+  color: #059669;
   font-weight: 700;
   transform: scale(1.05);
 }

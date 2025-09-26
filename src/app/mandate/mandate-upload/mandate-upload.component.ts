@@ -9,6 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Subject, takeUntil } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { MandateServiceService } from '../../../services/mandate-service.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mandate-upload',
@@ -30,7 +31,9 @@ export class MandateUploadComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private mandateService: MandateServiceService,
-    private toast: MessageService
+    private toast: MessageService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +68,7 @@ export class MandateUploadComponent implements OnInit, OnDestroy {
       this.fileControl.reset(); // Clear file input
       this.selectedFileName = null;
       console.log('Upload completed successfully:', response);
+      this.router.navigate(['/mandate-list']);
     },
     error: (error) => {
       // Error already handled in service, but you can add component-specific error handling here if needed

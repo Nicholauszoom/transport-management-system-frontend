@@ -33,7 +33,7 @@ export class UserListComponent implements OnInit {
     private userService: UserServiceService,
     private router: Router,
     private toast: MessageService,
-    private primengConfig: PrimeNGConfig // Import this for PrimeNG configuration
+    private primengConfig: PrimeNGConfig 
   ) {}
 
   ngOnInit(): void {

@@ -1,0 +1,363 @@
+<app-main-layout>
+<!-- mandate-report.component.html -->
+<div class="mandate-report-container">
+  <!-- Header -->
+  <div class="report-header">
+    <h2>Direct Debit Mandate Reports</h2>
+    
+    <!-- Date Filters -->
+    <mat-card class="filter-card">
+      <mat-card-header>
+        <mat-card-title>Filter Options</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="filterForm" (ngSubmit)="onFilterChange()">
+          <div class="filter-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+            
+            <button mat-raised-button color="primary" type="submit" [disabled]="isLoadingSummary">
+              <mat-icon>search</mat-icon>
+              Apply Filter
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Tab Navigation -->
+  <mat-tab-group animationDuration="300ms" (selectedTabChange)="onTabChange($event.tab.textLabel)">
+    
+    <!-- Summary Tab -->
+    <mat-tab label="Summary">
+      <div class="tab-content">
+        <div class="summary-cards" *ngIf="reportSummary && !isLoadingSummary">
+          <mat-card class="summary-card total">
+            <mat-card-header>
+              <mat-card-title>Total Mandates</mat-card-title>
+              <mat-icon>assignment</mat-icon>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="summary-number">{{ reportSummary.totalMandates }}</div>
+              <div class="summary-amount">Amount: {{ reportSummary.totalAmount | currency }}</div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card success">
+            <mat-card-header>
+              <mat-card-title>Success Mandates</mat-card-title>
+              <mat-icon>check_circle</mat-icon>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="summary-number">{{ reportSummary.successMandates }}</div>
+              <div class="summary-amount">Amount: {{ reportSummary.successAmount | currency }}</div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card failed">
+            <mat-card-header>
+              <mat-card-title>Failed Mandates</mat-card-title>
+              <mat-icon>error</mat-icon>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="summary-number">{{ reportSummary.failedMandates }}</div>
+              <div class="summary-rate">{{ (reportSummary.failedMandates / reportSummary.totalMandates * 100) | number:'1.1-1' }}%</div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="summary-card pending">
+            <mat-card-header>
+              <mat-card-title>Pending Mandates</mat-card-title>
+              <mat-icon>schedule</mat-icon>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="summary-number">{{ reportSummary.pendingMandates }}</div>
+              <div class="summary-rate">{{ (reportSummary.pendingMandates / reportSummary.totalMandates * 100) | number:'1.1-1' }}%</div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Loading Spinner for Summary -->
+        <div class="loading-container" *ngIf="isLoadingSummary">
+          <mat-spinner></mat-spinner>
+          <p>Loading summary...</p>
+        </div>
+
+        <!-- Success Rate Chart Area -->
+        <mat-card class="chart-card" *ngIf="reportSummary && !isLoadingSummary">
+          <mat-card-header>
+            <mat-card-title>Success Rate: {{ reportSummary.successRate | number:'1.1-1' }}%</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="success-rate-bar">
+              <div class="success-bar" [style.width.%]="reportSummary.successRate"></div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Export Options -->
+        <mat-card class="export-card" *ngIf="reportSummary">
+          <mat-card-header>
+            <mat-card-title>Export Reports</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="export-buttons">
+              <p-button mat-raised-button label="Export All (PDF)" icon="pi pi-paperclip"  (click)="exportReport('all', 'pdf')" />
+
+              <p-button mat-raised-button label="Export All (Excel)" icon="pi pi-chart-bar"  (click)="exportReport('all', 'excel')" />
+
+              <p-button mat-raised-button label="Export Success (PDF)" icon="pi pi-check-circle"  (click)="exportReport('success', 'pdf')" />
+
+              <p-button mat-raised-button label="Export Failed (PDF)" icon="pi pi-times-circle"  (click)="exportReport('failed', 'pdf')" />
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Success Mandates Tab -->
+    <mat-tab label="Success Mandates">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Success Mandates ({{ successDataSource.data.length }})</mat-card-title>
+            <button mat-icon-button (click)="exportReport('success', 'excel')">
+              <mat-icon>download</mat-icon>
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="loading-container" *ngIf="isLoadingSuccess">
+              <mat-spinner></mat-spinner>
+              <p>Loading success mandates...</p>
+            </div>
+            
+            <div class="table-container" *ngIf="!isLoadingSuccess">
+              <table mat-table [dataSource]="successDataSource" class="mandate-table">
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef>ID</th>
+                  <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="partnerId">
+                  <th mat-header-cell *matHeaderCellDef>Partner ID</th>
+                  <td mat-cell *matCellDef="let element">{{ element.partnerId }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="phoneNumber">
+                  <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+                  <td mat-cell *matCellDef="let element">{{ element.phoneNumber }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="debitAccount">
+                  <th mat-header-cell *matHeaderCellDef>Debit Account</th>
+                  <td mat-cell *matCellDef="let element">{{ element.debitAccount }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalAmount">
+                  <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                  <td mat-cell *matCellDef="let element">{{ element.totalAmount | currency }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">
+                    <span class="status-badge" [ngClass]="getStatusBadgeClass(element.status)">
+                      {{ element.status }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdDate">
+                  <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                  <td mat-cell *matCellDef="let element">{{ element.createdDate | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="viewDetails(element)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- Failed Mandates Tab -->
+    <mat-tab label="Failed Mandates">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Failed Mandates ({{ failedDataSource.data.length }})</mat-card-title>
+            <button mat-icon-button (click)="exportReport('failed', 'excel')">
+              <mat-icon>download</mat-icon>
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="loading-container" *ngIf="isLoadingFailed">
+              <mat-spinner></mat-spinner>
+              <p>Loading failed mandates...</p>
+            </div>
+            
+            <div class="table-container" *ngIf="!isLoadingFailed">
+              <table mat-table [dataSource]="failedDataSource" class="mandate-table">
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef>ID</th>
+                  <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="partnerId">
+                  <th mat-header-cell *matHeaderCellDef>Partner ID</th>
+                  <td mat-cell *matCellDef="let element">{{ element.partnerId }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="phoneNumber">
+                  <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+                  <td mat-cell *matCellDef="let element">{{ element.phoneNumber }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="debitAccount">
+                  <th mat-header-cell *matHeaderCellDef>Debit Account</th>
+                  <td mat-cell *matCellDef="let element">{{ element.debitAccount }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalAmount">
+                  <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                  <td mat-cell *matCellDef="let element">{{ element.totalAmount | currency }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">
+                    <span class="status-badge failed">
+                      {{ element.status }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdDate">
+                  <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                  <td mat-cell *matCellDef="let element">{{ element.createdDate | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="viewDetails(element)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <!-- All Mandates Tab -->
+    <mat-tab label="All Mandates">
+      <div class="tab-content">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>All Mandates ({{ allDataSource.data.length }})</mat-card-title>
+            <button mat-icon-button (click)="exportReport('all', 'excel')">
+              <mat-icon>download</mat-icon>
+            </button>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="loading-container" *ngIf="isLoadingAll">
+              <mat-spinner></mat-spinner>
+              <p>Loading all mandates...</p>
+            </div>
+            
+            <div class="table-container" *ngIf="!isLoadingAll">
+              <table mat-table [dataSource]="allDataSource" class="mandate-table">
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef>ID</th>
+                  <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="partnerId">
+                  <th mat-header-cell *matHeaderCellDef>Partner ID</th>
+                  <td mat-cell *matCellDef="let element">{{ element.partnerId }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="phoneNumber">
+                  <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+                  <td mat-cell *matCellDef="let element">{{ element.phoneNumber }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="debitAccount">
+                  <th mat-header-cell *matHeaderCellDef>Debit Account</th>
+                  <td mat-cell *matCellDef="let element">{{ element.debitAccount }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalAmount">
+                  <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                  <td mat-cell *matCellDef="let element">{{ element.totalAmount | currency }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">
+                    <span class="status-badge" [style.color]="getStatusColor(element.status)">
+                      {{ element.status }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="createdDate">
+                  <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                  <td mat-cell *matCellDef="let element">{{ element.createdDate | date:'short' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="viewDetails(element)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+</app-main-layout>

@@ -1,110 +1,90 @@
 <app-main-layout>
   <div class="flex justify-content-center flex-wrap w-full">
     <p-card [style]="{ width: '100%' }" styleClass="m-3">
-  <ng-template pTemplate="header">
-    <div class="p-card-header flex justify-content-between align-items-center">
-      <h2 class="m-0" style="font-size: 1.5rem; color: #003366;">
-        <i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i> Mandate Management
-      </h2>
+      <ng-template pTemplate="header">
+        <div class="p-card-header flex justify-content-between align-items-center">
+          <h2 class="m-0" style="font-size: 1.5rem; color: #003366;">
+            <i class="pi pi-tags text-primary" style="font-size: 1.5rem"></i> Mandate Management
+          </h2>
 
-      
-        <div class="button-group">
-        <p-button label="Add Mandate" icon="pi pi-plus" (click)="goToCreateMandate()" />
-        
-        <p-button 
-          label="Send to CRDB" 
-          icon="pi pi-send" 
-          styleClass="p-button-success" 
-          [disabled]="!selectedMandates?.length"
-          (click)="sendSelected()"
-           *ngIf="currentRequestType !== 'SUBMITTED'"
-        />
 
-      <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
-        <input
-          pInputText
-          type="text"
-          [(ngModel)]="term"
-          placeholder="Search mandates"
-          (input)="searchMandates()"
-          style="width: 250px"
-        />
-      </span>
-      </div>
-    </div>
-  </ng-template>
+          <div class="button-group">
+            <p-button label="Add Mandate" icon="pi pi-plus" (click)="goToCreateMandate()" />
 
-   <!-- Tab Menu -->
-      <p-tabMenu 
-        [model]="tabItems" 
-        [activeItem]="activeTab"
-        (activeItemChange)="onTabChange($event)"
-        styleClass="mb-3"
-      ></p-tabMenu>
+            <p-button label="Send to CRDB" icon="pi pi-send" styleClass="p-button-success"
+              [disabled]="!selectedMandates?.length" (click)="sendSelected()"
+              *ngIf="currentRequestType !== 'SUBMITTED' && currentRequestType !== 'PRESUBMITTED'" />
 
-  <!-- Mandates Table with checkbox selection -->
-  <p-table
-    [value]="mandates"
-    [(selection)]="selectedMandates"
-    dataKey="id"
-    [paginator]="true"
-    [rows]="pageSize"
-    [totalRecords]="totalRecords"
-    [lazy]="true"
-    (onLazyLoad)="onPageChange($event)"
-    [loading]="loading"
-    styleClass="p-datatable-gridlines p-datatable-striped"
-    [responsiveLayout]="'scroll'"
-    [tableStyle]="{ width: '100%' }"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 3rem">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th>#</th>
-        <th>Phone Number</th>
-        <th>Debit Account</th>
-        <th>Total Amount</th>
-        <th>Installment Amount</th>
-        <th>Frequency Type</th>
-        <th>Frequency</th>
-        <th>Created Date</th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
+            <p-button label="Delete mandate's" icon="pi pi-trash" styleClass="p-button-danger"
+              [disabled]="!selectedMandates?.length" (click)="deleteSelected()"
+              *ngIf="currentRequestType === 'UPLOADED'" />
 
-    <ng-template pTemplate="body" let-mandate let-rowIndex="rowIndex">
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="mandate"></p-tableCheckbox>
-        </td>
-        <td>{{ (currentPage - 1) * pageSize + rowIndex + 1 }}</td>
-        <td>{{ mandate.phoneNumber }}</td>
-        <td>{{ mandate.debitAccount }}</td>
-        <td>{{ mandate.totalAmount | number:'1.2-2' }}</td>
-        <td>{{ mandate.installmentAmount | number:'1.2-2' }}</td>
-        <td>{{ mandate.frequencyType }}</td>
-        <td>{{ mandate.frequency }}</td>
-        <td>{{ mandate.createdDate }}</td>
-        <td>
-          <p-button 
-            label="View" 
-            icon="pi pi-eye" 
-            styleClass="p-button-text" 
-            (click)="viewMandates(mandate.id)" 
-          />
-        </td>
-      </tr>
-    </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="12" class="text-center">No mandates found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</p-card>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" [(ngModel)]="term" placeholder="Search mandates" (input)="searchMandates()"
+                style="width: 250px" />
+            </span>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Tab Menu -->
+      <p-tabMenu [model]="tabItems" [activeItem]="activeTab" (activeItemChange)="onTabChange($event)"
+        styleClass="mb-3"></p-tabMenu>
+
+      <!-- Mandates Table with checkbox selection -->
+      <p-table [value]="mandates" [(selection)]="selectedMandates" dataKey="id" [paginator]="true" [rows]="pageSize"
+        [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="onPageChange($event)" [loading]="loading"
+        styleClass="p-datatable-gridlines p-datatable-striped" [responsiveLayout]="'scroll'"
+        [tableStyle]="{ width: '100%' }">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>#</th>
+            <th>Phone Number</th>
+            <th>Debit Account</th>
+            <th>Total Amount</th>
+            <th>Installment Amount</th>
+            <th>Frequency Type</th>
+            <th>Frequency</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-mandate let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="mandate"></p-tableCheckbox>
+            </td>
+            <td>{{ (currentPage - 1) * pageSize + rowIndex + 1 }}</td>
+            <td>{{ mandate.phoneNumber }}</td>
+            <td>{{ mandate.debitAccount }}</td>
+            <td>{{ mandate.totalAmount | number:'1.2-2' }}</td>
+            <td>{{ mandate.installmentAmount | number:'1.2-2' }}</td>
+            <td>{{ mandate.frequencyType }}</td>
+            <td>{{ mandate.frequency }}</td>
+            <td>{{ mandate.createdDate }}</td>
+            <td>
+                  <!-- Menu -->
+              <p-menu #menu [popup]="true" [model]="getMenuItems(mandate)" appendTo="body"></p-menu>
+              <!-- Toggle Button -->
+              <p-button icon="pi pi-ellipsis-v" styleClass="p-button-text" (click)="menu.toggle($event)">
+              </p-button>
+            </td>
+
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="12" class="text-center">No mandates found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
   </div>
 </app-main-layout>

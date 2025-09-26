@@ -13,6 +13,8 @@ import { LoanViewComponent } from './loan/loan-view/loan-view.component';
 import { MandateListComponent } from './mandate/mandate-list/mandate-list.component';
 import { MandateUploadComponent } from './mandate/mandate-upload/mandate-upload.component';
 import { MandateViewComponent } from './mandate/mandate-view/mandate-view.component';
+import { MandateCreateComponent } from './mandate/mandate-create/mandate-create.component';
+import { MandateReportComponent } from './report/mandate-report/mandate-report.component';
 
 
 export const routes: Routes = [
@@ -28,6 +30,9 @@ export const routes: Routes = [
     { path: 'create-mandate', component: MandateListComponent },
     { path: 'upload-mandate', component: MandateUploadComponent },
     { path: 'view-mandate/:id', component: MandateViewComponent },
-     { path: 'user-edit/:id', component: UserCreateComponent },
+    { path: 'user-edit/:id', component: UserCreateComponent },
+    { path: 'create-mandate', component: MandateCreateComponent },
+    { path: 'edit-mandate/:id', component: MandateCreateComponent },
+    { path: 'mandate-report', component: MandateReportComponent },
     // { path: 'search', component: SearchComponent },
 ];

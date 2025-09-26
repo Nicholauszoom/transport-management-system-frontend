@@ -1,0 +1,26 @@
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* Alternative with more spacing */
+.button-group-wide {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* For responsive design */
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .button-group > * {
+    width: 100%;
+  }
+}

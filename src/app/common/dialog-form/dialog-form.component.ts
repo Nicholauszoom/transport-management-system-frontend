@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
-  selector: 'app-reason-dialog',
+  selector: 'app-dialog-form',
   standalone: true,
   imports: [
     CommonModule,         
@@ -24,32 +24,34 @@ import { DropdownModule } from 'primeng/dropdown';
     <div class="p-fluid">
       <h3 class="mb-3">{{ config.data.actionText | titlecase }}</h3>
       <p>{{ config.data.message }}</p>
-      
-      <textarea [(ngModel)]="reason" rows="4" 
-                placeholder="Enter reason..." 
-                class="w-full p-inputtext"></textarea>
-
+            
       <div class="flex justify-content-end gap-2 mt-4">
-        <div class="flex justify-content-end gap-2 mt-4">
-  <button pButton type="button" 
-          label="Cancel" 
-          severity="secondary" 
-          (click)="ref.close(null)">
-  </button>
+         <div class="button-group">
+        <button pButton type="button" 
+                [label]="config.data.actionText | titlecase" 
+                severity="primary" 
+                (click)="onConfirm()">
+        </button>
 
-  <button pButton type="button" 
-          label="Submit" 
-          severity="primary" 
-          (click)="ref.close(reason)">
-  </button>
-</div>
-
+        <button pButton type="button" 
+                label="Cancel" 
+                severity="secondary" 
+                (click)="onCancel()">
+        </button>
+        </div>
       </div>
     </div>
-  `
+  `,
+  styleUrl: './dialog-form.component.css'
 })
 export class DialogFormComponent {
-  reason: string = '';
-
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig) {}
+
+  onConfirm() {
+    this.ref.close(true); // Return boolean true for confirmation
+  }
+
+  onCancel() {
+    this.ref.close(false); // Return boolean false for cancellation
+  }
 }

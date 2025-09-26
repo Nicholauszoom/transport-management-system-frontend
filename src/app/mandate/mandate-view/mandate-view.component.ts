@@ -16,6 +16,7 @@ import { MenuComponent } from '../../partials/main-layout/main-layout.component'
 export type RequestType = 
   | 'UPLOADED' 
   | 'SUBMITTED'
+  | 'PRESUBMITTED'
   | 'FAILED';
 
 @Component({
@@ -96,8 +97,10 @@ export class MandateViewComponent implements OnInit, OnDestroy {
 
     switch (stepType) {
       case 'UPLOADED':
-        // UPLOADED is completed when we move to any next step
-        return !['UPLOADED'].includes(currentType || '');
+        return ['UPLOADED', 'PRESUBMITTED', 'SUBMITTED', 'FAILED'].includes(currentType);
+
+       case 'PRESUBMITTED':
+        return ['PRESUBMITTED', 'SUBMITTED', 'FAILED'].includes(currentType);
 
       case 'SUBMITTED':
         // SUBMITTED is completed when current status is fsp_accepted or beyond (excluding rejected paths)
@@ -142,28 +145,13 @@ export class MandateViewComponent implements OnInit, OnDestroy {
   getStatusLabel(requestType: string): string {
     const labels: { [key: string]: string } = {
       'UPLOADED': 'Mandate Upload',
-      'SUBMITTED': 'Mandate Submitted',
+      'PRESUBMITTED': 'Mandate Submitted',
+      'SUBMITTED': 'Mandate Succeed',
       'FAILED': 'Mandate Failed',
     };
 
     return labels[requestType] || requestType?.replace(/_/g, ' ').toUpperCase() || 'Unknown Status';
   }
-
-  /**
-   * Get the flow path description
-   */
-// getFlowPath(): string {
-//   const currentType = this.mandate?.mandateRequestType?.toUpperCase().trim();
-
-//   const pathMap: { [key: string]: string } = {
-//     'UPLOADED': 'Mandate Uploaded → Pending Submitted',
-//     'SUBMITTED': 'Mandate Uploaded → Mandate Successful Submitted to CRDB → Awaiting Internal Processing',
-//     'FAILED': 'Mandate Uploaded → Mandate Failed Submitted to CRDB (Resubmission Required)',
-//   };
-
-//   return pathMap[currentType || ''] || 'Unknown Path';
-// }
-
 
   /**
    * Check if the current status represents a terminal state (process ended)
@@ -189,10 +177,11 @@ export class MandateViewComponent implements OnInit, OnDestroy {
    */
   getStatusIcon(): string {
     const currentType = this.mandate?.mandateRequestType;
-    
     switch (currentType) {
       case 'UPLOADED':
         return 'pi-clock';
+        case 'PRESUBMITTED':
+        return 'pi-check';
       case 'SUBMITTED':
         return 'pi-check-circle';
       case 'FAILED':
@@ -228,10 +217,10 @@ export class MandateViewComponent implements OnInit, OnDestroy {
 
     const pathMap: { [key: string]: string } = {
       'UPLOADED': 'Mandate Uploaded → Pending Submission',
-      'SUBMITTED': 'Mandate Uploaded → Successfully Submitted to CRDB → Awaiting Processing',
-      'FAILED': 'Mandate Uploaded → Submission Failed → Resubmission Required',
+      'PRESUBMITTED': 'Uploaded → Submitted → Awaiting CRDB Response',
+      'SUBMITTED': 'Uploaded → Submitted → Successfully Submitted to CRDB → Awaiting Processing',
+      'FAILED': 'Uploaded → Submitted → Submission Failed → Resubmission Required',
     };
-
     return pathMap[currentType || ''] || 'Unknown Process Path';
   }
 
@@ -240,4 +229,3 @@ export class MandateViewComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
-

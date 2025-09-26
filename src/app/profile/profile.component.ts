@@ -151,6 +151,10 @@ editProfile(): void {
   this.router.navigate(['/profile/edit']);
 }
 
+ editUser(id: number): void {
+    this.router.navigate(['/user-edit', id]);
+  }
+
 /**
  * Enhanced logout with confirmation
  */

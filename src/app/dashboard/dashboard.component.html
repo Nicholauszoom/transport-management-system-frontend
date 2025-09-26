@@ -14,16 +14,8 @@
     <!-- Quick Stats Banner -->
     <div class="quick-stats-banner">
       <div class="stat-highlight">
-        <span class="stat-number">{{ getSuccessRate() }}%</span>
-        <span class="stat-label">Success Rate</span>
-      </div>
-      <div class="stat-highlight">
         <span class="stat-number">{{ getTotalValue() | currency:'TSH ':'symbol':'1.0-0' }}</span>
         <span class="stat-label">Total Value</span>
-      </div>
-      <div class="stat-highlight">
-        <span class="stat-number">{{ getActiveCount() }}</span>
-        <span class="stat-label">Active This Month</span>
       </div>
     </div>
   </div>
@@ -192,85 +184,6 @@
           size="small"
           (click)="navigateToFailed()"
         />
-      </div>
-    </div>
-  </div>
-
-  <!-- Secondary Metrics Row -->
-  <div class="secondary-metrics">
-    <div class="metric-card processing">
-      <div class="metric-icon">
-        <i class="pi pi-cog pi-spin"></i>
-      </div>
-      <div class="metric-content">
-        <h4>Processing</h4>
-        <span class="metric-value">{{ getProcessingCount() }}</span>
-        <p>Currently in progress</p>
-      </div>
-    </div>
-
-    <div class="metric-card pending">
-      <div class="metric-icon">
-        <i class="pi pi-clock"></i>
-      </div>
-      <div class="metric-content">
-        <h4>Pending Review</h4>
-        <span class="metric-value">{{ getPendingCount() }}</span>
-        <p>Awaiting approval</p>
-      </div>
-    </div>
-
-    <div class="metric-card revenue">
-      <div class="metric-icon">
-        <i class="pi pi-dollar"></i>
-      </div>
-      <div class="metric-content">
-        <h4>Monthly Revenue</h4>
-        <span class="metric-value">{{ getMonthlyRevenue() | currency:'TSH ':'symbol':'1.0-0' }}</span>
-        <p>This month</p>
-      </div>
-    </div>
-
-    <div class="metric-card avg-time">
-      <div class="metric-icon">
-        <i class="pi pi-stopwatch"></i>
-      </div>
-      <div class="metric-content">
-        <h4>Avg. Processing</h4>
-        <span class="metric-value">{{ getAverageProcessingTime() }}</span>
-        <p>Hours to complete</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recent Activity Feed -->
-  <div class="activity-feed">
-    <div class="feed-header">
-      <h3>
-        <i class="pi pi-history"></i>
-        Recent Activity
-      </h3>
-      <p-button 
-        icon="pi pi-external-link" 
-        label="View All" 
-        text="true" 
-        size="small"
-        (click)="viewAllActivity()"
-      />
-    </div>
-    
-    <div class="activity-list">
-      <div class="activity-item" *ngFor="let activity of getRecentActivities()">
-        <div class="activity-icon" [ngClass]="activity.type">
-          <i [class]="activity.icon"></i>
-        </div>
-        <div class="activity-content">
-          <p class="activity-text">{{ activity.message }}</p>
-          <span class="activity-time">{{ activity.timestamp | date:'short' }}</span>
-        </div>
-        <div class="activity-status" [ngClass]="activity.status">
-          <i [class]="getStatusIcon(activity.status)"></i>
-        </div>
       </div>
     </div>
   </div>

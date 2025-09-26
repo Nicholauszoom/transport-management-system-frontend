@@ -1,1 +1,125 @@
-<p>mandate-create works!</p>
+<app-main-layout>
+  <div id="account-form" class="flex justify-content-center p-3">
+    <p-card id="auth-block" class="w-full md:w-9 lg:w-7 xl:w-6">
+      
+      <ng-template pTemplate="header">
+        <div class="p-card-header flex align-items-center gap-2">
+           <h2 style="margin: 0; font-size: 1.5rem; color: #003366;"><i class="pi pi-tags text-primary"
+              style="font-size: 1.5rem"></i>  {{ editMode ? 'Edit Mandate' : 'Create Mandate' }}</h2>
+        </div>
+      </ng-template>
+
+     <form [formGroup]="mandateForm" (ngSubmit)="createUpdateMndateData()" class="p-fluid">
+        <div class="grid formgrid p-fluid">
+          
+          <!-- Phone Number -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <input id="phoneNumber" type="text" formControlName="phoneNumber" pInputText />
+              <label for="phoneNumber">Phone Number</label>
+            </p-floatLabel>
+             @if (mandateForm.get('phoneNumber')?.hasError('required') && mandateForm.get('phoneNumber')?.touched) {
+            <small class="error">*Phone Number code is required.</small>
+            }
+          </div>
+
+          <!-- Debit Account -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <input id="debitAccount" type="text" formControlName="debitAccount" pInputText />
+              <label for="debitAccount">Debit Account</label>
+            </p-floatLabel>
+            @if (mandateForm.get('debitAccount')?.hasError('required') && mandateForm.get('debitAccount')?.touched) {
+            <small class="error">*Debit Account code is required.</small>
+            }
+          </div>
+
+          <!-- Total Amount -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <input id="totalAmount" type="number" formControlName="totalAmount" pInputText />
+              <label for="totalAmount">Total Amount</label>
+            </p-floatLabel>
+            @if (mandateForm.get('totalAmount')?.hasError('required') && mandateForm.get('totalAmount')?.touched) {
+            <small class="error">*Total Amount code is required.</small>
+            }
+          </div>
+
+          <!-- Installment Amount -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <input id="installmentAmount" type="number" formControlName="installmentAmount" pInputText />
+              <label for="installmentAmount">Installment Amount</label>
+            </p-floatLabel>
+            @if (mandateForm.get('installmentAmount')?.hasError('required') && mandateForm.get('installmentAmount')?.touched) {
+            <small class="error">*Installment Amount code is required.</small>
+            }
+          </div>
+
+          <!-- Start Date -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <p-calendar id="startDate" formControlName="startDate" dateFormat="dd/mm/yyyy" showIcon="true"></p-calendar>
+              <label for="startDate">Start Date</label>
+            </p-floatLabel>
+            @if (mandateForm.get('startDate')?.hasError('required') && mandateForm.get('startDate')?.touched) {
+            <small class="error">*Start Date code is required.</small>
+            }
+          </div>
+
+          <!-- End Date -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <p-calendar id="endDate" formControlName="endDate" dateFormat="dd/mm/yyyy" showIcon="true"></p-calendar>
+              <label for="endDate">End Date</label>
+            </p-floatLabel>
+            @if (mandateForm.get('endDate')?.hasError('required') && mandateForm.get('endDate')?.touched) {
+            <small class="error">*End Date code is required.</small>
+            }
+          </div>
+
+          <!-- Frequency Type -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <p-dropdown id="frequencyType" formControlName="frequencyType" [options]="frequencyType"
+                          optionLabel="label" optionValue="value" placeholder="Select Frequency Type"></p-dropdown>
+              <label for="frequencyType">Frequency Type</label>
+            </p-floatLabel>
+             @if (mandateForm.get('frequencyType')?.hasError('required') && mandateForm.get('frequencyType')?.touched) {
+            <small class="error">*Frequency Type code is required.</small>
+            }
+          </div>
+
+          <!-- Frequency -->
+          <div class="field col-12 md:col-6">
+            <p-floatLabel>
+              <input id="frequency" type="number" formControlName="frequency" pInputText />
+              <label for="frequency">Frequency</label>
+            </p-floatLabel>
+            @if (mandateForm.get('frequency')?.hasError('required') && mandateForm.get('frequency')?.touched) {
+            <small class="error">*Frequency code is required.</small>
+            }
+          </div>
+
+          <!-- Bill Details -->
+          <div class="field col-12">
+            <p-floatLabel>
+              <textarea id="billDetails" formControlName="billDetails" rows="3" pInputTextarea></textarea>
+              <label for="billDetails">Bill Details</label>
+            </p-floatLabel>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="field col-12 flex justify-content-center mt-3">
+            <p-button type="submit"
+                      [label]="editMode ? 'Update Mandate' : 'Create Mandate'"
+                      class="w-full md:w-6"
+                      [loading]="inProgress">
+            </p-button>
+          </div>
+
+        </div>
+      </form>
+    </p-card>
+  </div>
+</app-main-layout>

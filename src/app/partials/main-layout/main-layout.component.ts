@@ -66,7 +66,7 @@ export class MenuComponent implements OnInit {
                 label: 'Reports',
                 icon: 'pi pi-folder-open',
                 command: () => {
-                    // this.router.navigate(['']);
+                    this.router.navigate(['mandate-report']);
                 }
             },
             {
