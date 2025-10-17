@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../../partials/main-layout/main-layout.component';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
@@ -16,6 +16,9 @@ import { MandateServiceService } from '../../../services/mandate-service.service
 import { MenuModule } from 'primeng/menu';
 import { DialogFormComponent } from '../../common/dialog-form/dialog-form.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 export type RequestType =
   | 'UPLOADED'
   | 'SUBMITTED'
@@ -44,10 +47,16 @@ export class MandateListComponent implements OnInit, OnDestroy {
   mandates: MandateDto[] = [];
   menuItems: any[] = [];
   selectedMandates: MandateDto[] = [];
-  currentPage = 0; // Change to 0-based indexing to match Spring
-  pageSize = 10;
-  totalRecords = 0;
-  totalPages = 0;
+  // currentPage = 0; // Change to 0-based indexing to match Spring
+  // pageSize = 10;
+  // totalRecords = 0;
+  // totalPages = 0;
+
+  totalRecords: number = 0;
+  currentPage: number = 0; // 0-based for Spring Boot
+  totalPages: number = 0;
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [5, 10, 20, 50, 100];
   isFirstPage = true;
   isLastPage = true;
 
@@ -62,6 +71,11 @@ export class MandateListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  // MatTable DataSource
+  dataSource = new MatTableDataSource<MandateDto>([]);
   constructor(
     private mandateService: MandateServiceService,
     private router: Router,
@@ -114,20 +128,33 @@ export class MandateListComponent implements OnInit, OnDestroy {
   onTabChange(activeItem: MenuItem): void {
     this.activeTab = activeItem;
     this.currentRequestType = activeItem.id as RequestType;
-    this.currentPage = 1;
+    this.currentPage = 0;
     this.term = '';
     this.fetchMandates();
+     // Reset paginator to first page
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
+    }
   }
-
   fetchMandates(page: number = this.currentPage, size: number = this.pageSize): void {
     this.mandateService
-      .fetchMandatesByRequestType(this.currentRequestType, page, size)
+      .fetchMandatesByRequestType(this.currentRequestType, page, size, this.currentPage)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           console.log(`Fetched ${this.currentRequestType} mandates:`, response);
           this.mandates = response.mandates;
           this.totalRecords = response.totalRecords;
+
+           // Update table data source
+          this.dataSource.data = response.mandates;
+          
+          // Update paginator length
+          if (this.paginator) {
+            this.paginator.length = this.totalRecords;
+          }
+          
+          this.loading = false;
         },
         error: (err) => {
           console.error(`Failed to fetch ${this.currentRequestType} mandates:`, err);
@@ -170,7 +197,9 @@ export class MandateListComponent implements OnInit, OnDestroy {
     this.pageSize = event.rows;
     this.fetchMandates(this.currentPage, this.pageSize);
   }
-
+   refresh(): void {
+    this.fetchMandates();
+  }
 
   // Helper methods for status display
   getStatusLabel(status: string): string {
@@ -301,7 +330,6 @@ const actionText = 'Send to CRDB';
   });
   }
 
-
   getMenuItems(mandate: any) {
     return [
       {
@@ -321,7 +349,6 @@ const actionText = 'Send to CRDB';
       }
     ];
   }
-
 
   ngOnDestroy(): void {
     this.destroy$.next();

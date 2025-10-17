@@ -73,7 +73,8 @@ export class MandateServiceService {
 fetchMandatesByRequestType(
   requestType: RequestType,
   page: number = 0, // Spring uses 0-based indexing
-  size: number = 10
+  size: number = 10,
+  currentPage: number = 0
 ): Observable<{ mandates: MandateDto[]; totalRecords: number; pageInfo: any }> {
   let params = new HttpParams()
     .set('requestType', requestType)
