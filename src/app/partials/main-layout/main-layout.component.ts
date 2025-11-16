@@ -46,27 +46,48 @@ export class MenuComponent implements OnInit {
                 icon: 'pi pi-cloud-upload',
                 items: [
                     {
-                       label: 'Mandate Excel Upload',
+                       label: 'Bajaji Excel Upload',
                         icon: '',
                         command: () => {
-                            this.router.navigate(['upload-mandate']);
+                            this.router.navigate(['taxi-upload']);
+                        }
+                    },
+                     {
+                       label: 'Finance Excel Upload',
+                        icon: '',
+                        command: () => {
+                            this.router.navigate(['finance-upload']);
                         }
                     }
                 ]
             },
             
             {
-                label: 'Mandates',
+                label: 'Bajaji',
                 icon: 'pi pi-code',
                         command: () => {
-                            this.router.navigate(['mandate-list']);
+                            this.router.navigate(['taxi-list']);
+                        }
+            },
+             {
+                label: 'Finance/Marejesho',
+                icon: 'pi pi-code',
+                        command: () => {
+                            this.router.navigate(['finance-list']);
+                        }
+            },
+             {
+                label: 'Spare',
+                icon: 'pi pi-code',
+                        command: () => {
+                            // this.router.navigate(['stock-list']);
                         }
             },
             {
                 label: 'Reports',
                 icon: 'pi pi-folder-open',
                 command: () => {
-                    this.router.navigate(['mandate-report']);
+                    this.router.navigate(['transport-report']);
                 }
             },
             {
